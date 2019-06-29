@@ -4,4 +4,5 @@ export default function toContain(a, b) {
   } else if (typeof a === 'object') {
     return Object.values(a).indexOf(b) >= 0;
   }
+  return false;
 }
