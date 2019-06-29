@@ -6,3 +6,4 @@ export { default as toBeFalsy } from './toBeFalse';
 export { default as toBeNaN } from './toBeNaN';
 export { default as toBeNull } from './toBeNull';
 export { default as toBeUndefined } from './toBeUndefined';
+export { default as toBeDefined } from './toBeDefined';
