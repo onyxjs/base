@@ -46,6 +46,7 @@
     "webpack-cli": "^3.3.5"
   },
   "dependencies": {
-    "core-js": "3"
+    "core-js": "3",
+    "lodash.isequal": "^4.5.0"
   }
 }
