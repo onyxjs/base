@@ -16,6 +16,11 @@
     "lint:fix": "eslint --fix -c .eslintrc.js src",
     "commit": "npx git-cz"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint & yarn test",
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/node": "^7.4.5",
@@ -27,6 +32,7 @@
     "babel-loader": "^8.0.6",
     "commitizen": "^3.1.1",
     "eslint": "^6.0.1",
+    "husky": "^2.7.0",
     "jest": "^24.8.0",
     "webpack": "^4.35.0",
     "webpack-cli": "^3.3.5"
