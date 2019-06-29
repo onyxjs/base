@@ -11,3 +11,4 @@ export { default as toBeTrue } from './toBeTrue';
 export { default as toBeTruthy } from './toBeTrue';
 export { default as toBeInstanceOf } from './toBeInstanceOf';
 export { default as toHaveLength } from './toHaveLength';
+export { default as toBeTypeOf } from './toBeTypeOf';
