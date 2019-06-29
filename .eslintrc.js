@@ -3,4 +3,10 @@ module.exports = {
   parserOptions: {
     requireConfigFile: false,
   },
+  rules: {
+    'comma-dangle': ['error', 'always-multiline'],
+    quotes: ['error', 'single'],
+    semi: 'error',
+    'eol-last': 'error'
+  }, 
 };
