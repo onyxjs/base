@@ -1,4 +1,4 @@
-import toBeTruthy from '../toBeTruthy';
+import toBeTruthy from '../toBeTrue';
 
 describe('toBeTruthy', () => {
   it('Should return truthy', () => {

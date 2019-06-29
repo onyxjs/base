@@ -4,3 +4,5 @@ export { default as toStrictlyEqual } from './toStrictlyEqual';
 export { default as toBeFalse } from './toBeFalse';
 export { default as toBeFalsy } from './toBeFalse';
 export { default as toBeNaN } from './toBeNaN';
+export { default as toBeTrue } from './toBeTrue';
+export { default as toBeTruthy } from './toBeTrue';
