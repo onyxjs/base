@@ -13,3 +13,4 @@ export { default as toBeInstanceOf } from './toBeInstanceOf';
 export { default as toHaveLength } from './toHaveLength';
 export { default as toBeTypeOf } from './toBeTypeOf';
 export { default as toThrow } from './toThrow';
+export { default as toContain } from './toContain';
