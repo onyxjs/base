@@ -1,0 +1,15 @@
+{
+  "name": "matchers",
+  "version": "0.0.0",
+  "description": "Onyx matchers",
+  "main": "src/index.js",
+  "repository": "git@github.com:ElijahKotyluk/onyx.git",
+  "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "lint": "eslint -c ../../.eslintrc.js src test",
+    "lint:fix": "eslint --fix -c ../../.eslintrc.js src test",
+    "test": "jest -c ../../jest.config.js --coverage"
+  }
+}
