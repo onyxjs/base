@@ -19,7 +19,7 @@
     "*.js": [
       "lerna run lint:fix --",
       "git add",
-      "lerna test -- --bail --findreltests"
+      "lerna run test -- --bail --findRelatedTests"
     ]
   },
   "devDependencies": {
