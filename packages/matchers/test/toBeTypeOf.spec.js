@@ -1,4 +1,4 @@
-import toBeTypeOf from '../toBeTypeOf';
+import toBeTypeOf from '../src/toBeTypeOf';
 
 describe('toBeTypeOf', () => {
   it('should match simple values', () => {

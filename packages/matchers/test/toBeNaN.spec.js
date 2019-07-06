@@ -1,4 +1,4 @@
-import toBeNaN from '../toBeNaN';
+import toBeNaN from '../src/toBeNaN';
 
 describe('toBeNaN', () => {
   it('should match NaN and NaN strings', () => {

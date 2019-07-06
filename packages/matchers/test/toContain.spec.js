@@ -1,4 +1,4 @@
-import toContain from '../toContain';
+import toContain from '../src/toContain';
 
 describe('toContain', () => {
   it('should search in arrays', () => {

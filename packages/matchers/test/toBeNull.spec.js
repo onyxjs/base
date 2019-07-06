@@ -1,4 +1,4 @@
-import toBeNull from '../toBeNull';
+import toBeNull from '../src/toBeNull';
 
 describe('toBeNull', () => {
   it('should match simple values', () => {

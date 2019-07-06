@@ -1,4 +1,4 @@
-import toThrow from '../toThrow';
+import toThrow from '../src/toThrow';
 
 describe('toThrow', () => {
   it('should check functions', () => {

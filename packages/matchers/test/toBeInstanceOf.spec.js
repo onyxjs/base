@@ -1,4 +1,4 @@
-import toBeInstanceOf from '../toBeInstanceOf';
+import toBeInstanceOf from '../src/toBeInstanceOf';
 
 describe('toBeInstanceOf', () => {
   it('Should be an instance of', () => {

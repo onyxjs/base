@@ -1,4 +1,4 @@
-import toStrictlyEqual from '../toStrictlyEqual';
+import toStrictlyEqual from '../src/toStrictlyEqual';
 
 describe('toEqual', () => {
   it('should match simple values', () => {

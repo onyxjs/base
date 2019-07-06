@@ -1,4 +1,4 @@
-import toHaveLength from '../toHaveLength';
+import toHaveLength from '../src/toHaveLength';
 
 describe('toHaveLength', () => {
   it('should have equal length', () => {

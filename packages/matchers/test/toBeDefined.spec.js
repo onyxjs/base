@@ -1,4 +1,4 @@
-import toBeDefined from '../toBeDefined';
+import toBeDefined from '../src/toBeDefined';
 
 describe('toBeDefined', () => {
   it('should match simple values', () => {
