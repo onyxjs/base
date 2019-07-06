@@ -7,6 +7,9 @@
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
   "license": "MIT",
   "private": false,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "commit": "npx git-cz",
     "test": "lerna run test --stream",
