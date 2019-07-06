@@ -1,5 +1,5 @@
 {
-  "name": "matchers",
+  "name": "@onyx/matchers",
   "version": "0.0.0",
   "description": "Onyx matchers",
   "main": "src/index.js",
