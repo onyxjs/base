@@ -2,7 +2,7 @@
   "name": "@onyx/matchers",
   "version": "0.0.0",
   "description": "Onyx matchers",
-  "main": "src/index.js",
+  "main": "dist/main.js",
   "repository": "git@github.com:ElijahKotyluk/onyx.git",
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
   "license": "MIT",
