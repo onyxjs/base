@@ -6,7 +6,7 @@
   "repository": "git@github.com:ElijahKotyluk/onyx.git",
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
   "license": "MIT",
-  "private": false,
+  "private": true,
   "workspaces": [
     "packages/*"
   ],
