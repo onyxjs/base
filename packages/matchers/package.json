@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint -c .eslintrc.js src test",
     "lint:fix": "eslint --fix -c .eslintrc.js src test",
-    "test": "jest -c ./jest.config.js --coverage",
+    "test": "jest -c jest.config.js",
     "build": "webpack -с webpack.config.js --mode production"
   },
   "devDependencies": {
