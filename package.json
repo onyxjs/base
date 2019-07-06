@@ -8,7 +8,11 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "commit": "npx git-cz"
+    "commit": "npx git-cz",
+    "test": "lerna run test",
+    "lint": "lerna run lint",
+    "lint:fix": "lerna run lint:fix",
+    "build": "lerna run build"
   },
   "husky": {
     "hooks": {
