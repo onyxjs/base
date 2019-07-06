@@ -9,10 +9,10 @@
   "private": false,
   "scripts": {
     "commit": "npx git-cz",
-    "test": "lerna run test",
-    "lint": "lerna run lint",
-    "lint:fix": "lerna run lint:fix",
-    "build": "lerna run build"
+    "test": "lerna run test --stream",
+    "lint": "lerna run lint --stream",
+    "lint:fix": "lerna run lint:fix --stream",
+    "build": "lerna run build --stream"
   },
   "husky": {
     "hooks": {
