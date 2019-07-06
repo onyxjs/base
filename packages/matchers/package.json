@@ -10,7 +10,8 @@
     "lint": "eslint -c .eslintrc.js src test",
     "lint:fix": "eslint --fix -c .eslintrc.js src test",
     "test": "jest -c jest.config.js",
-    "build": "webpack -с webpack.config.js --mode production"
+    "build": "webpack -с webpack.config.js --mode production",
+    "watch": "webpack --watch -с webpack.config.js --mode dev"
   },
   "devDependencies": {
     "@babel/core": "^7.5.0",
