@@ -1,4 +1,4 @@
-import toBeUndefined from '../toBeUndefined';
+import toBeUndefined from '../src/toBeUndefined';
 
 describe('toBeUndefined', () => {
   it('should match simple values', () => {

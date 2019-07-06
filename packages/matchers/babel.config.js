@@ -1,11 +1,11 @@
 const presets = [
   [
-    "@babel/env",
+    '@babel/env',
     {
       targets: {
         node: '8',
       },
-      useBuiltIns: "usage",
+      useBuiltIns: 'usage',
       corejs: 3,
     },
   ],

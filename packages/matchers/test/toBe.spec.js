@@ -1,4 +1,4 @@
-import toBe from '../toBe';
+import toBe from '../src/toBe';
 
 describe('toBe', () => {
   it('should match simple values', () => {

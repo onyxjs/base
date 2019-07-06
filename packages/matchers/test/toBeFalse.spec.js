@@ -1,4 +1,4 @@
-import toBeFalse from '../toBeFalse';
+import toBeFalse from '../src/toBeFalse';
 
 describe('toBeFalse', () => {
   it('should match true and false', () => {
