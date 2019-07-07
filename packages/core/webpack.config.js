@@ -1,5 +1,9 @@
 exports.default = {
   module: {
+    entry: './src/index.js',
+    output: {
+      path: __dirname + '/dist',
+    },
     rules: [
       {
         test: /\.js$/,
