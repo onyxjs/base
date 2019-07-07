@@ -1,4 +1,8 @@
 exports.default = {
+  entry: './src/index.js',
+  output: {
+    path: __dirname + '/dist',
+  },
   module: {
     rules: [
       {
