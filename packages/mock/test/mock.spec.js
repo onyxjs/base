@@ -1,4 +1,4 @@
-import mock from '../src/fn';
+import mock from '../src/mock';
 
 describe('Mock function', () => {
   it('should create a mocking function', () => {
