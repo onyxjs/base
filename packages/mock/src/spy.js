@@ -1,7 +1,7 @@
 import mock from './mock';
 
-const spy = (obj, prop, impl = undefined) => {
-  obj[prop] = mock(impl || obj[prop]);
+const spy = (obj, prop, cb = undefined, impl = undefined) => {
+  obj[prop] = mock(impl || obj[prop], cb);
   return obj[prop];
 };
 
