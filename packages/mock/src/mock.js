@@ -7,6 +7,10 @@ const mock = (fn) => {
   };
   mock.calls = [];
   mock.returns = [];
+  mock.reset = function () {
+    mock.calls = [];
+    mock.returns = [];
+  };
   
   return mock;
 };

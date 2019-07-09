@@ -11,4 +11,16 @@ describe('Mock function', () => {
     expect(mockFn.calls).toEqual([[1, 2]]);
     expect(mockFn.returns).toEqual([3]);
   });
+
+  it('should reset', () => {
+    const fn = (a, b) => a + b;
+    const mockFn = mock(fn);
+
+    mockFn(1, 2);
+    expect(mockFn.calls).toEqual([[1, 2]]);
+    expect(mockFn.returns).toEqual([3]);
+    mockFn.reset();
+    expect(mockFn.calls).toEqual([]);
+    expect(mockFn.returns).toEqual([]);
+  });
 });
