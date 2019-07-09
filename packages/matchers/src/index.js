@@ -14,3 +14,4 @@ export { default as toEqual } from './toEqual';
 export { default as toHaveLength } from './toHaveLength';
 export { default as toStrictlyEqual } from './toStrictlyEqual';
 export { default as toThrow } from './toThrow';
+export { ExpectError } from './expect';
