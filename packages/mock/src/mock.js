@@ -1,7 +1,8 @@
-const mock = (fn) => {
+const mock = (fn, cb = undefined) => {
   const mock = function (...args) {
-    mock.calls.push(args);
     const result = fn(...args);
+    if (cb) cb(args, result);
+    mock.calls.push(args);
     mock.returns.push(result);
     return result;
   };

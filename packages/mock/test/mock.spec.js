@@ -23,4 +23,13 @@ describe('Mock function', () => {
     expect(mockFn.calls).toEqual([]);
     expect(mockFn.returns).toEqual([]);
   });
+
+  it('should work with callback', () => {
+    const fn = (a, b) => a + b;
+    const cb = jest.fn();
+    const mockFn = mock(fn, cb);
+
+    mockFn(1, 2);
+    expect(cb).toHaveBeenCalledWith([1, 2], 3);
+  });
 });
