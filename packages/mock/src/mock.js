@@ -1,9 +1,12 @@
 const mock = (fn) => {
   const mock = function (...args) {
     mock.calls.push(args);
-    return fn(...args);
+    const result = fn(...args);
+    mock.returns.push(result);
+    return result;
   };
   mock.calls = [];
+  mock.returns = [];
   
   return mock;
 };

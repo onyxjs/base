@@ -6,7 +6,9 @@ describe('Mock function', () => {
     const mockFn = mock(fn);
 
     expect(mockFn.calls).toEqual([]);
+    expect(mockFn.returns).toEqual([]);
     expect(mockFn(1, 2)).toBe(3);
     expect(mockFn.calls).toEqual([[1, 2]]);
+    expect(mockFn.returns).toEqual([3]);
   });
 });
