@@ -1,16 +1,2 @@
-export { default as toBe } from './toBe';
-export { default as toBeDefined } from './toBeDefined';
-export { default as toBeFalse } from './toBeFalse';
-export { default as toBeFalsy } from './toBeFalse';
-export { default as toBeInstanceOf } from './toBeInstanceOf';
-export { default as toBeNaN } from './toBeNaN';
-export { default as toBeNull } from './toBeNull';
-export { default as toBeTrue } from './toBeTrue';
-export { default as toBeTruthy } from './toBeTrue';
-export { default as toBeTypeOf } from './toBeTypeOf';
-export { default as toBeUndefined } from './toBeUndefined';
-export { default as toContain } from './toContain';
-export { default as toEqual } from './toEqual';
-export { default as toHaveLength } from './toHaveLength';
-export { default as toStrictlyEqual } from './toStrictlyEqual';
-export { default as toThrow } from './toThrow';
+export * from './matchers';
+export { ExpectError } from './expect';
