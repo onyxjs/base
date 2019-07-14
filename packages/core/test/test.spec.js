@@ -2,9 +2,9 @@ import Test from '../src/test.js';
 import TestResult from '../src/testResult.js';
 
 describe('test', () => {
-  const test = new Test();
+  const test = new Test('example description', null);
 
-  test.description = 'example description';
+  const sum = (a, b) => a + b;
 
   it('should return a valid test', () => {
     expect(test).toBeInstanceOf(Test);
