@@ -1,2 +1,2 @@
 export * from './matchers';
-export { ExpectError } from './expect';
+export { default, ExpectError } from './expect';
