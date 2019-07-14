@@ -4,19 +4,21 @@ export default class Test {
   description = '';
   fn = null;
 
-  constructor(...args) {
+  constructor(description, fn) {
+    this.description = description;
+    this.fn = fn;
   }
 
   run() {
     try {
-      fn();
+      this.fn();
     } catch (e) {
       return new TestResult('error', [ e ]);
     }
-    return new TestResult();
+    return new TestResult('success', [ 'SUCCESS' ]);
   }
 
   async asyncRun(...args) {
-    return run(...args);
+    return this.run(...args);
   }
 }
