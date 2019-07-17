@@ -18,7 +18,7 @@ export default class Test {
     return new TestResult('success', [ 'SUCCESS' ]);
   }
 
-  async asyncRun(...args) {
+  asyncRun(...args) {
     return this.run(...args);
   }
 }
