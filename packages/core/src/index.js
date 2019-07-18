@@ -3,25 +3,16 @@
 module.exports = core;
 
 function core() {
-    // TODO
-    // Describe fn
-    // xDescribe fn
-    // It fn
-    // xIt fn
 
     const describe = (description, fn) => {
-      try {
-        fn();
-      } catch(err) {
-        return new Error('error', err);
-      }
+      return new Suite(description, fn);
     };
 
+    // const xdescribe = () => {};
+
     const it = (description, fn) => {
-      try {
-        fn();
-      } catch(err) {
-        return new Error('error', err);
-      }
+      return new Test(description, fn);
     };
+
+    // const xit = () => {};
 }
