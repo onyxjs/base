@@ -1,22 +1,28 @@
 import Test from './test';
+import SuiteResult from './suiteResult';
 
 export default class Suite {
-  status = '';
-  tests = [];
+  description = '';
+  fn = null;
+  status = null;
 
-  constructor(status, tests) {
-    this.status = status;
-    this.tests = tests;
+  constructor(description, fn) {
+    this.description = description;
+    this.fn = fn;
+    this.status = 'pending';
   }
 
   run() {
-    this.status = 'pending';
-
-    this.tests.forEach(test => {
-      if(test instanceof Test) {
-        test.run();
-      }
-    });
+    try {
+      this.fn();
+    } catch (e) {
+      
+      this.status = new SuiteResult('error', [ e ]);
+      return this.status;
+    }
+    
+    this.status = new SuiteResult('success', [ 'Success' ]);
+    return this.status;
   }
 
   asyncRun(...args) {
