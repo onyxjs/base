@@ -15,10 +15,10 @@ export default class Test {
     } catch (e) {
       return new TestResult('error', [ e ]);
     }
-    return new TestResult('success', [ 'SUCCESS' ]);
+    return new TestResult('success', [ 'Success' ]);
   }
 
   asyncRun(...args) {
     return this.run(...args);
   }
-}
+};

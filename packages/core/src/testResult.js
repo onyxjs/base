@@ -6,4 +6,4 @@ export default class TestResult {
     this.status = status;
     this.messages = messages;
   }
-}
+};
