@@ -22,7 +22,7 @@
     }
   },
   "lint-staged": {
-    "*.js": [
+    "*.[jt]s": [
       "lerna run lint:fix --",
       "git add",
       "lerna run test -- --bail --findRelatedTests"
