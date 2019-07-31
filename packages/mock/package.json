@@ -1,0 +1,31 @@
+{
+  "name": "@onyx/mock",
+  "version": "0.0.0",
+  "description": "Onyx mocking module",
+  "main": "dist/main.js",
+  "repository": "git@github.com:ElijahKotyluk/onyx.git",
+  "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint -c .eslintrc.js src test",
+    "lint:fix": "eslint --fix -c .eslintrc.js src test",
+    "test": "jest -c jest.config.js",
+    "build": "webpack -с webpack.config.js --mode production",
+    "watch": "webpack --watch -с webpack.config.js --mode dev"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.0",
+    "@babel/node": "^7.5.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.0",
+    "@babel/preset-env": "^7.5.0",
+    "@babel/preset-stage-2": "^7.0.0",
+    "babel-eslint": "^10.0.2",
+    "babel-jest": "^24.8.0",
+    "babel-loader": "^8.0.6",
+    "eslint": "^6.0.1",
+    "jest": "^24.8.0",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5"
+  },
+  "dependencies": {}
+}
