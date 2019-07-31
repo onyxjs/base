@@ -1,4 +1,6 @@
-export default function watch (object, properties, getCb = undefined, setCb = undefined) {
+import { Prop } from "./spy";
+
+export default function watch (object: object, properties: Prop[], getCb?: (value: any) => any, setCb?: (value: any) => any) {
   return new Proxy(object, {
     get: (t, p, r) => {
       const v = Reflect.get(t, p, r);
