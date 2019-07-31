@@ -19,6 +19,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.5.0",
     "@babel/preset-env": "^7.5.0",
     "@babel/preset-stage-2": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
     "@types/jest": "^24.0.16",
     "babel-eslint": "^10.0.2",
     "babel-jest": "^24.8.0",
@@ -27,8 +28,5 @@
     "jest": "^24.8.0",
     "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5"
-  },
-  "dependencies": {
-    "@babel/preset-typescript": "^7.3.3"
   }
 }
