@@ -1,4 +1,4 @@
-export default function toThrow(a, b) {
+export default function toThrow(a: Function, b: string): boolean {
   try {
     a();
   } catch (e) {

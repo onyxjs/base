@@ -1,11 +1,11 @@
 import * as matchers from './matchers';
 
-function expectations (expectation, not = false) {
+function expectations (expectation: any, not: boolean = false): { [key: string]: Function } {
   return Object.fromEntries(
     Object.entries(matchers)
       .map(([key, value]) => ([
         key,
-        (...args) => {
+        (...args: any[]) => {
           const result = value(expectation, ...args);
           if (result === not) throw new ExpectError(`${not ? 'not.' : ''}${key} failed`); // TODO diff
           return result;
@@ -14,7 +14,7 @@ function expectations (expectation, not = false) {
   );
 }
 
-export default function expect (expectation) {
+export default function expect (expectation): any {
   return {
     ...expectations(expectation, false),
     not: expectations(expectation, true),
