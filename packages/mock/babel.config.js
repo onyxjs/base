@@ -1,7 +1,6 @@
 const presets = [
   [
     '@babel/env',
-    '@babel/preset-typescript',
     {
       targets: {
         node: '8',
@@ -10,6 +9,7 @@ const presets = [
       corejs: 3,
     },
   ],
+  '@babel/preset-typescript',
 ];
 
 module.exports = { presets };
