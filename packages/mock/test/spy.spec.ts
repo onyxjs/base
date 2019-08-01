@@ -18,7 +18,7 @@ describe('Spy', () => {
     const obj = {
       fn: (a, b) => a + b,
     };
-    const spyFn = spy(obj, 'fn', (a, b) => a * b);
+    const spyFn = spy(obj, 'fn', () => {}, (a, b) => a * b);
 
     expect(spyFn.calls).toEqual([]);
     expect(spyFn(2, 2)).toBe(4);
