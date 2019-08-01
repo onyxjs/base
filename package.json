@@ -14,7 +14,9 @@
     "test": "lerna run test --stream",
     "lint": "lerna run lint --stream",
     "lint:fix": "lerna run lint:fix --stream",
-    "build": "lerna run build --stream"
+    "build": "lerna run build --stream",
+    "dev": "lerna run dev --stream",
+    "watch": "lerna run watch --stream"
   },
   "husky": {
     "hooks": {
@@ -22,7 +24,7 @@
     }
   },
   "lint-staged": {
-    "*.js": [
+    "*.[jt]s": [
       "lerna run lint:fix --",
       "git add",
       "lerna run test -- --bail --findRelatedTests"
