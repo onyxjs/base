@@ -10,10 +10,13 @@ describe('Watch', () => {
     obj = watch(obj, ['a'], get, undefined) as { a: string, b: string };
 
     expect(get).toHaveBeenCalledTimes(0);
+
+    // tslint:disable-next-line:no-unused-expression
     obj.a;
     expect(get).toHaveBeenCalledTimes(1);
     expect(get).toHaveBeenCalledWith('foo');
 
+    // tslint:disable-next-line:no-unused-expression
     obj.b; // Shouldn't trigger on other props' get
     expect(get).toHaveBeenCalledTimes(1);
   });
