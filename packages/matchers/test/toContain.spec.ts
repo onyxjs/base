@@ -16,6 +16,6 @@ describe('toContain', () => {
   });
 
   it('should return false if first argument neither object or array', () => {
-    expect(toContain(1, 'onyx')).toBeFalsy();
+    expect(toContain(1 as any, 'onyx')).toBeFalsy();
   });
 });
