@@ -11,7 +11,7 @@
     "lint:fix": "eslint --fix -c .eslintrc.js src test",
     "test": "jest -c jest.config.js",
     "build": "webpack -с webpack.config.js --mode production",
-    "watch": "webpack --watch -с webpack.config.js --mode dev"
+    "watch": "webpack --watch -с webpack.config.js --mode development"
   },
   "devDependencies": {
     "@babel/core": "^7.5.0",
@@ -19,13 +19,15 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.5.0",
     "@babel/preset-env": "^7.5.0",
     "@babel/preset-stage-2": "^7.0.0",
-    "@babel/preset-typescript": "^7.3.3",
     "@types/jest": "^24.0.16",
     "babel-eslint": "^10.0.2",
     "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.6",
     "eslint": "^6.0.1",
     "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
     "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5"
   }
