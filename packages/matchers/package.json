@@ -7,10 +7,11 @@
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint -c .eslintrc.js src test",
-    "lint:fix": "eslint --fix -c .eslintrc.js src test",
+    "lint": "tslint -c tslint.json src/*.[tj]s test/*.[tj]s *.[tj]s",
+    "lint:fix": "yarn lint --fix",
     "test": "jest -c jest.config.js",
     "build": "webpack -с webpack.config.js --mode production",
+    "dev": "webpack -с webpack.config.js --mode development",
     "watch": "webpack --watch -с webpack.config.js --mode development"
   },
   "devDependencies": {
@@ -19,11 +20,13 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.5.0",
     "@babel/preset-env": "^7.5.0",
     "@babel/preset-stage-2": "^7.0.0",
-    "babel-eslint": "^10.0.2",
+    "@types/jest": "^24.0.16",
     "babel-jest": "^24.8.0",
-    "babel-loader": "^8.0.6",
-    "eslint": "^6.0.1",
     "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
+    "ts-loader": "^6.0.4",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3",
     "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5"
   },
