@@ -1,7 +1,10 @@
-import * as matchers from './matchers';
-
-// tslint:disable-next-line:ban-types
-function expectations(expectation: any, not: boolean = false): { [key: string]: Function } {
+function expectations(
+  // tslint:disable-next-line:ban-types
+  matchers: { [ key: string ]: Function },
+  expectation: any,
+  not: boolean = false,
+  // tslint:disable-next-line:ban-types
+): { [key: string]: Function } {
   const entries = Object.entries(matchers)
     .map(([key, value]) => [
       key,
@@ -15,10 +18,14 @@ function expectations(expectation: any, not: boolean = false): { [key: string]: 
   return Object.assign({}, ...Array.from(entries, ([k, v]: any[]) => ({[k]: v}) ));
 }
 
-export default function expect(expectation): any {
+export default function expect(
+  // tslint:disable-next-line:ban-types
+  matchers: { [ key: string ]: Function },
+  expectation: any,
+): any {
   return {
-    ...expectations(expectation, false),
-    not: expectations(expectation, true),
+    ...expectations(matchers, expectation, false),
+    not: expectations(matchers, expectation, true),
   };
 }
 

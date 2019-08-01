@@ -1,4 +1,4 @@
-import _expect from '../src/expect';
+import _expect from '../src/index';
 
 describe('Expect', () => {
   it('should expect values', () => {
