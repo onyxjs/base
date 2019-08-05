@@ -1,18 +1,41 @@
 export enum Status {
-  Failed,
   Passed,
+  Failed,
+  Errored,
   Skipped,
+  Pending,
 }
 
 export default class Result {
-  public status: Status;
-  public messages: string[];
+  private _status: Status;
+  private _messages: string[];
 
-  constructor(status: Status, messages: string | string[]) {
-    this.status = status;
+  constructor(status?: Status, messages?: string | string[]) {
+    this._status = status || Status.Pending;
     if (!Array.isArray(messages)) {
       messages = [ messages ];
     }
-    this.messages = messages;
+    this._messages = messages;
+  }
+
+  public isDone() {
+    return this._status !== Status.Pending;
+  }
+
+  public get status() {
+    return this._status;
+  }
+  public set status(v: Status) {
+    if (this.isDone()) return;
+    this._status = v;
+  }
+
+  public get messages() {
+    return this._messages;
+  }
+  // No ability to delete messages
+  public addMessages(...messages: string[]) {
+    if (this.isDone()) return;
+    this._messages.push(...messages);
   }
 }
