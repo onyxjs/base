@@ -1,5 +1,4 @@
-import Result from './result';
-import { Status } from './result';
+import Result, { Status } from './result';
 
 /**
  * @class
@@ -10,39 +9,58 @@ import { Status } from './result';
 export default class Runnable {
   public description: string;
   public fn: () => any;
-  public pending: boolean;
-  public async: boolean | number;
-  public sync: boolean;
+  public skip: boolean;
+  public result: Result;
 
-  constructor(description: string, fn: () => Result | Result) {
+  constructor(description: string, fn: () => any, skip = false) {
     this.description = description;
     this.fn = fn;
-    this.pending = false;
+    this.result = new Result();
+    this.skip = skip;
   }
 
   /**
    * Run a `Runnable` instance return `Runnable` status:
    * @public
-   * @param {Function} fn
    * @return {Result}
    */
-  public run(fn: () => any): Result {
-    try {
-      fn();
-    } catch (error) {
-      return new Result(Status.Failed, error);
+  public run(): Result {
+    if (this.skip) {
+      this.result.status = Status.Skipped;
+      return this.result;
     }
 
-    return new Result(Status.Passed, []);
+    try {
+      this.fn();
+    } catch (error) {
+      if (error.name === 'ExpectError') {
+        this.result.addMessages(String(error));
+        this.result.status = Status.Failed;
+      } else {
+        this.result.addMessages(String(error));
+        this.result.status = Status.Errored;
+      }
+    }
+
+    this.result.status = Status.Passed; // Will be cancelled if status is already set in catch
+
+    return this.result;
   }
 
   /**
    * Run asynchronous `Test` or `Suite`:
    * @public
-   * @param {Function} fn
-   * @return {Result}
+   * @return {Promise}
    */
-  public async asyncRun(fn: () => any): Promise<Result> {
-    return await this.run(this.fn);
+  public async asyncRun(): Promise<Result> {
+    return await this.run();
+  }
+
+  /**
+   * Check if `Runnable` is done
+   * @return {boolean}
+   */
+  public isDone() {
+    return this.result.isDone();
   }
 }
