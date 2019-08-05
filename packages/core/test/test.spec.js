@@ -3,7 +3,7 @@ import TestResult from '../src/testResult.js';
 
 describe('test', () => {
   const sum = (a, b) => a + b;
-  
+
   const test = new Test('example description', sum(1, 2));
 
   it('should return a valid test', () => {

@@ -37,6 +37,6 @@ describe('Result', () => {
     expect(result.messages).toHaveLength(2);
 
     result.status = Status.Pending;
-    expect(result.status).toBe(Status.Passed)
+    expect(result.status).toBe(Status.Passed);
   });
 });

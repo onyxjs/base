@@ -7,35 +7,35 @@ export enum Status {
 }
 
 export default class Result {
-  private _status: Status;
-  private _messages: string[];
+  private internalStatus: Status;
+  private internalMessages: string[];
 
   constructor(status?: Status, messages: string | string[] = []) {
-    this._status = status || Status.Pending;
+    this.internalStatus = status || Status.Pending;
     if (!Array.isArray(messages)) {
       messages = [ messages ];
     }
-    this._messages = messages;
+    this.internalMessages = messages;
   }
 
   public isDone() {
-    return this._status !== Status.Pending;
+    return this.internalStatus !== Status.Pending;
   }
 
   public get status() {
-    return this._status;
+    return this.internalStatus;
   }
   public set status(v: Status) {
-    if (this.isDone()) return;
-    this._status = v;
+    if (this.isDone()) { return; }
+    this.internalStatus = v;
   }
 
   public get messages() {
-    return this._messages;
+    return this.internalMessages;
   }
   // No ability to delete messages
   public addMessages(...messages: string[]) {
-    if (this.isDone()) return;
-    this._messages.push(...messages);
+    if (this.isDone()) { return; }
+    this.internalMessages.push(...messages);
   }
 }

@@ -11,7 +11,7 @@ describe('Runnable', () => {
   });
 
   it('should return isDone', () => {
-    const runnable = new Runnable('test', () => {});
+    const runnable = new Runnable('test', () => null);
 
     expect(runnable.isDone()).toBeFalsy();
     runnable.run();
@@ -36,7 +36,7 @@ describe('Runnable', () => {
   });
 
   class ExpectError extends Error {
-    constructor (message) {
+    constructor(message) {
       super(message);
       this.name = 'ExpectError';
     }
