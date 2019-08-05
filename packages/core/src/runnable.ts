@@ -1,4 +1,5 @@
 import Result from './result';
+import { Status } from './result';
 
 /**
  * @class
@@ -17,8 +18,6 @@ export default class Runnable {
     this.description = description;
     this.fn = fn;
     this.pending = false;
-    this.async = fn && fn.length;
-    this.sync = !this.async;
   }
 
   /**
@@ -27,23 +26,23 @@ export default class Runnable {
    * @param {Function} fn
    * @return {Result}
    */
-  public run(fn: () => any | any[]): Result {
+  public run(fn: () => any): Result {
     try {
       fn();
     } catch (error) {
-      return new Result('Failed', error);
+      return new Result(Status.Failed, error);
     }
 
-    return new Result('Success', [`passing test`]);
+    return new Result(Status.Passed, []);
   }
 
   /**
    * Run asynchronous `Test` or `Suite`:
    * @public
-   * @param {Function} fn 
+   * @param {Function} fn
    * @return {Result}
    */
-  public async asyncRun(fn: any[]): Promise<Result> {
+  public async asyncRun(fn: () => any): Promise<Result> {
     return await this.run(this.fn);
   }
 }
