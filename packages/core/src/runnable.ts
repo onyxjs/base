@@ -8,13 +8,17 @@ import Result from './result';
 
 export default class Runnable {
   public description: string;
-  public fn: () => Result | Result;
+  public fn: () => any;
   public pending: boolean;
+  public async: boolean | number;
+  public sync: boolean;
 
   constructor(description: string, fn: () => Result | Result) {
     this.description = description;
     this.fn = fn;
     this.pending = false;
+    this.async = fn && fn.length;
+    this.sync = !this.async;
   }
 
   /**
@@ -23,12 +27,23 @@ export default class Runnable {
    * @param {Function} fn
    * @return {Result}
    */
-  public run(fn: any): Result {
-    // run runnable instance
+  public run(fn: () => any | any[]): Result {
     try {
       fn();
     } catch (error) {
       return new Result('Failed', error);
     }
+
+    return new Result('Success', [`passing test`]);
+  }
+
+  /**
+   * Run asynchronous `Test` or `Suite`:
+   * @public
+   * @param {Function} fn 
+   * @return {Result}
+   */
+  public async asyncRun(fn: any[]): Promise<Result> {
+    return await this.run(this.fn);
   }
 }
