@@ -10,7 +10,7 @@ export default class Result {
   private _status: Status;
   private _messages: string[];
 
-  constructor(status?: Status, messages?: string | string[]) {
+  constructor(status?: Status, messages: string | string[] = []) {
     this._status = status || Status.Pending;
     if (!Array.isArray(messages)) {
       messages = [ messages ];
