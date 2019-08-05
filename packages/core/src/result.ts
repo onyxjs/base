@@ -1,3 +1,9 @@
+export enum Status {
+  Failed = 'FAILED',
+  Passed = 'PASSED',
+  Skipped = 'SKIPPED',
+}
+
 export default class Result {
   public status: string;
   public messages: string[];
