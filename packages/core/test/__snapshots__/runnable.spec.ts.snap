@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Runnable should error 1`] = `
+Result {
+  "_messages": Array [
+    "Error: Fatal error",
+  ],
+  "_status": 2,
+}
+`;
+
+exports[`Runnable should fail 1`] = `
+Result {
+  "_messages": Array [
+    "ExpectError: Expect failed",
+  ],
+  "_status": 1,
+}
+`;
+
+exports[`Runnable should run 1`] = `
+Result {
+  "_messages": Array [],
+  "_status": 0,
+}
+`;
+
+exports[`Runnable should run asynchronously 1`] = `
+Result {
+  "_messages": Array [],
+  "_status": 0,
+}
+`;
+
+exports[`Runnable should skip 1`] = `
+Result {
+  "_messages": Array [],
+  "_status": 3,
+}
+`;
