@@ -2,39 +2,39 @@
 
 exports[`Runnable should error 1`] = `
 Result {
-  "_messages": Array [
+  "internalMessages": Array [
     "Error: Fatal error",
   ],
-  "_status": 2,
+  "internalStatus": 2,
 }
 `;
 
 exports[`Runnable should fail 1`] = `
 Result {
-  "_messages": Array [
+  "internalMessages": Array [
     "ExpectError: Expect failed",
   ],
-  "_status": 1,
+  "internalStatus": 1,
 }
 `;
 
 exports[`Runnable should run 1`] = `
 Result {
-  "_messages": Array [],
-  "_status": 0,
+  "internalMessages": Array [],
+  "internalStatus": 0,
 }
 `;
 
 exports[`Runnable should run asynchronously 1`] = `
 Result {
-  "_messages": Array [],
-  "_status": 0,
+  "internalMessages": Array [],
+  "internalStatus": 0,
 }
 `;
 
 exports[`Runnable should skip 1`] = `
 Result {
-  "_messages": Array [],
-  "_status": 3,
+  "internalMessages": Array [],
+  "internalStatus": 3,
 }
 `;
