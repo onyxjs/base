@@ -9,9 +9,9 @@
   "scripts": {
     "lint": "tslint -c tslint.json src/*.[tj]s test/*.[tj]s *.[tj]s",
     "lint:fix": "yarn lint --fix",
+    "lint:wotan": "wotan test/** src/** -e 'test/__snapshots__'",
     "lint:tests": "wotan test/** -e 'test/__snapshots__'",
-    "lint:valtyr": "wotan -m @fimbul/valtyr",
-    "lint:wotan": "wotan",
+    "lint:valtyr": "wotan -m @fimbul/valtyr --fix",
     "test": "jest -c jest.config.js",
     "build": "webpack -с webpack.config.js --mode production",
     "dev": "webpack -с webpack.config.js --mode development",
