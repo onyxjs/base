@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
+    "rootDir": "./src",
     "module": "es2015",
     "target": "es5",
     "allowJs": true,
     "checkJs": true,
     "esModuleInterop": true,
+    "strict": true,
     "moduleResolution": "node",
     "lib": [
       "es2015",
@@ -14,7 +16,8 @@
       "es2018",
       "es2019",
       "es2020",
-      "esnext"
+      "esnext",
+      "dom"
     ],
     "sourceMap": true
   },
@@ -23,5 +26,7 @@
     "**/*.spec.js",
     "node_modules"
   ],
-  "files": ["./src/index.ts"]
+  "include": [
+    "src"
+  ]
 }
