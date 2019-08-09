@@ -181,7 +181,7 @@
       "unused-catch-binding"
     ],
     "ext-curly": [
-      true,
+      false,
       "else",
       "nested-if-else",
       "braced-child"
