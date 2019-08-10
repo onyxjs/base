@@ -1,0 +1,2 @@
+# Tell wotan to use the valtyr module for linting.
+modules: "@fimbul/valtyr"

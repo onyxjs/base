@@ -12,8 +12,8 @@
   "scripts": {
     "commit": "npx git-cz",
     "test": "lerna run test --stream",
-    "lint": "lerna run lint --stream",
-    "lint:fix": "lerna run lint:fix --stream",
+    "lint": "lerna run --no-bail lint:wotan --stream",
+    "lint:fix": "lerna run --no-bail lint:fix --stream",
     "build": "lerna run build --stream",
     "dev": "lerna run dev --stream",
     "watch": "lerna run watch --stream"
