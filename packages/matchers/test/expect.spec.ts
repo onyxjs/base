@@ -1,7 +1,7 @@
 import _expect from '../src/expect';
 
 const matchers = {
-  toStrictlyEqual: (a, b) => a === b,
+  toStrictlyEqual: (a: any, b: any) => a === b,
 };
 
 describe('Expect', () => {
