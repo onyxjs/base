@@ -1,0 +1,9 @@
+{
+  "name": "@onyx/docs",
+  "version": "0.0.0",
+  "description": "Onyx docs",
+  "repository": "git@github.com:onyxjs/onyx.git",
+  "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
+  "license": "MIT",
+  "private": true
+}
