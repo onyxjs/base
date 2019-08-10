@@ -9,11 +9,11 @@ export default function watch(
   return new Proxy(object, {
     get: (t, p, r) => {
       const v = Reflect.get(t, p, r);
-      if (properties.indexOf(p) >= 0) { getCb(v); }
+      if (properties.indexOf(p) >= 0 && getCb) { getCb(v); }
       return v;
     },
     set: (t, p, v, r) => {
-      if (properties.indexOf(p) >= 0) { setCb(v); }
+      if (properties.indexOf(p) >= 0 && setCb) { setCb(v); }
       return Reflect.set(t, p, v, r);
     },
   });

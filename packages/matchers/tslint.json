@@ -4,11 +4,17 @@
     "tslint:recommended"
   ],
   "rules": {
-    "quotemark": [true, "single"],
+    "quotemark": [
+      true,
+      "single"
+    ],
     "radix": false
   },
   "jsRules": {
-    "quotemark": [true, "single"],
+    "quotemark": [
+      true,
+      "single"
+    ],
     "radix": false
   }
 }
