@@ -1,3 +1,4 @@
+// tslint:disable-next-line:interface-name
 export interface Mock extends Function {
   calls: any[][];
   returns: any[];
