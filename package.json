@@ -13,9 +13,7 @@
     "commit": "npx git-cz",
     "test": "lerna run test --stream",
     "lint": "lerna run --no-bail lint:wotan --stream",
-    "lint:fix": "lerna run --no-bail lint:wotan:fix --stream",
-    "lint:tests": "lerna run --no-bail lint:tests --stream",
-    "lint:valtyr": "lerna run --no-bail lint:valtyr --stream",
+    "lint:fix": "lerna run --no-bail lint:fix --stream",
     "build": "lerna run build --stream",
     "dev": "lerna run dev --stream",
     "watch": "lerna run watch --stream"

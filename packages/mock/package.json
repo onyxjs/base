@@ -7,10 +7,8 @@
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
   "license": "MIT",
   "scripts": {
-    "lint:wotan": "wotan src/** test/** -e 'test/__snapshots__'",
-    "lint:wotan:fix": "wotan -m @fimbul/valtyr test/** src/** -e 'test/__snapshots__' --fix",
-    "lint:tests": "wotan test/** -e 'test/__snapshots__'",
-    "lint:valtyr": "wotan -m @fimbul/valtyr",
+    "lint:wotan": "wotan -m @fimbul/valtyr test/** src/** -e 'test/__snapshots__'",
+    "lint:fix": "yarn run lint:wotan --fix",
     "test": "jest -c jest.config.js",
     "build": "webpack -с webpack.config.js --mode production",
     "dev": "webpack -с webpack.config.js --mode development",
