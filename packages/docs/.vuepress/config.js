@@ -1,4 +1,5 @@
 module.exports = {
+  base: '/onyx/',
   plugins: {
     '@vuepress/pwa': {
       serviceWorker: true,
