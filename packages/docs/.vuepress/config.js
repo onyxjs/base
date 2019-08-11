@@ -25,7 +25,13 @@ module.exports = {
         editLinkText: 'Edit this page on GitHub',
         sidebar: [
           '/',
-          '/matchers/',
+          {
+            title: '@onyx/matchers',
+            path: '/matchers/',
+            children: [
+              '/matchers/matchers/'
+            ]
+          },
           '/mock/',
         ],
       },
