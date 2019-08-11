@@ -1,16 +1,27 @@
 module.exports = {
+  plugins: {
+    '@vuepress/pwa': {
+      serviceWorker: true,
+      updatePopup: {
+        '/': {
+          message: "New content is available.",
+          buttonText: "Refresh",
+        },
+        '/ru/': {
+          message: "Доступна новая информация.",
+          buttonText: "Обновить",
+        },
+      },
+    },
+    '@vuepress/nprogress': {},
+    '@vuepress/back-to-top': {},
+  },
   themeConfig: {
     locales: {
       '/': {
         selectText: 'Languages',
         label: 'English',
         editLinkText: 'Edit this page on GitHub',
-        serviceWorker: {
-          updatePopup: {
-            message: "New content is available.",
-            buttonText: "Refresh",
-          },
-        },
         sidebar: [
           '/',
           '/matchers/',
@@ -21,12 +32,6 @@ module.exports = {
         selectText: 'Языки',
         label: 'Русский',
         editLinkText: 'Редактировать эту страницу на GitHub',
-        serviceWorker: {
-          updatePopup: {
-            message: "Доступна новая информация.",
-            buttonText: "Обновить",
-          },
-        },
         sidebar: [
           '/ru/',
           '/ru/matchers/',
