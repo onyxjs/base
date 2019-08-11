@@ -1,5 +1,5 @@
 # Onyx
-![Onyx logo](packages/docs/src/.vuepress/public/onyx-logo-sm.svg)
+![Onyx logo](packages/docs/.vuepress/public/onyx-logo-sm.svg)
 
 [![Build Status](https://travis-ci.org/onyxjs/onyx.svg?branch=master)](https://travis-ci.org/onyxjs/onyx)
 [![codecov](https://codecov.io/gh/onyxjs/onyx/branch/master/graph/badge.svg)](https://codecov.io/gh/onyxjs/onyx)
