@@ -50,7 +50,7 @@ module.exports = {
     '/ru/': {
       lang: 'ru-RU',
       title: 'Onyx',
-      description: 'Onyx это фреймворк для тестированя JavaScript кода.',
+      description: 'Onyx это фреймворк для тестирования JavaScript кода.',
     },
   },
 }
