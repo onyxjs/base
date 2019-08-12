@@ -7,11 +7,8 @@
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
   "license": "MIT",
   "scripts": {
-    "lint": "tslint -c tslint.json src/*.[tj]s test/*.[tj]s *.[tj]s",
-    "lint:fix": "yarn lint --fix",
-    "lint:wotan": "wotan test/** src/** -e 'test/__snapshots__'",
-    "lint:tests": "wotan test/** -e 'test/__snapshots__'",
-    "lint:valtyr": "wotan -m @fimbul/valtyr --fix",
+    "lint:wotan": "wotan -m @fimbul/valtyr test/** src/** -e 'test/__snapshots__'",
+    "lint:fix": "yarn run lint:wotan --fix",
     "test": "jest -c jest.config.js",
     "build": "webpack -с webpack.config.js --mode production",
     "dev": "webpack -с webpack.config.js --mode development",
@@ -32,7 +29,6 @@
     "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.4",
     "tslint": "^5.18.0",
-    "tslint-consistent-codestyle": "^1.15.1",
     "typescript": "^3.5.3",
     "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5"
