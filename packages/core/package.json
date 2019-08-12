@@ -32,5 +32,8 @@
     "typescript": "^3.5.3",
     "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5"
+  },
+  "dependencies": {
+    "chokidar": "^3.0.2"
   }
 }
