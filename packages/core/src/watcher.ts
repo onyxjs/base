@@ -1,6 +1,6 @@
 import chokidar from 'chokidar';
 
-class Watcher {
+export default class Watcher {
   public files: string | string[];
   public options: any;
   private watcher: any;
