@@ -5,7 +5,7 @@ All matcher functions are listed here:
 - [toBeFalse](to-be-false)
 - [toBeFalsy](to-be-falsy)
 - [toBeInstanceOf](to-be-instance-of)
-- [toBeNaN](to-be-na-n)
+- [toBeNaN](to-be-nan)
 - [toBeNull](to-be-null)
 - [toBeTrue](to-be-true)
 - [toBeTruthy](to-be-truthy)
