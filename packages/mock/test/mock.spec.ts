@@ -2,7 +2,7 @@ import mock from '../src/mock';
 
 describe('Mock function', () => {
   it('should create a mocking function', () => {
-    const fn = (a, b) => a + b;
+    const fn = (a: number, b: number) => a + b;
     const mockFn = mock(fn);
 
     expect(mockFn.calls).toEqual([]);
@@ -13,7 +13,7 @@ describe('Mock function', () => {
   });
 
   it('should reset', () => {
-    const fn = (a, b) => a + b;
+    const fn = (a: number, b: number) => a + b;
     const mockFn = mock(fn);
 
     mockFn(1, 2);
@@ -25,7 +25,7 @@ describe('Mock function', () => {
   });
 
   it('should work with callback', () => {
-    const fn = (a, b) => a + b;
+    const fn = (a: number, b: number) => a + b;
     const cb = jest.fn();
     const mockFn = mock(fn, cb);
 

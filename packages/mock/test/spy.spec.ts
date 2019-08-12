@@ -3,7 +3,7 @@ import spy from '../src/spy';
 describe('Spy', () => {
   it('should create a spy function', () => {
     const obj = {
-      fn: (a, b) => a + b,
+      fn: (a: number, b: number) => a + b,
     };
     const spyFn = spy(obj, 'fn');
 
@@ -16,9 +16,9 @@ describe('Spy', () => {
 
   it('should create a spy function with custom implementation', () => {
     const obj = {
-      fn: (a, b) => a + b,
+      fn: (a: number, b: number) => a + b,
     };
-    const spyFn = spy(obj, 'fn', () => undefined, (a, b) => a * b);
+    const spyFn = spy(obj, 'fn', () => undefined, (a: number, b: number) => a * b);
 
     expect(spyFn.calls).toEqual([]);
     expect(spyFn(2, 2)).toBe(4);
@@ -29,7 +29,7 @@ describe('Spy', () => {
 
   it('should create a spy function with a callback', () => {
     const obj = {
-      fn: (a, b) => a + b,
+      fn: (a: number, b: number) => a + b,
     };
     const cb = jest.fn();
     spy(obj, 'fn', cb);

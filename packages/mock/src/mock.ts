@@ -1,7 +1,8 @@
-export class Mock extends Function {
-  public calls: any[][];
-  public returns: any[];
-  public reset: () => void;
+// tslint:disable-next-line:interface-name
+export interface Mock extends Function {
+  calls: any[][];
+  returns: any[];
+  reset: () => void;
 }
 
 // tslint:disable-next-line:ban-types

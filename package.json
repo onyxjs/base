@@ -2,7 +2,7 @@
   "name": "onyx",
   "version": "0.0.0",
   "description": "A simple Javascript unit testing library.",
-  "repository": "git@github.com:ElijahKotyluk/onyx.git",
+  "repository": "git@github.com:onyxjs/onyx.git",
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
   "license": "MIT",
   "private": true,
@@ -12,8 +12,8 @@
   "scripts": {
     "commit": "npx git-cz",
     "test": "lerna run test --stream",
-    "lint": "lerna run lint --stream",
-    "lint:fix": "lerna run lint:fix --stream",
+    "lint": "lerna run --no-bail lint:wotan --stream",
+    "lint:fix": "lerna run --no-bail lint:fix --stream",
     "build": "lerna run build --stream",
     "dev": "lerna run dev --stream",
     "watch": "lerna run watch --stream"

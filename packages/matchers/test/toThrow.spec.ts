@@ -1,7 +1,7 @@
 import toThrow from '../src/toThrow';
 
 export class DemoError extends Error {
-  constructor(message) {
+  constructor(message: string) {
     super(message);
     this.name = 'DemoError';
   }
