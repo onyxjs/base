@@ -29,7 +29,7 @@ module.exports = {
             title: '@onyx/matchers',
             path: '/matchers/',
             children: [
-              '/matchers/matchers/'
+              '/matchers/matchers/to-be'
             ]
           },
           '/mock/',
