@@ -6,7 +6,7 @@ export default class Suite extends Runnable {
   public total: number;
 
   constructor(description: string, fn: () => any, skip = false, type = 'Suite') {
-    super(description, fn, type);
+    super(description, fn);
     this.children = [];
     this.total = 0;
     this.type = type;
