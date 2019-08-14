@@ -9,14 +9,18 @@ import Result, { Status } from './result';
 export default class Runnable {
   public description: string;
   public fn: () => any;
-  public skip: boolean;
   public result: Result;
+  public skip: boolean;
+  public status: string;
+  public type: string;
 
   constructor(description: string, fn: () => any, skip = false) {
     this.description = description;
     this.fn = fn;
     this.result = new Result();
     this.skip = skip;
+    this.status = 'pending';
+    this.type = '';
   }
 
   /**
