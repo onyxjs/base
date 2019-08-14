@@ -1,4 +1,5 @@
 import Result, { Status } from './result';
+import Suite from './suite'
 
 /**
  * @class
@@ -13,6 +14,7 @@ export default class Runnable {
   public skip: boolean;
   public status: string;
   public type: string;
+  public parent: Suite | undefined;
 
   constructor(description: string, fn: () => any, skip = false) {
     this.description = description;
