@@ -13,7 +13,6 @@ export default class Runnable {
   public result: Result;
   public skip: boolean;
   public status: string;
-  public type: string;
   public parent: Suite | undefined;
 
   constructor(description: string, fn: () => any, skip = false) {
@@ -22,7 +21,6 @@ export default class Runnable {
     this.result = new Result();
     this.skip = skip;
     this.status = 'pending';
-    this.type = '';
   }
 
   /**
