@@ -33,6 +33,7 @@ module.exports = {
               '/matchers/matchers/to-be-defined',
               '/matchers/matchers/to-be-false',
               '/matchers/matchers/to-be-instance-of',
+              '/matchers/matchers/to-be-nan',
               '/matchers/matchers/to-be-true',
             ]
           },
