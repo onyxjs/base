@@ -34,6 +34,7 @@ module.exports = {
               '/matchers/matchers/to-be-false',
               '/matchers/matchers/to-be-instance-of',
               '/matchers/matchers/to-be-nan',
+              '/matchers/matchers/to-be-null',
               '/matchers/matchers/to-be-true',
             ]
           },
