@@ -10,10 +10,10 @@ export default class Runner extends EventEmitter {
    */
   public static runSuite(suite: Suite, fn: () => any) {
     for (let child of suite.children) {
-      if (child.type === 'Suite') {
-        this.runSuite(child as Suite, fn);
-      } else {
-        this.runTest(child as Test, fn);
+      if (child instanceof Suite) {
+        this.runSuite(child, fn);
+      } else if (child instanceof Test) {
+        this.runTest(child, fn);
       }
     }
   }

@@ -6,7 +6,6 @@ export default class Suite extends Runnable {
   constructor(description: string, fn: () => any, skip = false) {
     super(description, fn, skip);
     this.children = [];
-    this.type = 'Suite';
   }
 
   public addChild(child: Runnable) {
