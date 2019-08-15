@@ -32,6 +32,7 @@ module.exports = {
               '/matchers/matchers/to-be',
               '/matchers/matchers/to-be-defined',
               '/matchers/matchers/to-be-false',
+              '/matchers/matchers/to-be-true',
             ]
           },
           '/mock/',
