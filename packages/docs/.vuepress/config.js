@@ -31,6 +31,7 @@ module.exports = {
             children: [
               '/matchers/matchers/to-be',
               '/matchers/matchers/to-be-defined',
+              '/matchers/matchers/to-be-false',
             ]
           },
           '/mock/',
