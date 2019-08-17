@@ -5,11 +5,11 @@ import Test from '../src/test';
 export default class Runner extends EventEmitter {
   /**
    * @public
-   * @param {Suite} suite 
-   * @param {Function} fn 
+   * @param {Suite} suite
+   * @param {Function} fn
    */
   public static runSuite(suite: Suite, fn: () => any) {
-    for (let child of suite.children) {
+    for (const child of suite.children) {
       if (child instanceof Suite) {
         this.runSuite(child, fn);
       } else if (child instanceof Test) {
@@ -20,8 +20,8 @@ export default class Runner extends EventEmitter {
 
   /**
    * @public
-   * @param {Test} test 
-   * @param {Function} fn 
+   * @param {Test} test
+   * @param {Function} fn
    */
-  public static runTest(test: Test, fn: () => any) {}
+  public static runTest(test: Test, fn: () => any) {/*comment*/}
 }

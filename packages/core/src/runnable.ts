@@ -1,5 +1,5 @@
 import Result, { Status } from './result';
-import Suite from './suite'
+import Suite from './suite';
 
 /**
  * @class
