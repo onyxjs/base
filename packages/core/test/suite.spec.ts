@@ -3,59 +3,24 @@ import Runnable from '../src/runnable';
 import Suite from '../src/suite';
 
 describe('Suite', () => {
-  it('should be an instance of Runnable', () => {
+  it('should return a full description', () => {
     const fn = jest.fn();
-    const suite = new Suite('Suite', fn);
+    const child = new Suite('child', fn);
+    const parent = new Suite('parent', fn);
 
-    expect(suite).toBeInstanceOf(Runnable);
-    expect(suite.run()).toBeInstanceOf(Result);
-    expect(suite.asyncRun()).toBeInstanceOf(Promise);
-    expect(suite.skip).toBeFalsy();
-    expect(suite).toHaveProperty('description');
-    expect(suite).toHaveProperty('fn');
-    expect(suite).toHaveProperty('result');
-  });
-  it('should be type `Suite`', () => {
-    const suite = new Suite('Suite', () => null);
+    child.parent = parent;
 
-    expect(suite).toHaveProperty('type');
-    expect(suite.type).toBe('Suite');
+    expect(child.getFullDesc()).toBe('parent child');
   });
-  it('should skip', () => {
+
+  it('should push a child to children array', () => {
     const fn = jest.fn();
+    const child = new Runnable('desc', fn);
     const suite = new Suite('Suite', fn);
 
-    expect(suite.skip = true).toBeTruthy();
-    expect(suite.run()).toEqual(new Result(Status.Skipped, []));
-  });
-  it('should error', () => {
-    const fn = () => {
-      throw new Error('Error');
-    };
-    const suite = new Suite('Suite', fn);
+    expect(suite.children).toEqual([]);
 
-    expect(suite.run()).toEqual(new Result(Status.Errored, [ 'Error: Error' ]));
-  });
-
-  class ExpectError extends Error {
-    constructor(message) {
-      super(message);
-      this.name = 'ExpectError';
-    }
-  }
-
-  it('should fail', () => {
-    const fn = () => {
-      throw new ExpectError('Expect failed');
-    };
-    const suite = new Suite('Suite', fn);
-
-    expect(suite.run()).toEqual(new Result(Status.Failed, [ 'ExpectError: Expect failed']));
-  });
-  it('should run asynchronously', async () => {
-    const fn = jest.fn();
-    const suite = new Suite('test', fn);
-
-    await expect(suite.asyncRun()).resolves.toBeInstanceOf(Result);
+    suite.addChild(child);
+    expect(suite.children.length).toEqual(1);
   });
 });
