@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Runnable should error 1`] = `
+exports[`Test should error 1`] = `
 Result {
   "internalMessages": Array [
     "Error: Fatal error",
@@ -9,30 +9,23 @@ Result {
 }
 `;
 
-exports[`Runnable should fail 1`] = `
+exports[`Test should fail 1`] = `
 Result {
   "internalMessages": Array [
     "ExpectError: Expect failed",
   ],
-  "internalStatus": 1,
+  "internalStatus": 2,
 }
 `;
 
-exports[`Runnable should run 1`] = `
+exports[`Test should run 1`] = `
 Result {
   "internalMessages": Array [],
   "internalStatus": 0,
 }
 `;
 
-exports[`Runnable should run asynchronously 1`] = `
-Result {
-  "internalMessages": Array [],
-  "internalStatus": 0,
-}
-`;
-
-exports[`Runnable should skip 1`] = `
+exports[`Test should skip 1`] = `
 Result {
   "internalMessages": Array [],
   "internalStatus": 3,

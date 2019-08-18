@@ -4,23 +4,18 @@ import Suite from './suite';
 /**
  * @class
  * @param {String} description
- * @param {Function} fn
+ * @param {boolean} skip
  */
-
 export default class Runnable {
   public description: string;
-  public fn: () => any;
   public result: Result;
   public skip: boolean;
-  public status: string;
   public parent: Suite | undefined;
 
-  constructor(description: string, fn: () => any, skip = false) {
+  constructor(description: string, skip = false) {
     this.description = description;
-    this.fn = fn;
     this.result = new Result();
     this.skip = skip;
-    this.status = 'pending';
   }
 
   /**
@@ -29,25 +24,7 @@ export default class Runnable {
    * @return {Result}
    */
   public run(): Result {
-    if (this.skip) {
-      this.result.status = Status.Skipped;
-      return this.result;
-    }
-
-    try {
-      this.fn();
-    } catch (error) {
-      if (error.name === 'ExpectError') {
-        this.result.addMessages(String(error));
-        this.result.status = Status.Failed;
-      } else {
-        this.result.addMessages(String(error));
-        this.result.status = Status.Errored;
-      }
-    }
-
-    this.result.status = Status.Passed; // Will be cancelled if status is already set in catch
-
+    this.result.status = Status.Skipped; // Should be implemented in children
     return this.result;
   }
 
@@ -57,7 +34,7 @@ export default class Runnable {
    * @return {Promise}
    */
   public async asyncRun(): Promise<Result> {
-    return await this.run();
+    return this.run();
   }
 
   /**
@@ -66,5 +43,17 @@ export default class Runnable {
    */
   public isDone() {
     return this.result.isDone();
+  }
+
+  /**
+   * Get a full description
+   * @public
+   * @return {string}
+   */
+  public getFullDescription(): string {
+    if (this.parent) {
+      return this.parent.getFullDescription() + ' ' + this.description;
+    }
+    return this.description;
   }
 }
