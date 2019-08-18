@@ -3,11 +3,9 @@ import Result, { Status } from './result';
 import Runnable from './runnable';
 
 export default class Test extends Runnable {
-  // tslint:disable-next-line:ban-types
-  public fn: Function;
+  public fn: () => void;
 
-  // tslint:disable-next-line:ban-types
-  constructor(description: string, fn: Function, skip = false) {
+  constructor(description: string, fn: () => void, skip = false) {
     super(description, skip);
     this.fn = fn;
   }
