@@ -14,13 +14,6 @@ export default class Suite extends Runnable {
     this.children.push(child);
   }
 
-  public getFullDesc(): string {
-    if (this.parent) {
-      return this.parent.getFullDesc() + ' ' + this.description;
-    }
-    return this.description;
-  }
-
   /**
    * Run a `Suite` instance return `Runnable` status:
    * @public

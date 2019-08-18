@@ -44,4 +44,16 @@ export default class Runnable {
   public isDone() {
     return this.result.isDone();
   }
+
+  /**
+   * Get a full description
+   * @public
+   * @return {string}
+   */
+  public getFullDescription(): string {
+    if (this.parent) {
+      return this.parent.getFullDescription() + ' ' + this.description;
+    }
+    return this.description;
+  }
 }
