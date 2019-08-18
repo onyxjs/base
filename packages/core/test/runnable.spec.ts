@@ -8,5 +8,5 @@ describe('Runnable', () => {
     child.parent = parent;
 
     expect(child.getFullDescription()).toBe('parent child');
-  })
+  });
 });
