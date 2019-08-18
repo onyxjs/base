@@ -36,6 +36,7 @@ module.exports = {
               '/matchers/matchers/to-be-nan',
               '/matchers/matchers/to-be-null',
               '/matchers/matchers/to-be-true',
+              '/matchers/matchers/to-be-type-of',
             ]
           },
           '/mock/',
