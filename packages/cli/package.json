@@ -1,0 +1,9 @@
+{
+  "name": "@onyx/cli",
+  "version": "0.0.0",
+  "description": "Onyx cli",
+  "main": "dist/main.js",
+  "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
+  "license": "MIT",
+  "scripts": {}
+}
