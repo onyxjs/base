@@ -5,7 +5,14 @@
   "main": "dist/main.js",
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "lint:wotan": "wotan -m @fimbul/valtyr test/** src/** -e 'test/__snapshots__'",
+    "lint:fix": "yarn run lint:wotan --fix",
+    "test": "jest -c jest.config.js",
+    "build": "webpack -с webpack.config.js --mode production",
+    "dev": "webpack -с webpack.config.js --mode development",
+    "watch": "webpack --watch -с webpack.config.js --mode development"
+  },
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
@@ -15,6 +22,7 @@
     "@types/jest": "^24.0.18",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
+    "jest": "^24.9.0",
     "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.4",
     "tslint": "^5.19.0",
