@@ -30,5 +30,8 @@
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.7"
   },
-  "dependencies": {}
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^3.0.0"
+  }
 }
