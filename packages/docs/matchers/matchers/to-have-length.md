@@ -2,7 +2,7 @@
 
 > Signature: `toHaveLength (a: any, b: number): boolean`
 
-`toHaveLength` matcher checks that an object has a length property and is a certain numeric value.
+`toHaveLength` matcher checks that an object has a length property and it equals a certain numeric value.
 
 ### Example
 
