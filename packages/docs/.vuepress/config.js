@@ -37,6 +37,9 @@ module.exports = {
               '/matchers/matchers/to-be-null',
               '/matchers/matchers/to-be-true',
               '/matchers/matchers/to-be-type-of',
+              '/matchers/matchers/to-be-undefined',
+              '/matchers/matchers/to-contain',
+              '/matchers/matchers/to-equal'
             ]
           },
           '/mock/',
