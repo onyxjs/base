@@ -1,6 +1,6 @@
 ## toEqual
 
-> Signature: `toEqual (a: Object || Array, b: any): boolean`
+> Signature: `toEqual (a: any, b: any): boolean`
 
 `toEqual` matcher performs `type coercion` and checks the given parameters for loose equality.
 

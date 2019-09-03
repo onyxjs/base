@@ -1,6 +1,6 @@
 ## toContain
 
-> Signature: `toContain (a: Object || Array, b: any): boolean`
+> Signature: `toContain (a: any[] | object, b: any): boolean`
 
 `toContain` matcher checks if the first given parameter contains the second given parameter.
 
