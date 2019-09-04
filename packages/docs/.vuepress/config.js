@@ -40,7 +40,9 @@ module.exports = {
               '/matchers/matchers/to-be-undefined',
               '/matchers/matchers/to-contain',
               '/matchers/matchers/to-equal',
-              '/matchers/matchers/to-have-length'
+              '/matchers/matchers/to-have-length',
+              '/matchers/matchers/to-strictly-equal',
+              '/matchers/matchers/to-throw.md'
             ]
           },
           '/mock/',
