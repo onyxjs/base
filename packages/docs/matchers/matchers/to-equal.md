@@ -7,7 +7,7 @@
 ### Example
 
 ```ts
-import { toContain } from '@onyx/matchers';
+import { toEqual } from '@onyx/matchers';
 
 console.log(toEqual(1, '1')); // true
 console.log(toEqual('string', ['string'])); // true
