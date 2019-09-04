@@ -5,6 +5,9 @@
   "main": "dist/main.js",
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
   "license": "MIT",
+  "bin": {
+    "onyx": "./src/index.ts"
+  },
   "scripts": {
     "lint:wotan": "wotan -m @fimbul/valtyr test/** src/** -e 'test/__snapshots__'",
     "lint:fix": "yarn run lint:wotan --fix",
@@ -20,9 +23,11 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-stage-2": "^7.0.0",
     "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.4",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
     "jest": "^24.9.0",
+    "shebang-loader": "^0.0.1",
     "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.4",
     "tslint": "^5.19.0",
@@ -31,6 +36,7 @@
     "webpack-cli": "^3.3.7"
   },
   "dependencies": {
+    "@onyx/core": "^0.0.0",
     "chalk": "^2.4.2",
     "commander": "^3.0.0"
   }
