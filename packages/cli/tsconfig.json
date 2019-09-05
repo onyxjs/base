@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "rootDir": "./src",
-    "module": "es2015",
+    "module": "commonjs",
     "target": "es5",
     "allowJs": true,
     "checkJs": true,
@@ -18,12 +18,14 @@
       "es2020",
       "esnext"
     ],
-    "sourceMap": true
+    "sourceMap": true,
+    "types": ["node"]
   },
   "exclude": [
     "**/*.spec.ts",
     "**/*.spec.js",
-    "node_modules"
+    "node_modules",
+    "bin/"
   ],
   "include": [
     "src"

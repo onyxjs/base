@@ -1,6 +1,7 @@
 const presets = [
   [
     '@babel/env',
+    '@babel/typescript',
     {
       corejs: 3,
       targets: {
