@@ -9,7 +9,7 @@
     "onyx": "./bin/onyx"
   },
   "scripts": {
-    "lint:wotan": "wotan -m @fimbul/valtyr test/** src/** -e 'test/__snapshots__'",
+    "lint:wotan": "wotan -m @fimbul/valtyr test/** src/**/** -e 'test/__snapshots__'",
     "lint:fix": "yarn run lint:wotan --fix",
     "test": "jest -c jest.config.js",
     "build": "webpack -с webpack.config.js --mode production",
