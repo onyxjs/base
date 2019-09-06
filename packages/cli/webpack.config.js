@@ -1,9 +1,20 @@
 exports.default = {
   devtool: 'inline-source-map',
   entry: './src/index.ts',
+  externals: {
+    child_process: 'require(\'child_process\')',
+    fs: 'require(\'fs\')',
+  },
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: 'ts-loader' },
+      {
+        loader: [
+          {
+            loader: 'ts-loader',
+          },
+        ],
+        test: /\.tsx?$/,
+      },
       {
         exclude: /node_modules/,
         test: /\.js$/,
