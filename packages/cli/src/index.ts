@@ -1,4 +1,7 @@
 import commander from 'commander';
+import fs from 'fs';
+// tslint:disable-next-line:no-var-requires
+const pkg = require('../package.json');
 
 enum descriptions {
   version = 'Prints Onyx version',
@@ -13,12 +16,13 @@ const text = (description: string) => {
   return (descriptions as any)[description];
 };
 
-const program = commander;
+const program = new commander.Command();
 
 // help
 program
   .command('help')
   .option('-h, --help', text('help'))
+  .description(text('help'))
   .action(() => {
     program.help();
   });
@@ -27,9 +31,22 @@ program
 program
   .option('-v, --version', text('version'))
   .command('version')
-  .version('0.0.0');
+  .description(text('version'))
+  .action(() => {
+    // tslint:disable-next-line:no-console
+    console.log(pkg.version);
+  });
 
 program.parse(process.argv);
 
+const files = process.argv;
+
 // tslint:disable-next-line:no-console
 console.log('Onyx');
+
+fs.readFile('index.js', 'utf-8', (err, data) => {
+    // tslint:disable-next-line:no-console
+  if (err) { console.log(err); }
+  // tslint:disable-next-line:no-console
+  console.log(data);
+});
