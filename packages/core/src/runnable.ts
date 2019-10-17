@@ -19,7 +19,7 @@ export default class Runnable {
   }
 
   /**
-   * Run a `Runnable` instance.
+   * @description Run a `Runnable` instance.
    * @public
    * @return {Result}
    */
@@ -29,7 +29,7 @@ export default class Runnable {
   }
 
   /**
-   * Run asynchronous `Runnable` instance.:
+   * @description Run asynchronous `Runnable` instance.
    * @public
    * @return {Promise}
    */
@@ -38,7 +38,8 @@ export default class Runnable {
   }
 
   /**
-   * Check if `Runnable` is done
+   * @description Check that `Runnable` run has completed and `Result` status is not 'Pending'
+   * @public
    * @return {boolean}
    */
   public isDone() {
@@ -46,7 +47,7 @@ export default class Runnable {
   }
 
   /**
-   * Get a full description
+   * @description return a concatenated description of the current `Runnable` and it's `parent`
    * @public
    * @return {string}
    */
