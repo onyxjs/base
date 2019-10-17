@@ -19,7 +19,7 @@ export default class Runnable {
   }
 
   /**
-   * Run a `Runnable` instance return `Runnable` status:
+   * Run a `Runnable` instance.
    * @public
    * @return {Result}
    */
@@ -29,7 +29,7 @@ export default class Runnable {
   }
 
   /**
-   * Run asynchronous `Test` or `Suite`:
+   * Run asynchronous `Runnable` instance.:
    * @public
    * @return {Promise}
    */

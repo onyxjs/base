@@ -9,15 +9,20 @@ export default class Suite extends Runnable {
     this.children = [];
   }
 
+  /**
+   * @description Add a `Runnable` to the `children` array.
+   * @param {Runnable} child
+   * @returns {Void}
+   */
   public addChild(child: Runnable) {
     child.parent = this;
     this.children.push(child);
   }
 
   /**
-   * Run a `Suite` instance return `Runnable` status:
+   * @description Runs a `Suite` instance returning a `Result`:
    * @public
-   * @return {Result}
+   * @returns {Result}
    */
   public run(): Result {
     let newStatus = Status.Passed;
