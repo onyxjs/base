@@ -23,7 +23,6 @@
     "@types/jest": "^24.0.16",
     "@types/lodash.isequal": "^4.5.5",
     "babel-jest": "^24.8.0",
-    "babel-loader": "^8.0.6",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.4",
