@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "rootDir": "./src",
-    "module": "es2015",
+    "module": "CommonJS",
     "target": "es5",
     "allowJs": true,
     "checkJs": true,
