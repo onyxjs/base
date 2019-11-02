@@ -5,7 +5,7 @@ Result {
   "internalMessages": Array [
     "Error: Fatal error",
   ],
-  "internalStatus": 2,
+  "internalStatus": 1,
 }
 `;
 
@@ -14,7 +14,7 @@ Result {
   "internalMessages": Array [
     "ExpectError: Expect failed",
   ],
-  "internalStatus": 2,
+  "internalStatus": 1,
 }
 `;
 
