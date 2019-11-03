@@ -1,6 +1,19 @@
 import Result, { Status } from './result';
 import Suite from './suite';
 
+export const runnableSymbol = Symbol('isRunnable');
+
+export const isRunnable = (v: unknown): v is Runnable => {
+  if (typeof v === 'object' && v === null) { return false; }
+  return (v as Runnable)[runnableSymbol];
+};
+
+export enum RunnableTypes {
+  Runnable = 'runnable',
+  Suite = 'suite',
+  Test = 'test',
+}
+
 /**
  * @class
  * @param {String} description
@@ -10,12 +23,15 @@ export default class Runnable {
   public description: string;
   public result: Result;
   public skip: boolean;
-  public parent: Suite | undefined;
+  public parent: Suite | null;
+  public type: RunnableTypes = RunnableTypes.Runnable;
+  public [runnableSymbol] = true;
 
-  constructor(description: string, skip = false) {
+  constructor(description: string, skip?: boolean, parent?: Suite) {
     this.description = description;
     this.result = new Result();
-    this.skip = skip;
+    this.skip = skip || false;
+    this.parent = parent || null;
   }
 
   /**
@@ -23,6 +39,7 @@ export default class Runnable {
    * @public
    * @return {Result}
    */
+  // istanbul ignore next unimplemented
   public run(): Result {
     this.result.status = Status.Skipped; // Should be implemented in children
     return this.result;
@@ -47,13 +64,22 @@ export default class Runnable {
   }
 
   /**
+   * @description Get the `Runnable` type
+   * @public
+   * @return {RunnableTypes}
+   */
+  public getType() {
+    return this.type;
+  }
+
+  /**
    * @description return a concatenated description of the current `Runnable` and it's `parent`
    * @public
    * @return {string}
    */
   public getFullDescription(): string {
-    if (this.parent) {
-      return this.parent.getFullDescription() + ' ' + this.description;
+    if (this.parent && !this.parent.isRoot()) {
+      return `${this.parent.getFullDescription()} -> ${this.description}`;
     }
     return this.description;
   }

@@ -1,12 +1,18 @@
-import ExpectError from '../../matchers/src';
 import Result, { Status } from './result';
-import Runnable from './runnable';
+import Runnable, { isRunnable, RunnableTypes } from './runnable';
+import Suite from './suite';
+
+export const isTest = (v: unknown): v is Test => {
+  if (!isRunnable(v)) { return false; }
+  return v.type === RunnableTypes.Test;
+};
 
 export default class Test extends Runnable {
   public fn: () => void;
+  public type = RunnableTypes.Test;
 
-  constructor(description: string, fn: () => void, skip = false) {
-    super(description, skip);
+  constructor(description: string, fn: () => void, skip?: boolean, parent?: Suite) {
+    super(description, skip || false, parent);
     this.fn = fn;
   }
 
@@ -24,7 +30,7 @@ export default class Test extends Runnable {
     try {
       this.fn();
     } catch (error) {
-      if (error instanceof ExpectError) {
+      if ((error as Error).name === 'ExpectError') {
         this.result.addMessages(String(error));
         this.result.status = Status.Failed;
       } else {

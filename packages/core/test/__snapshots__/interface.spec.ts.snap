@@ -5,16 +5,6 @@ Suite {
   "children": Array [
     Suite {
       "children": Array [],
-      "description": "test 1",
-      "parent": [Circular],
-      "result": Result {
-        "internalMessages": Array [],
-        "internalStatus": 4,
-      },
-      "skip": false,
-    },
-    Suite {
-      "children": Array [],
       "description": "test 2",
       "parent": [Circular],
       "result": Result {
@@ -22,14 +12,20 @@ Suite {
         "internalStatus": 4,
       },
       "skip": false,
+      "type": "suite",
+      Symbol(isRunnable): true,
     },
   ],
-  "description": "Tests",
+  "description": "root",
+  "parent": null,
   "result": Result {
     "internalMessages": Array [],
     "internalStatus": 4,
   },
   "skip": false,
+  "type": "suite",
+  Symbol(isRunnable): true,
+  Symbol(isRoot): true,
 }
 `;
 
@@ -44,77 +40,34 @@ Test {
     "description": "test 5",
     "parent": Suite {
       "children": Array [
-        Suite {
-          "children": Array [],
-          "description": "test 1",
-          "parent": [Circular],
-          "result": Result {
-            "internalMessages": Array [],
-            "internalStatus": 4,
-          },
-          "skip": false,
-        },
-        Suite {
-          "children": Array [],
-          "description": "test 2",
-          "parent": [Circular],
-          "result": Result {
-            "internalMessages": Array [],
-            "internalStatus": 4,
-          },
-          "skip": false,
-        },
-        Suite {
-          "children": Array [],
-          "description": "test 3",
-          "parent": [Circular],
-          "result": Result {
-            "internalMessages": Array [],
-            "internalStatus": 4,
-          },
-          "skip": true,
-        },
-        Suite {
-          "children": Array [
-            Test {
-              "description": "child 1",
-              "fn": [Function],
-              "parent": [Circular],
-              "result": Result {
-                "internalMessages": Array [],
-                "internalStatus": 4,
-              },
-              "skip": false,
-            },
-          ],
-          "description": "test 4",
-          "parent": [Circular],
-          "result": Result {
-            "internalMessages": Array [],
-            "internalStatus": 4,
-          },
-          "skip": true,
-        },
         [Circular],
       ],
-      "description": "Tests",
+      "description": "root",
+      "parent": null,
       "result": Result {
         "internalMessages": Array [],
         "internalStatus": 4,
       },
       "skip": false,
+      "type": "suite",
+      Symbol(isRunnable): true,
+      Symbol(isRoot): true,
     },
     "result": Result {
       "internalMessages": Array [],
       "internalStatus": 4,
     },
     "skip": true,
+    "type": "suite",
+    Symbol(isRunnable): true,
   },
   "result": Result {
     "internalMessages": Array [],
     "internalStatus": 4,
   },
   "skip": true,
+  "type": "test",
+  Symbol(isRunnable): true,
 }
 `;
 
@@ -126,18 +79,24 @@ Suite {
     "children": Array [
       [Circular],
     ],
-    "description": "Tests",
+    "description": "root",
+    "parent": null,
     "result": Result {
       "internalMessages": Array [],
       "internalStatus": 4,
     },
     "skip": false,
+    "type": "suite",
+    Symbol(isRunnable): true,
+    Symbol(isRoot): true,
   },
   "result": Result {
     "internalMessages": Array [],
     "internalStatus": 4,
   },
   "skip": false,
+  "type": "suite",
+  Symbol(isRunnable): true,
 }
 `;
 
@@ -152,55 +111,235 @@ Test {
     "description": "test 4",
     "parent": Suite {
       "children": Array [
-        Suite {
-          "children": Array [],
-          "description": "test 1",
-          "parent": [Circular],
-          "result": Result {
-            "internalMessages": Array [],
-            "internalStatus": 4,
-          },
-          "skip": false,
-        },
-        Suite {
-          "children": Array [],
-          "description": "test 2",
-          "parent": [Circular],
-          "result": Result {
-            "internalMessages": Array [],
-            "internalStatus": 4,
-          },
-          "skip": false,
-        },
-        Suite {
-          "children": Array [],
-          "description": "test 3",
-          "parent": [Circular],
-          "result": Result {
-            "internalMessages": Array [],
-            "internalStatus": 4,
-          },
-          "skip": true,
-        },
         [Circular],
       ],
-      "description": "Tests",
+      "description": "root",
+      "parent": null,
       "result": Result {
         "internalMessages": Array [],
         "internalStatus": 4,
       },
       "skip": false,
+      "type": "suite",
+      Symbol(isRunnable): true,
+      Symbol(isRoot): true,
     },
     "result": Result {
       "internalMessages": Array [],
       "internalStatus": 4,
     },
     "skip": true,
+    "type": "suite",
+    Symbol(isRunnable): true,
   },
   "result": Result {
     "internalMessages": Array [],
     "internalStatus": 4,
   },
   "skip": false,
+  "type": "test",
+  Symbol(isRunnable): true,
+}
+`;
+
+exports[`Interface should handle nested suites 1`] = `
+Suite {
+  "children": Array [
+    Suite {
+      "children": Array [
+        Test {
+          "description": "test 1",
+          "fn": [Function],
+          "parent": [Circular],
+          "result": Result {
+            "internalMessages": Array [],
+            "internalStatus": 4,
+          },
+          "skip": false,
+          "type": "test",
+          Symbol(isRunnable): true,
+        },
+        Test {
+          "description": "test 2",
+          "fn": [Function],
+          "parent": [Circular],
+          "result": Result {
+            "internalMessages": Array [],
+            "internalStatus": 4,
+          },
+          "skip": false,
+          "type": "test",
+          Symbol(isRunnable): true,
+        },
+        Suite {
+          "children": Array [
+            Test {
+              "description": "test 1",
+              "fn": [Function],
+              "parent": [Circular],
+              "result": Result {
+                "internalMessages": Array [],
+                "internalStatus": 4,
+              },
+              "skip": false,
+              "type": "test",
+              Symbol(isRunnable): true,
+            },
+            Test {
+              "description": "test 2",
+              "fn": [Function],
+              "parent": [Circular],
+              "result": Result {
+                "internalMessages": Array [],
+                "internalStatus": 4,
+              },
+              "skip": false,
+              "type": "test",
+              Symbol(isRunnable): true,
+            },
+          ],
+          "description": "component 1",
+          "parent": [Circular],
+          "result": Result {
+            "internalMessages": Array [],
+            "internalStatus": 4,
+          },
+          "skip": false,
+          "type": "suite",
+          Symbol(isRunnable): true,
+        },
+        Suite {
+          "children": Array [
+            Test {
+              "description": "test 1",
+              "fn": [Function],
+              "parent": [Circular],
+              "result": Result {
+                "internalMessages": Array [],
+                "internalStatus": 4,
+              },
+              "skip": false,
+              "type": "test",
+              Symbol(isRunnable): true,
+            },
+            Test {
+              "description": "test 2",
+              "fn": [Function],
+              "parent": [Circular],
+              "result": Result {
+                "internalMessages": Array [],
+                "internalStatus": 4,
+              },
+              "skip": false,
+              "type": "test",
+              Symbol(isRunnable): true,
+            },
+            Suite {
+              "children": Array [
+                Test {
+                  "description": "test 1",
+                  "fn": [Function],
+                  "parent": [Circular],
+                  "result": Result {
+                    "internalMessages": Array [],
+                    "internalStatus": 4,
+                  },
+                  "skip": false,
+                  "type": "test",
+                  Symbol(isRunnable): true,
+                },
+                Test {
+                  "description": "test 2",
+                  "fn": [Function],
+                  "parent": [Circular],
+                  "result": Result {
+                    "internalMessages": Array [],
+                    "internalStatus": 4,
+                  },
+                  "skip": false,
+                  "type": "test",
+                  Symbol(isRunnable): true,
+                },
+              ],
+              "description": "method 1",
+              "parent": [Circular],
+              "result": Result {
+                "internalMessages": Array [],
+                "internalStatus": 4,
+              },
+              "skip": false,
+              "type": "suite",
+              Symbol(isRunnable): true,
+            },
+            Suite {
+              "children": Array [
+                Test {
+                  "description": "test 1",
+                  "fn": [Function],
+                  "parent": [Circular],
+                  "result": Result {
+                    "internalMessages": Array [],
+                    "internalStatus": 4,
+                  },
+                  "skip": false,
+                  "type": "test",
+                  Symbol(isRunnable): true,
+                },
+                Test {
+                  "description": "test 2",
+                  "fn": [Function],
+                  "parent": [Circular],
+                  "result": Result {
+                    "internalMessages": Array [],
+                    "internalStatus": 4,
+                  },
+                  "skip": false,
+                  "type": "test",
+                  Symbol(isRunnable): true,
+                },
+              ],
+              "description": "method 2",
+              "parent": [Circular],
+              "result": Result {
+                "internalMessages": Array [],
+                "internalStatus": 4,
+              },
+              "skip": false,
+              "type": "suite",
+              Symbol(isRunnable): true,
+            },
+          ],
+          "description": "component 2",
+          "parent": [Circular],
+          "result": Result {
+            "internalMessages": Array [],
+            "internalStatus": 4,
+          },
+          "skip": false,
+          "type": "suite",
+          Symbol(isRunnable): true,
+        },
+      ],
+      "description": "module",
+      "parent": [Circular],
+      "result": Result {
+        "internalMessages": Array [],
+        "internalStatus": 4,
+      },
+      "skip": false,
+      "type": "suite",
+      Symbol(isRunnable): true,
+    },
+  ],
+  "description": "root",
+  "parent": null,
+  "result": Result {
+    "internalMessages": Array [],
+    "internalStatus": 4,
+  },
+  "skip": false,
+  "type": "suite",
+  Symbol(isRunnable): true,
+  Symbol(isRoot): true,
 }
 `;
