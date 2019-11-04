@@ -1,4 +1,6 @@
-import Test from '../src/test';
+import Runnable from '../src/runnable';
+import Suite from '../src/suite';
+import Test, { isTest } from '../src/test';
 
 describe('Test', () => {
   it('should run', () => {
@@ -49,5 +51,13 @@ describe('Test', () => {
     const test = new Test('test', fn);
 
     expect(test.run()).toMatchSnapshot();
+  });
+
+  it('should check if is test', () => {
+    expect(isTest(null)).toBeFalsy();
+    expect(isTest({})).toBeFalsy();
+    expect(isTest(new Runnable('not a test'))).toBeFalsy();
+    expect(isTest(new Suite('not a test'))).toBeFalsy();
+    expect(isTest(new Test('a test', () => null))).toBeTruthy();
   });
 });

@@ -1,6 +1,7 @@
 import { Status } from '../src/result';
 import Runnable from '../src/runnable';
-import Suite from '../src/suite';
+import Suite, { isSuite, rootSymbol } from '../src/suite';
+import Test from '../src/test';
 
 describe('Suite', () => {
   it('should run children', () => {
@@ -11,6 +12,15 @@ describe('Suite', () => {
     parent.run();
 
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('should check if is root', () => {
+    const suite = new Suite('suite');
+
+    expect(suite.isRoot()).toBeFalsy();
+
+    suite[rootSymbol] = true;
+    expect(suite.isRoot()).toBeTruthy();
   });
 
   it('should push a child to children array', () => {
@@ -72,5 +82,13 @@ describe('Suite', () => {
     suite.run();
 
     expect(suite.result).toMatchSnapshot();
+  });
+
+  it('should check if is suite', () => {
+    expect(isSuite(null)).toBeFalsy();
+    expect(isSuite({})).toBeFalsy();
+    expect(isSuite(new Runnable('not a suite'))).toBeFalsy();
+    expect(isSuite(new Test('not a suite', () => null))).toBeFalsy();
+    expect(isSuite(new Suite('a suite'))).toBeTruthy();
   });
 });

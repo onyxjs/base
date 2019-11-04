@@ -1,36 +1,62 @@
-import Suite from './suite';
+import Suite, { isSuite, rootSymbol } from './suite';
 import Test from './test';
 
-const root = new Suite('Tests');
-export { root };
+const root = new Suite('root');
+root[rootSymbol] = true;
+let currentRoot: Suite = root;
+
+export const getCurrentRoot = () => currentRoot;
+export const setCurrentRoot = (v: Suite) => {
+  if (!isSuite(v)) { return; }
+  currentRoot = v;
+};
+
+export { root, currentRoot };
+
+// istanbul ignore next internal
+function _it(description: string, fn: () => void, skip = false) {
+  if (currentRoot.isRoot()) {
+    throw new Error(`"${description}" "it" should not be called outside of "describe" block`);
+  }
+
+  const test = new Test(description, fn, skip, currentRoot);
+
+  currentRoot.addChild(test);
+  return test;
+}
 
 export type ItFn = (description: string, fn: () => void) => Test;
 // tslint:disable-next-line:interface-name
 export interface It extends ItFn {
   skip: ItFn;
 }
-export type DescribeCallback = (it: It) => void;
 
-// istanbul ignore next
-function _it(description: string, fn: () => void, suite: Suite, skip = false) {
-  const test = new Test(description, fn, skip);
-  suite.addChild(test);
-  return test;
-}
+const it: It = (description: string, fn: () => void) => _it(description, fn, false);
+it.skip = (description: string, fn: () => void) => _it(description, fn, true);
 
-// istanbul ignore next
-function _describe(description: string, cb: DescribeCallback, skip = false): Suite {
-  const suite = new Suite(description, skip);
+// istanbul ignore next internal
+function _describe(description: string, fn: () => void, skip = false): Suite {
+  const suite = new Suite(description, skip, currentRoot);
 
-  const it = (testDescription: string, fn: () => void) => _it(testDescription, fn, suite, false);
-  it.skip = (testDescription: string, fn: () => void) => _it(testDescription, fn, suite, true);
-  cb(it);
+  currentRoot = suite;
+  fn();
+  if (!suite.skip && suite.children.length <= 0) {
+    // tslint:disable-next-line:no-console
+    console.warn(`suite "${suite.getFullDescription()}" doesn't have any child tests or suites.`);
+  }
+  currentRoot = currentRoot.parent || root;
 
-  root.addChild(suite);
+  currentRoot.addChild(suite);
   return suite;
 }
 
-const describe = (description: string, cb: DescribeCallback) => _describe(description, cb, false);
-describe.skip = (description: string, cb: DescribeCallback) => _describe(description, cb, true);
+export type DescribeFn = (description: string, fn: () => void) => Suite;
+// tslint:disable-next-line:interface-name
+export interface Describe extends DescribeFn {
+  skip: DescribeFn;
+}
 
-export default describe;
+const describe: Describe = (description: string, fn: () => void) => _describe(description, fn, false);
+describe.skip = (description: string, fn: () => void) => _describe(description, fn, true);
+
+export { it, describe };

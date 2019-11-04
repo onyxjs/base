@@ -1,5 +1,16 @@
-export { root, ItFn, It, DescribeCallback, default as describe } from './interface';
+export {
+  root,
+  currentRoot,
+  ItFn,
+  It,
+  it,
+  DescribeFn,
+  Describe,
+  describe,
+  getCurrentRoot,
+  setCurrentRoot,
+} from './interface';
 export { Status, default as Result } from './result';
-export { default as Runnable } from './runnable';
-export { default as Test } from './test';
-export { default as Suite } from './suite';
+export { default as Runnable, isRunnable, RunnableTypes } from './runnable';
+export { default as Test, isTest } from './test';
+export { default as Suite, isSuite } from './suite';
