@@ -41,7 +41,6 @@ function _describe(description: string, fn: () => void, skip = false): Suite {
   currentRoot = suite;
   fn();
   if (!suite.skip && suite.children.length <= 0) {
-    // tslint:disable-next-line:no-console
     console.warn(`suite "${suite.getFullDescription()}" doesn't have any child tests or suites.`);
   }
   currentRoot = currentRoot.parent || root;
