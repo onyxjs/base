@@ -1,4 +1,3 @@
-// tslint:disable:no-console
 import { currentRoot, describe as $describe, getCurrentRoot, it as $it, root, setCurrentRoot } from '../src/interface';
 import Suite from '../src/suite';
 
