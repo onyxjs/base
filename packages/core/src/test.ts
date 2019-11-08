@@ -1,4 +1,3 @@
-import ExpectError from '../../matchers/src';
 import Result, { Status } from './result';
 import Runnable from './runnable';
 
@@ -24,7 +23,7 @@ export default class Test extends Runnable {
     try {
       this.fn();
     } catch (error) {
-      if (error instanceof ExpectError) {
+      if (error.name === 'ExpectError') {
         this.result.addMessages(String(error));
         this.result.status = Status.Failed;
       } else {

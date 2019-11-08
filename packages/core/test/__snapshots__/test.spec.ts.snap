@@ -14,7 +14,7 @@ Result {
   "internalMessages": Array [
     "ExpectError: Expect failed",
   ],
-  "internalStatus": 2,
+  "internalStatus": 1,
 }
 `;
 
