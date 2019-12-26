@@ -30,7 +30,7 @@ export default class Test extends Runnable {
     try {
       this.fn();
     } catch (error) {
-      if ((error as Error).name === 'ExpectError') {
+      if (error.name === 'ExpectError') {
         this.result.addMessages(String(error));
         this.result.status = Status.Failed;
       } else {
