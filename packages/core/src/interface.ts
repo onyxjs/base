@@ -28,7 +28,7 @@ function _it(description: string, fn: () => void, skip = false) {
 export type ItFn = (description: string, fn: () => void) => Test;
 // tslint:disable-next-line:interface-name
 export interface It extends ItFn {
-  skip: ItFn;
+  skip?: ItFn;
 }
 
 const it: It = (description: string, fn: () => void) => _it(description, fn, false);
@@ -52,7 +52,7 @@ function _describe(description: string, fn: () => void, skip = false): Suite {
 export type DescribeFn = (description: string, fn: () => void) => Suite;
 // tslint:disable-next-line:interface-name
 export interface Describe extends DescribeFn {
-  skip: DescribeFn;
+  skip?: DescribeFn;
 }
 
 const describe: Describe = (description: string, fn: () => void) => _describe(description, fn, false);
