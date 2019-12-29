@@ -22,7 +22,7 @@ export default class Suite extends Runnable {
    * @param {Runnable} child
    * @returns {Void}
    */
-  public addChild(child: Runnable) {
+  public addChild(child: Runnable): void {
     child.parent = this;
     this.children.push(child);
   }
@@ -32,7 +32,7 @@ export default class Suite extends Runnable {
    * @public
    * @return {boolean}
    */
-  public isRoot() {
+  public isRoot(): boolean {
     return Boolean(this[rootSymbol]);
   }
 
