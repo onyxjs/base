@@ -21,16 +21,6 @@ describe('Runnable', () => {
     expect(child.getFullDescription()).toBe('child');
   });
 
-  it('should get type', () => {
-    const suite = new Suite('suite');
-    const test = new Test('test', () => null);
-    const runnable = new Runnable('runnable');
-
-    expect(suite.getType()).toBe('suite');
-    expect(test.getType()).toBe('test');
-    expect(runnable.getType()).toBe('runnable');
-  });
-
   it('should run asynchronously', async () => {
     const runnable = new Runnable('runnable');
 

@@ -1,7 +1,6 @@
 export enum Status {
   Passed,
   Failed,
-  Errored,
   Skipped,
   Pending,
 }

@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events';
 import Result, { Status } from './result';
 import Suite from './suite';
 
@@ -19,7 +20,7 @@ export enum RunnableTypes {
  * @param {String} description
  * @param {boolean} skip
  */
-export default class Runnable {
+export default class Runnable extends EventEmitter {
   public description: string;
   public result: Result;
   public skip: boolean;
@@ -27,11 +28,42 @@ export default class Runnable {
   public type: RunnableTypes = RunnableTypes.Runnable;
   public [runnableSymbol] = true;
 
+  // TODO: probably make parent of type Suite | null
   constructor(description: string, skip?: boolean, parent?: Suite) {
+    super();
     this.description = description;
     this.result = new Result();
     this.skip = skip || false;
     this.parent = parent || null;
+  }
+
+  public doStart() {
+    this.emit('start', this);
+  }
+
+  public doPass(): Result {
+    this.result.status = Status.Passed;
+    this.emit('pass', this);
+    this.emit('end', this);
+
+    return this.result;
+  }
+
+  public doFail(error?: Error): Result {
+    this.result.addMessages(String(error));
+    this.result.status = Status.Failed;
+    this.emit('fail', this, error);
+    this.emit('end', this);
+
+    return this.result;
+  }
+
+  public doSkip(): Result { // TODO: add TODO tests support
+    this.result.status = Status.Skipped;
+    this.emit('skip', this);
+    this.emit('end', this);
+
+    return this.result;
   }
 
   /**
@@ -41,17 +73,29 @@ export default class Runnable {
    */
   // istanbul ignore next unimplemented
   public run(): Result {
-    this.result.status = Status.Skipped; // Should be implemented in children
-    return this.result;
+    if (this.skip) {
+      return this.doSkip();
+    }
+
+    this.doStart();
+
+    return this.doSkip(); // To be replaced with real run function
   }
 
   /**
-   * @description Run asynchronous `Runnable` instance.
+   * @description Run `Runnable` instance asynchronously.
    * @public
    * @return {Promise}
    */
+  // istanbul ignore next unimplemented
   public async asyncRun(): Promise<Result> {
-    return this.run();
+    if (this.skip) {
+      return this.doSkip();
+    }
+
+    this.doStart();
+
+    return this.doSkip(); // To be replaced with real run function
   }
 
   /**
@@ -61,15 +105,6 @@ export default class Runnable {
    */
   public isDone() {
     return this.result.isDone();
-  }
-
-  /**
-   * @description Get the `Runnable` type
-   * @public
-   * @return {RunnableTypes}
-   */
-  public getType() {
-    return this.type;
   }
 
   /**

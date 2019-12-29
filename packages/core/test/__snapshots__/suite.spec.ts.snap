@@ -5,7 +5,7 @@ Result {
   "internalMessages": Array [
     "FATAL ERROR!",
   ],
-  "internalStatus": 2,
+  "internalStatus": 0,
 }
 `;
 
@@ -13,6 +13,7 @@ exports[`Suite should fail and collect messages 1`] = `
 Result {
   "internalMessages": Array [
     "FAIL!",
+    "undefined",
   ],
   "internalStatus": 1,
 }

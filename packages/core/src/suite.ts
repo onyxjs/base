@@ -42,15 +42,26 @@ export default class Suite extends Runnable {
    * @returns {Result}
    */
   public run(): Result {
-    let newStatus = Status.Passed;
-    for (const child of this.children) {
-      const result = child.run();
-      if (result.status === Status.Errored && newStatus === Status.Passed) { newStatus = Status.Errored; }
-      if (result.status === Status.Failed && newStatus === Status.Passed) { newStatus = Status.Failed; }
-      this.result.addMessages(...result.messages);
+    if (this.skip) {
+      return this.doSkip();
     }
 
-    this.result.status = newStatus;
-    return this.result;
+    this.doStart();
+
+    for (const child of this.children) {
+      const result = child.run();
+      this.result.addMessages(...result.messages);
+      if (result.status === Status.Failed) { // TODO: make bail optional
+        return this.doFail();
+      }
+    }
+
+    return this.doPass();
   }
+
+  // TODO: doEnd() - Emit when suite has ended
+
+  // TODO: return total number of tests/suites
+
+  // TODO: real asyncRun using EventEmitters or Promise
 }

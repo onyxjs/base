@@ -23,24 +23,17 @@ export default class Test extends Runnable {
    */
   public run(): Result {
     if (this.skip) {
-      this.result.status = Status.Skipped;
-      return this.result;
+      return this.doSkip();
     }
+
+    this.doStart();
 
     try {
       this.fn();
     } catch (error) {
-      if (error.name === 'ExpectError') {
-        this.result.addMessages(String(error));
-        this.result.status = Status.Failed;
-      } else {
-        this.result.addMessages(String(error));
-        this.result.status = Status.Errored;
-      }
-      return this.result;
+      return this.doFail(error);
     }
 
-    this.result.status = Status.Passed;
-    return this.result;
+    return this.doPass();
   }
 }

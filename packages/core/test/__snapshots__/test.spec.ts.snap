@@ -5,7 +5,7 @@ Result {
   "internalMessages": Array [
     "Error: Fatal error",
   ],
-  "internalStatus": 2,
+  "internalStatus": 1,
 }
 `;
 
