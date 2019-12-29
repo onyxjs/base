@@ -28,6 +28,6 @@ Result {
 exports[`Test should skip 1`] = `
 Result {
   "internalMessages": Array [],
-  "internalStatus": 3,
+  "internalStatus": 2,
 }
 `;

@@ -15,7 +15,7 @@ Suite {
       "parent": [Circular],
       "result": Result {
         "internalMessages": Array [],
-        "internalStatus": 4,
+        "internalStatus": 3,
       },
       "skip": false,
       "type": "suite",
@@ -26,7 +26,7 @@ Suite {
   "parent": null,
   "result": Result {
     "internalMessages": Array [],
-    "internalStatus": 4,
+    "internalStatus": 3,
   },
   "skip": false,
   "type": "suite",
@@ -61,7 +61,7 @@ Test {
       "parent": null,
       "result": Result {
         "internalMessages": Array [],
-        "internalStatus": 4,
+        "internalStatus": 3,
       },
       "skip": false,
       "type": "suite",
@@ -70,7 +70,7 @@ Test {
     },
     "result": Result {
       "internalMessages": Array [],
-      "internalStatus": 4,
+      "internalStatus": 3,
     },
     "skip": true,
     "type": "suite",
@@ -78,7 +78,7 @@ Test {
   },
   "result": Result {
     "internalMessages": Array [],
-    "internalStatus": 4,
+    "internalStatus": 3,
   },
   "skip": true,
   "type": "test",
@@ -104,7 +104,7 @@ Suite {
     "parent": null,
     "result": Result {
       "internalMessages": Array [],
-      "internalStatus": 4,
+      "internalStatus": 3,
     },
     "skip": false,
     "type": "suite",
@@ -113,7 +113,7 @@ Suite {
   },
   "result": Result {
     "internalMessages": Array [],
-    "internalStatus": 4,
+    "internalStatus": 3,
   },
   "skip": false,
   "type": "suite",
@@ -147,7 +147,7 @@ Test {
       "parent": null,
       "result": Result {
         "internalMessages": Array [],
-        "internalStatus": 4,
+        "internalStatus": 3,
       },
       "skip": false,
       "type": "suite",
@@ -156,7 +156,7 @@ Test {
     },
     "result": Result {
       "internalMessages": Array [],
-      "internalStatus": 4,
+      "internalStatus": 3,
     },
     "skip": true,
     "type": "suite",
@@ -164,7 +164,7 @@ Test {
   },
   "result": Result {
     "internalMessages": Array [],
-    "internalStatus": 4,
+    "internalStatus": 3,
   },
   "skip": false,
   "type": "test",
@@ -192,7 +192,7 @@ Suite {
           "parent": [Circular],
           "result": Result {
             "internalMessages": Array [],
-            "internalStatus": 4,
+            "internalStatus": 3,
           },
           "skip": false,
           "type": "test",
@@ -207,7 +207,7 @@ Suite {
           "parent": [Circular],
           "result": Result {
             "internalMessages": Array [],
-            "internalStatus": 4,
+            "internalStatus": 3,
           },
           "skip": false,
           "type": "test",
@@ -227,7 +227,7 @@ Suite {
               "parent": [Circular],
               "result": Result {
                 "internalMessages": Array [],
-                "internalStatus": 4,
+                "internalStatus": 3,
               },
               "skip": false,
               "type": "test",
@@ -242,7 +242,7 @@ Suite {
               "parent": [Circular],
               "result": Result {
                 "internalMessages": Array [],
-                "internalStatus": 4,
+                "internalStatus": 3,
               },
               "skip": false,
               "type": "test",
@@ -253,7 +253,7 @@ Suite {
           "parent": [Circular],
           "result": Result {
             "internalMessages": Array [],
-            "internalStatus": 4,
+            "internalStatus": 3,
           },
           "skip": false,
           "type": "suite",
@@ -273,7 +273,7 @@ Suite {
               "parent": [Circular],
               "result": Result {
                 "internalMessages": Array [],
-                "internalStatus": 4,
+                "internalStatus": 3,
               },
               "skip": false,
               "type": "test",
@@ -288,7 +288,7 @@ Suite {
               "parent": [Circular],
               "result": Result {
                 "internalMessages": Array [],
-                "internalStatus": 4,
+                "internalStatus": 3,
               },
               "skip": false,
               "type": "test",
@@ -308,7 +308,7 @@ Suite {
                   "parent": [Circular],
                   "result": Result {
                     "internalMessages": Array [],
-                    "internalStatus": 4,
+                    "internalStatus": 3,
                   },
                   "skip": false,
                   "type": "test",
@@ -323,7 +323,7 @@ Suite {
                   "parent": [Circular],
                   "result": Result {
                     "internalMessages": Array [],
-                    "internalStatus": 4,
+                    "internalStatus": 3,
                   },
                   "skip": false,
                   "type": "test",
@@ -334,7 +334,7 @@ Suite {
               "parent": [Circular],
               "result": Result {
                 "internalMessages": Array [],
-                "internalStatus": 4,
+                "internalStatus": 3,
               },
               "skip": false,
               "type": "suite",
@@ -354,7 +354,7 @@ Suite {
                   "parent": [Circular],
                   "result": Result {
                     "internalMessages": Array [],
-                    "internalStatus": 4,
+                    "internalStatus": 3,
                   },
                   "skip": false,
                   "type": "test",
@@ -369,7 +369,7 @@ Suite {
                   "parent": [Circular],
                   "result": Result {
                     "internalMessages": Array [],
-                    "internalStatus": 4,
+                    "internalStatus": 3,
                   },
                   "skip": false,
                   "type": "test",
@@ -380,7 +380,7 @@ Suite {
               "parent": [Circular],
               "result": Result {
                 "internalMessages": Array [],
-                "internalStatus": 4,
+                "internalStatus": 3,
               },
               "skip": false,
               "type": "suite",
@@ -391,7 +391,7 @@ Suite {
           "parent": [Circular],
           "result": Result {
             "internalMessages": Array [],
-            "internalStatus": 4,
+            "internalStatus": 3,
           },
           "skip": false,
           "type": "suite",
@@ -402,7 +402,7 @@ Suite {
       "parent": [Circular],
       "result": Result {
         "internalMessages": Array [],
-        "internalStatus": 4,
+        "internalStatus": 3,
       },
       "skip": false,
       "type": "suite",
@@ -413,7 +413,7 @@ Suite {
   "parent": null,
   "result": Result {
     "internalMessages": Array [],
-    "internalStatus": 4,
+    "internalStatus": 3,
   },
   "skip": false,
   "type": "suite",
