@@ -1,9 +1,9 @@
 export enum Status {
-  Pending,
-  Running,
-  Passed,
-  Failed,
-  Skipped,
+  Pending = 'pending',
+  Running = 'running',
+  Passed = 'passed',
+  Failed = 'failed',
+  Skipped = 'skipped',
 }
 
 export default class Result {

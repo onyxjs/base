@@ -5,27 +5,27 @@ Result {
   "internalMessages": Array [
     "Error: Fatal error",
   ],
-  "internalStatus": 3,
+  "internalStatus": "failed",
 }
 `;
 
 exports[`Test should run 1`] = `
 Result {
   "internalMessages": Array [],
-  "internalStatus": 2,
+  "internalStatus": "passed",
 }
 `;
 
 exports[`Test should run asynchronously 1`] = `
 Result {
   "internalMessages": Array [],
-  "internalStatus": 2,
+  "internalStatus": "passed",
 }
 `;
 
 exports[`Test should skip 1`] = `
 Result {
   "internalMessages": Array [],
-  "internalStatus": 4,
+  "internalStatus": "skipped",
 }
 `;
