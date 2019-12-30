@@ -13,7 +13,6 @@ export const setCurrentRoot = (v: Suite) => {
 
 export { root, currentRoot };
 
-// TODO: test this
 // istanbul ignore next internal
 function _it(description: string, fn: () => void, skip = false) {
   if (currentRoot.isRoot()) {
@@ -35,7 +34,6 @@ export interface It extends ItFn {
 const it: It = ((description: string, fn: () => void) => _it(description, fn, false)) as It;
 it.skip = (description: string, fn: () => void) => _it(description, fn, true);
 
-// TODO: test this
 // istanbul ignore next internal
 function _describe(description: string, fn: () => void, skip = false): Suite {
   const suite = new Suite(description, skip, currentRoot);
