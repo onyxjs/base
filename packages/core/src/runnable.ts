@@ -37,8 +37,12 @@ export default class Runnable extends EventEmitter {
     this.parent = parent || null;
   }
 
-  public doStart() {
+  public doStart(): void {
     this.emit('start', this);
+  }
+
+  public doEnd(): void {
+    this.emit('end', this);
   }
 
   public doPass(): Result {
