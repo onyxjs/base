@@ -1,5 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Test async should run 1`] = `
+Result {
+  "internalMessages": Array [],
+  "internalStatus": "passed",
+}
+`;
+
 exports[`Test should fail 1`] = `
 Result {
   "internalMessages": Array [
@@ -10,13 +17,6 @@ Result {
 `;
 
 exports[`Test should run 1`] = `
-Result {
-  "internalMessages": Array [],
-  "internalStatus": "passed",
-}
-`;
-
-exports[`Test should run asynchronously 1`] = `
 Result {
   "internalMessages": Array [],
   "internalStatus": "passed",

@@ -23,26 +23,6 @@ describe('Test', () => {
     expect(end).toHaveBeenCalledTimes(1);
   });
 
-  it('should run asynchronously', async () => {
-    const fn = jest.fn();
-    const test = new Test('test', fn);
-
-    const start = jest.fn();
-    test.on('start', start);
-    const pass = jest.fn();
-    test.on('pass', pass);
-    const end = jest.fn();
-    test.on('end', end);
-
-    expect(fn).toHaveBeenCalledTimes(0);
-    expect(await test.asyncRun()).toMatchSnapshot();
-    expect(fn).toHaveBeenCalledTimes(1);
-
-    expect(start).toHaveBeenCalledTimes(1);
-    expect(pass).toHaveBeenCalledTimes(1);
-    expect(end).toHaveBeenCalledTimes(1);
-  });
-
   it('should return isDone', () => {
     const test = new Test('test', () => null);
 
@@ -90,35 +70,57 @@ describe('Test', () => {
     expect(end).toHaveBeenCalledTimes(1);
   });
 
-  it('should fail in async', async () => {
-    const err = new Error('Fatal error');
-    const fn = () => {
-      throw err;
-    };
-    const test = new Test('test', fn);
-
-    const start = jest.fn();
-    test.on('start', start);
-    const fail = jest.fn();
-    test.on('fail', fail);
-    const end = jest.fn();
-    test.on('end', end);
-
-    const spy = jest.fn();
-    await test.asyncRun().catch(spy);
-
-    expect(spy).toHaveBeenCalledWith(err);
-
-    expect(start).toHaveBeenCalledTimes(1);
-    expect(fail).toHaveBeenCalledTimes(1);
-    expect(end).toHaveBeenCalledTimes(1);
-  });
-
   it('should check if is test', () => {
     expect(isTest(null)).toBeFalsy();
     expect(isTest({})).toBeFalsy();
     expect(isTest(new Runnable('not a test'))).toBeFalsy();
     expect(isTest(new Suite('not a test'))).toBeFalsy();
     expect(isTest(new Test('a test', () => null))).toBeTruthy();
+  });
+
+  describe('async', () => {
+    it('should run', async () => {
+      const fn = jest.fn();
+      const test = new Test('test', fn);
+
+      const start = jest.fn();
+      test.on('start', start);
+      const pass = jest.fn();
+      test.on('pass', pass);
+      const end = jest.fn();
+      test.on('end', end);
+
+      expect(fn).toHaveBeenCalledTimes(0);
+      expect(await test.asyncRun()).toMatchSnapshot();
+      expect(fn).toHaveBeenCalledTimes(1);
+
+      expect(start).toHaveBeenCalledTimes(1);
+      expect(pass).toHaveBeenCalledTimes(1);
+      expect(end).toHaveBeenCalledTimes(1);
+    });
+
+    it('should fail', async () => {
+      const err = new Error('Fatal error');
+      const fn = () => {
+        throw err;
+      };
+      const test = new Test('test', fn);
+
+      const start = jest.fn();
+      test.on('start', start);
+      const fail = jest.fn();
+      test.on('fail', fail);
+      const end = jest.fn();
+      test.on('end', end);
+
+      const spy = jest.fn();
+      await test.asyncRun().catch(spy);
+
+      expect(spy).toHaveBeenCalledWith(err);
+
+      expect(start).toHaveBeenCalledTimes(1);
+      expect(fail).toHaveBeenCalledTimes(1);
+      expect(end).toHaveBeenCalledTimes(1);
+    });
   });
 });
