@@ -59,9 +59,10 @@ export default class Suite extends Runnable {
     return this.doPass();
   }
 
-  // TODO: doEnd() - Emit when suite has ended
-
   // TODO: return total number of tests/suites
+  public getTotal(): number {
+    return this.children.length;
+  }
 
   // TODO: real asyncRun using EventEmitters or Promise
 }
