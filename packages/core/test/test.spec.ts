@@ -12,6 +12,15 @@ describe('Test', () => {
     expect(fn).toHaveBeenCalledTimes(1);
   });
 
+  it('should run asynchronously', async () => {
+    const fn = jest.fn();
+    const test = new Test('test', fn);
+
+    expect(fn).toHaveBeenCalledTimes(0);
+    expect(await test.asyncRun()).toMatchSnapshot();
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+
   it('should return isDone', () => {
     const test = new Test('test', () => null);
 
@@ -28,7 +37,7 @@ describe('Test', () => {
     expect(fn).toHaveBeenCalledTimes(0);
   });
 
-  it('should error', () => {
+  it('should fail', () => {
     const fn = () => {
       throw new Error('Fatal error');
     };
@@ -37,20 +46,17 @@ describe('Test', () => {
     expect(test.run()).toMatchSnapshot();
   });
 
-  class ExpectError extends Error {
-    constructor(message: string) {
-      super(message);
-      this.name = 'ExpectError';
-    }
-  }
-
-  it('should fail', () => {
+  it('should fail in async', async () => {
+    const err = new Error('Fatal error');
     const fn = () => {
-      throw new ExpectError('Expect failed');
+      throw err;
     };
     const test = new Test('test', fn);
 
-    expect(test.run()).toMatchSnapshot();
+    const spy = jest.fn();
+    await test.asyncRun().catch(spy);
+
+    expect(spy).toHaveBeenCalledWith(err);
   });
 
   it('should check if is test', () => {

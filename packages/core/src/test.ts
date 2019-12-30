@@ -36,4 +36,26 @@ export default class Test extends Runnable {
 
     return this.doPass();
   }
+
+  /**
+   * Run a `Test` instance asynchronously return `Runnable` status:
+   * @public
+   * @return {Promise<Result>}
+   */
+  public async asyncRun(): Promise<Result> {
+    if (this.skip) {
+      return this.doSkip();
+    }
+
+    this.doStart();
+
+    try {
+      this.fn();
+    } catch (error) {
+      this.doFail(error);
+      throw error;
+    }
+
+    return this.doPass();
+  }
 }
