@@ -100,4 +100,32 @@ describe('Suite', () => {
 
     expect(parent.getState()).toMatchSnapshot();
   });
+
+  describe('async', () => {
+    it('should pass', async () => {
+      const child = new Test('child', () => null);
+      const parent = new Suite('parent');
+      parent.addChild(child);
+
+      expect((await parent.asyncRun()).status).toBe(Status.Passed);
+    });
+
+    it('should fail', async () => {
+      const err = new Error('FAIL!');
+      const child = new Test('child', () => { throw err; });
+      const parent = new Suite('parent');
+      parent.addChild(child);
+
+      const fn = jest.fn();
+      await parent.asyncRun().catch(fn);
+
+      expect(fn).toHaveBeenCalledWith(err);
+    });
+
+    it('should skip', async () => {
+      const parent = new Suite('parent', true);
+
+      expect((await parent.asyncRun()).status).toBe(Status.Skipped);
+    });
+  });
 });

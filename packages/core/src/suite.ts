@@ -68,6 +68,33 @@ export default class Suite extends Runnable {
     return this.doPass();
   }
 
+  /**
+   * @description Runs a `Suite` instance asynchronously returning a `Result`:
+   * @public
+   * @returns {Promise<Result>}
+   */
+  public async asyncRun(): Promise<Result> {
+    if (this.skip) {
+      return this.doSkip();
+    }
+
+    this.doStart();
+
+    const promises: Array<Promise<Result>> = [];
+    for (const child of this.children) {
+      promises.push(child.asyncRun().then((r) => {
+        this.result.addMessages(...r.messages.map((m) => `${child.description}: ${m}`));
+        return r;
+      }).catch((e) => {
+        this.doFail(`${child.description}: ${e}`); // TODO: make bail optional
+        throw e;
+      }));
+    }
+
+    await Promise.all(promises);
+    return this.doPass();
+  }
+
   public filterChildrenByStatus(status: Status): Runnable[] {
     return this.children.filter((c) => c.result.status === status);
   }
@@ -82,6 +109,4 @@ export default class Suite extends Runnable {
       total: this.children.length,
     };
   }
-
-  // TODO: real asyncRun using EventEmitters or Promise
 }

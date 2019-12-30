@@ -54,7 +54,7 @@ export default class Runnable extends EventEmitter {
     return this.result;
   }
 
-  public doFail(error?: Error): Result {
+  public doFail(error?: Error | string): Result {
     if (error) {
       this.result.addMessages(String(error));
     }
