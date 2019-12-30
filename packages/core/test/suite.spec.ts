@@ -74,4 +74,30 @@ describe('Suite', () => {
     expect(isSuite(new Test('not a suite', () => null))).toBeFalsy();
     expect(isSuite(new Suite('a suite'))).toBeTruthy();
   });
+
+  it('filter children by status', () => {
+    const child = new Suite('child');
+    const parent = new Suite('parent');
+    parent.addChild(child);
+
+    expect(parent.filterChildrenByStatus(Status.Skipped)).toHaveLength(0);
+    expect(parent.filterChildrenByStatus(Status.Pending)).toHaveLength(1);
+
+    parent.run();
+
+    expect(parent.filterChildrenByStatus(Status.Passed)).toHaveLength(1);
+    expect(parent.filterChildrenByStatus(Status.Pending)).toHaveLength(0);
+  });
+
+  it('get state', () => {
+    const child = new Suite('child');
+    const parent = new Suite('parent');
+    parent.addChild(child);
+
+    expect(parent.getState()).toMatchSnapshot();
+
+    parent.run();
+
+    expect(parent.getState()).toMatchSnapshot();
+  });
 });

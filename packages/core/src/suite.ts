@@ -7,6 +7,15 @@ export const isSuite = (v: unknown): v is Suite => {
 };
 export const rootSymbol = Symbol('isRoot');
 
+export interface SuiteState {
+  total: number;
+  pending: number;
+  done: number;
+  passed: number;
+  failed: number;
+  skipped: number; // TODO: add TODO state
+}
+
 export default class Suite extends Runnable {
   public children: Runnable[];
   public [rootSymbol]?: boolean;
@@ -59,9 +68,19 @@ export default class Suite extends Runnable {
     return this.doPass();
   }
 
-  // TODO: return total number of tests/suites
-  public getTotal(): number {
-    return this.children.length;
+  public filterChildrenByStatus(status: Status): Runnable[] {
+    return this.children.filter((c) => c.result.status === status);
+  }
+
+  public getState(): SuiteState {
+    return {
+      done: this.children.filter((c) => c.result.isDone()).length,
+      failed: this.filterChildrenByStatus(Status.Failed).length,
+      passed: this.filterChildrenByStatus(Status.Passed).length,
+      pending: this.filterChildrenByStatus(Status.Pending).length,
+      skipped: this.filterChildrenByStatus(Status.Skipped).length,
+      total: this.children.length,
+    };
   }
 
   // TODO: real asyncRun using EventEmitters or Promise

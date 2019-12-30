@@ -1,5 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Suite get state 1`] = `
+Object {
+  "done": 0,
+  "failed": 0,
+  "passed": 0,
+  "pending": 1,
+  "skipped": 0,
+  "total": 1,
+}
+`;
+
+exports[`Suite get state 2`] = `
+Object {
+  "done": 1,
+  "failed": 0,
+  "passed": 1,
+  "pending": 0,
+  "skipped": 0,
+  "total": 1,
+}
+`;
+
 exports[`Suite should fail and collect messages 1`] = `
 Result {
   "internalMessages": Array [
