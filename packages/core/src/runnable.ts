@@ -48,7 +48,7 @@ export default class Runnable extends EventEmitter {
   public doPass(): Result {
     this.result.status = Status.Passed;
     this.emit('pass', this);
-    this.emit('end', this);
+    this.doEnd();
 
     return this.result;
   }
@@ -57,7 +57,7 @@ export default class Runnable extends EventEmitter {
     this.result.addMessages(String(error));
     this.result.status = Status.Failed;
     this.emit('fail', this, error);
-    this.emit('end', this);
+    this.doEnd();
 
     return this.result;
   }
@@ -65,7 +65,7 @@ export default class Runnable extends EventEmitter {
   public doSkip(): Result { // TODO: add TODO tests support
     this.result.status = Status.Skipped;
     this.emit('skip', this);
-    this.emit('end', this);
+    this.doEnd();
 
     return this.result;
   }
