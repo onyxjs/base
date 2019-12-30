@@ -13,7 +13,6 @@ export function expectations(
     .map(([key, value]) => [
       key,
       (...args: any[]) => {
-        // @ts-ignore
         const result = value(expectation, ...args);
         if (result === not) { throw new ExpectError(`${not ? 'not.' : ''}${key} failed`); } // TODO diff
         return result;
