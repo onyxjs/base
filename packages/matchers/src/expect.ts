@@ -1,11 +1,15 @@
-function expectations(
-  // tslint:disable-next-line:ban-types
-  matchers: { [ key: string ]: Function },
+import { matchers, Matchers } from './matchers';
+
+type Expectations = {
+  [K in keyof typeof matchers]: (...args: any[]) => boolean // TODO: infer args
+};
+
+export function expectations(
+  currentMatchers: Matchers,
   expectation: any,
   not: boolean = false,
-  // tslint:disable-next-line:ban-types
-): { [key: string]: Function } {
-  const entries = Object.entries(matchers)
+): Expectations {
+  const entries = Object.entries(currentMatchers)
     .map(([key, value]) => [
       key,
       (...args: any[]) => {
@@ -18,11 +22,13 @@ function expectations(
   return Object.assign({}, ...Array.from(entries, ([k, v]: any[]) => ({[k]: v}) ));
 }
 
+interface NegatedExpectations extends Expectations {
+  not: Expectations;
+}
+
 export default function expect(
-  // tslint:disable-next-line:ban-types
-  matchers: { [ key: string ]: Function },
   expectation: any,
-): any {
+): NegatedExpectations {
   return {
     ...expectations(matchers, expectation, false),
     not: expectations(matchers, expectation, true),
