@@ -35,7 +35,7 @@ export let matchers = {
 };
 
 export interface Matchers {
-  [key: string]: (...args: any[]) => boolean;
+  [key: string]: (expectation: any, ...args: any[]) => boolean;
 }
 
 export function extendMatchers(ext: Matchers) { // TODO: extend types properly

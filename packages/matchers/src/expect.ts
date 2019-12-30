@@ -1,7 +1,8 @@
 import { matchers, Matchers } from './matchers';
 
-type Expectations = {
-  [K in keyof typeof matchers]: (...args: any[]) => boolean // TODO: infer args
+type OmitFirstArg<F> = F extends (x: any, ...args: infer P) => infer R ? (...args: P) => R : never;
+type Expectations<M = typeof matchers> = {
+  [K in keyof M]: OmitFirstArg<M[K]>
 };
 
 export function expectations(
