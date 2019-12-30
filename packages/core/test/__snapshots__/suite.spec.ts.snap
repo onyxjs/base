@@ -25,8 +25,7 @@ Object {
 exports[`Suite should fail and collect messages 1`] = `
 Result {
   "internalMessages": Array [
-    "FAIL!",
-    "undefined",
+    "desc: FAIL!",
   ],
   "internalStatus": "failed",
 }
@@ -35,7 +34,7 @@ Result {
 exports[`Suite should pass and collect messages 1`] = `
 Result {
   "internalMessages": Array [
-    "OK",
+    "desc: OK",
   ],
   "internalStatus": "passed",
 }

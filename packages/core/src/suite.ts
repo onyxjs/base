@@ -59,7 +59,7 @@ export default class Suite extends Runnable {
 
     for (const child of this.children) {
       const result = child.run();
-      this.result.addMessages(...result.messages);
+      this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
       if (result.status === Status.Failed) { // TODO: make bail optional
         return this.doFail();
       }

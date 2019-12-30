@@ -55,7 +55,9 @@ export default class Runnable extends EventEmitter {
   }
 
   public doFail(error?: Error): Result {
-    this.result.addMessages(String(error));
+    if (error) {
+      this.result.addMessages(String(error));
+    }
     this.result.status = Status.Failed;
     this.emit('fail', this, error);
     this.doEnd();
