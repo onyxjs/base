@@ -1,4 +1,4 @@
-## Mock
+## mock
 
 > Signature: `mock (fn: Function, cb?: (args: any[], result: any) => any): mock`
 
