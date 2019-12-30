@@ -10,6 +10,7 @@ export const rootSymbol = Symbol('isRoot');
 export interface SuiteState {
   total: number;
   pending: number;
+  running: number;
   done: number;
   passed: number;
   failed: number;
@@ -105,6 +106,7 @@ export default class Suite extends Runnable {
       failed: this.filterChildrenByStatus(Status.Failed).length,
       passed: this.filterChildrenByStatus(Status.Passed).length,
       pending: this.filterChildrenByStatus(Status.Pending).length,
+      running: this.filterChildrenByStatus(Status.Running).length,
       skipped: this.filterChildrenByStatus(Status.Skipped).length,
       total: this.children.length,
     };
