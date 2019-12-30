@@ -35,6 +35,7 @@ describe('Runnable', () => {
       runnable.on('start', fn);
 
       runnable.doStart();
+      expect(runnable.result.status).toBe(Status.Running);
       expect(fn).toHaveBeenCalledTimes(1);
     });
 
@@ -47,6 +48,7 @@ describe('Runnable', () => {
       runnable.on('end', end);
 
       runnable.doPass();
+      expect(runnable.result.status).toBe(Status.Passed);
       expect(fn).toHaveBeenCalledTimes(1);
       expect(end).toHaveBeenCalledTimes(1);
     });
@@ -60,6 +62,7 @@ describe('Runnable', () => {
       runnable.on('end', end);
 
       runnable.doFail();
+      expect(runnable.result.status).toBe(Status.Failed);
       expect(fn).toHaveBeenCalledTimes(1);
       expect(end).toHaveBeenCalledTimes(1);
     });
@@ -73,6 +76,7 @@ describe('Runnable', () => {
       runnable.on('end', end);
 
       runnable.doSkip();
+      expect(runnable.result.status).toBe(Status.Skipped);
       expect(fn).toHaveBeenCalledTimes(1);
       expect(end).toHaveBeenCalledTimes(1);
     });

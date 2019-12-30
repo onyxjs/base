@@ -1,8 +1,9 @@
 export enum Status {
+  Pending,
+  Running,
   Passed,
   Failed,
   Skipped,
-  Pending,
 }
 
 export default class Result {
@@ -18,7 +19,7 @@ export default class Result {
   }
 
   public isDone() {
-    return this.internalStatus !== Status.Pending;
+    return this.internalStatus !== Status.Pending && this.internalStatus !== Status.Running;
   }
 
   public get status() {
