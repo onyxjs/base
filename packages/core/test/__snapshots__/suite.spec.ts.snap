@@ -1,14 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Suite should error and collect messages 1`] = `
-Result {
-  "internalMessages": Array [
-    "FATAL ERROR!",
-  ],
-  "internalStatus": 0,
-}
-`;
-
 exports[`Suite should fail and collect messages 1`] = `
 Result {
   "internalMessages": Array [

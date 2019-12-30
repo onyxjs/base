@@ -1,4 +1,4 @@
-import Result, { Status } from './result';
+import Result from './result';
 import Runnable, { isRunnable, RunnableTypes } from './runnable';
 import Suite from './suite';
 
