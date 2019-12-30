@@ -21,7 +21,7 @@ export default class Suite extends Runnable {
   public [rootSymbol]?: boolean;
   public type = RunnableTypes.Suite;
 
-  constructor(description: string, skip?: boolean, parent?: Suite) {
+  constructor(description: string, skip?: boolean, parent?: Suite | null) {
     super(description, skip || false, parent);
     this.children = [];
   }

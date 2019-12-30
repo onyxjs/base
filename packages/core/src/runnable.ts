@@ -28,8 +28,7 @@ export default class Runnable extends EventEmitter {
   public type: RunnableTypes = RunnableTypes.Runnable;
   public [runnableSymbol] = true;
 
-  // TODO: probably make parent of type Suite | null
-  constructor(description: string, skip?: boolean, parent?: Suite) {
+  constructor(description: string, skip?: boolean, parent?: Suite | null) {
     super();
     this.description = description;
     this.result = new Result();

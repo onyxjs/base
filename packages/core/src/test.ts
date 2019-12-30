@@ -11,7 +11,7 @@ export default class Test extends Runnable {
   public fn: () => void;
   public type = RunnableTypes.Test;
 
-  constructor(description: string, fn: () => void, skip?: boolean, parent?: Suite) {
+  constructor(description: string, fn: () => void, skip?: boolean, parent?: Suite | null) {
     super(description, skip || false, parent);
     this.fn = fn;
   }
