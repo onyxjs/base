@@ -25,6 +25,22 @@ describe('Suite', () => {
     expect(end).toHaveBeenCalledTimes(1);
   });
 
+  it('should skip', () => {
+    const suite = new Suite('parent', true);
+
+    const start = jest.fn();
+    suite.on('start', start);
+    const skip = jest.fn();
+    suite.on('skip', skip);
+    const end = jest.fn();
+    suite.on('end', end);
+    suite.run();
+
+    expect(start).toHaveBeenCalledTimes(0);
+    expect(skip).toHaveBeenCalledTimes(1);
+    expect(end).toHaveBeenCalledTimes(1);
+  });
+
   it('should check if is root', () => {
     const suite = new Suite('suite');
 
