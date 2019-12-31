@@ -96,10 +96,20 @@ export default class Suite extends Runnable {
     return this.doPass();
   }
 
+  /**
+   * @description Returns all of the `Suite` children with matching status:
+   * @public
+   * @returns {Runnable[]}
+   */
   public filterChildrenByStatus(status: Status): Runnable[] {
     return this.children.filter((c) => c.result.status === status);
   }
 
+  /**
+   * @description Returns `Suite` stats in a `Stats` object
+   * @public
+   * @returns {Stats}
+   */
   public getStats(): Stats {
     return {
       done: this.children.filter((c) => c.result.isDone()).length,
