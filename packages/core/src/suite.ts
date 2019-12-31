@@ -15,6 +15,7 @@ export interface Stats {
   passed: number;
   failed: number;
   skipped: number; // TODO: add TODO state
+  time: number;
 }
 
 export default class Suite extends Runnable {
@@ -118,6 +119,7 @@ export default class Suite extends Runnable {
       pending: this.filterChildrenByStatus(Status.Pending).length,
       running: this.filterChildrenByStatus(Status.Running).length,
       skipped: this.filterChildrenByStatus(Status.Skipped).length,
+      time: this.time,
       total: this.children.length,
     };
   }

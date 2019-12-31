@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { performance } from 'perf_hooks';
 import Result, { Status } from './result';
 import Suite from './suite';
 
@@ -28,6 +29,9 @@ export default class Runnable extends EventEmitter {
   public type: RunnableTypes = RunnableTypes.Runnable;
   public [runnableSymbol] = true;
 
+  public time: number = 0;
+  private start: number = 0;
+
   constructor(description: string, skip?: boolean, parent?: Suite | null) {
     super();
     this.description = description;
@@ -39,10 +43,12 @@ export default class Runnable extends EventEmitter {
   public doStart(): void {
     this.result.status = Status.Running;
     this.emit('start', this);
+    this.start = performance.now();
   }
 
   public doEnd(): void {
-    this.emit('end', this);
+    this.time = performance.now() - this.start;
+    this.emit('end', this, this.time);
   }
 
   public doPass(): Result {

@@ -21,6 +21,7 @@ describe('Test', () => {
     expect(start).toHaveBeenCalledTimes(1);
     expect(pass).toHaveBeenCalledTimes(1);
     expect(end).toHaveBeenCalledTimes(1);
+    expect(test.time).toBeGreaterThan(0);
   });
 
   it('should return isDone', () => {

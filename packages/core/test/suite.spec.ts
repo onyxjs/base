@@ -143,11 +143,15 @@ describe('Suite', () => {
     const parent = new Suite('parent');
     parent.addChild(child);
 
-    expect(parent.getStats()).toMatchSnapshot();
+    expect(parent.getStats()).toMatchSnapshot({
+      time: expect.any(Number),
+    });
 
     parent.run();
 
-    expect(parent.getStats()).toMatchSnapshot();
+    expect(parent.getStats()).toMatchSnapshot({
+      time: expect.any(Number),
+    });
   });
 
   describe('async', () => { // TODO: check this for races
