@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Suite get state 1`] = `
+exports[`Suite get stats 1`] = `
 Object {
   "done": 0,
   "failed": 0,
@@ -12,7 +12,7 @@ Object {
 }
 `;
 
-exports[`Suite get state 2`] = `
+exports[`Suite get stats 2`] = `
 Object {
   "done": 1,
   "failed": 0,

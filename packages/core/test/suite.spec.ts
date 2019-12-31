@@ -138,16 +138,16 @@ describe('Suite', () => {
     expect(parent.filterChildrenByStatus(Status.Pending)).toHaveLength(0);
   });
 
-  it('get state', () => {
+  it('get stats', () => {
     const child = new Suite('child');
     const parent = new Suite('parent');
     parent.addChild(child);
 
-    expect(parent.getState()).toMatchSnapshot();
+    expect(parent.getStats()).toMatchSnapshot();
 
     parent.run();
 
-    expect(parent.getState()).toMatchSnapshot();
+    expect(parent.getStats()).toMatchSnapshot();
   });
 
   describe('async', () => { // TODO: check this for races
