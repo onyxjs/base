@@ -1,15 +1,15 @@
-import { matchers, Matchers } from './matchers';
+import { AnyMatchers, matchers, onyx } from './matchers';
 
 type OmitFirstArg<F> = F extends (x: any, ...args: infer P) => infer R ? (...args: P) => R : never;
-type Expectations<M = typeof matchers> = {
+type Expectations<M extends AnyMatchers> = {
   [K in keyof M]: OmitFirstArg<M[K]>
 };
 
-export function expectations(
-  currentMatchers: Matchers,
+export function expectations<M extends AnyMatchers = AnyMatchers>(
+  currentMatchers: M,
   expectation: any,
   not: boolean = false,
-): Expectations {
+): Expectations<M> {
   const entries = Object.entries(currentMatchers)
     .map(([key, value]) => [
       key,
@@ -22,16 +22,16 @@ export function expectations(
   return Object.assign({}, ...Array.from(entries, ([k, v]: any[]) => ({[k]: v}) ));
 }
 
-interface NegatedExpectations extends Expectations {
-  not: Expectations;
-}
+type NegatedExpectations<M extends AnyMatchers> = Expectations<M> & {
+  not: Expectations<M>;
+};
 
-export default function expect(
+export default function expect<M extends onyx.Matchers = onyx.Matchers>(
   expectation: any,
-): NegatedExpectations {
+): NegatedExpectations<M> {
   return {
-    ...expectations(matchers, expectation, false),
-    not: expectations(matchers, expectation, true),
+    ...expectations<M>(matchers as M, expectation, false),
+    not: expectations<M>(matchers as M, expectation, true),
   };
 }
 

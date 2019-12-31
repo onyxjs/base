@@ -1,2 +1,2 @@
-export { default as matchers, Matchers, extendMatchers } from './matchers';
+export { default as matchers, AnyMatchers, extendMatchers, onyx } from './matchers';
 export { default, ExpectError } from './expect';

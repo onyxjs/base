@@ -15,6 +15,10 @@ import toHaveLength from './toHaveLength';
 import toStrictlyEqual from './toStrictlyEqual';
 import toThrow from './toThrow';
 
+export interface AnyMatchers {
+  [key: string]: (expectation: any, ...args: any[]) => boolean;
+}
+
 export let matchers = {
   toBe,
   toBeDefined,
@@ -33,12 +37,15 @@ export let matchers = {
   toStrictlyEqual,
   toThrow,
 };
+type BuiltInMatchers = typeof matchers & AnyMatchers;
 
-export interface Matchers {
-  [key: string]: (expectation: any, ...args: any[]) => boolean;
+// tslint:disable-next-line:no-namespace
+export namespace onyx {
+  // tslint:disable-next-line:no-empty-interface reason: extensibility
+  export interface Matchers extends BuiltInMatchers {}
 }
 
-export function extendMatchers(ext: Matchers) { // TODO: extend types properly
+export function extendMatchers(ext: AnyMatchers) {
   matchers = {
     ...matchers,
     ...ext,
