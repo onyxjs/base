@@ -7,7 +7,7 @@ export const isSuite = (v: unknown): v is Suite => {
 };
 export const rootSymbol = Symbol('isRoot');
 
-export interface SuiteState {
+export interface Stats {
   total: number;
   pending: number;
   running: number;
@@ -100,7 +100,7 @@ export default class Suite extends Runnable {
     return this.children.filter((c) => c.result.status === status);
   }
 
-  public getState(): SuiteState {
+  public getStats(): Stats {
     return {
       done: this.children.filter((c) => c.result.isDone()).length,
       failed: this.filterChildrenByStatus(Status.Failed).length,
