@@ -120,14 +120,14 @@ export default class Suite extends Runnable {
     };
   }
 
-  private flatten(array: Runnable[]): Test[] {
-    const flatTree: Test[] = [];
+  private flatten(array: Runnable[]): Runnable[] {
+    const flatTree: Runnable[] = [];
     for (const child of array) {
-      if (isTest(child)) {
-        flatTree.push(child);
-      } else if (isSuite(child)) {
+      if (isSuite(child)) {
         flatTree.push(...this.flatten(child.children));
+        continue;
       }
+      flatTree.push(child);
     }
 
     return flatTree;
