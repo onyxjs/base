@@ -135,6 +135,26 @@ describe('Suite', () => {
     expect(end).toHaveBeenCalledTimes(1);
   });
 
+  it('should not bail out', () => {
+    const child1 = new FailingRunnable('desc');
+    const child2 = new PassingRunnable('desc');
+    const suite = new Suite('Suite');
+    suite.addChildren(child1, child2);
+
+    suite.run();
+    expect(suite.getStats().done).toBe(2);
+  });
+
+  it('should bail out', () => {
+    const child1 = new FailingRunnable('desc');
+    const child2 = new PassingRunnable('desc');
+    const suite = new Suite('Suite', { bail: true });
+    suite.addChildren(child1, child2);
+
+    suite.run();
+    expect(suite.getStats().done).toBe(1);
+  });
+
   it('should check if is suite', () => {
     expect(isSuite(null)).toBeFalsy();
     expect(isSuite({})).toBeFalsy();
@@ -146,7 +166,7 @@ describe('Suite', () => {
   it('should collect stats', () => {
     const passing = new Suite('passing');
     passing.addChildren(
-      new Test('passing test', () => null),
+      new PassingRunnable('passing runnable'),
     );
     const skipped = new Suite('skipped', { skip: true });
     const todo = new Suite('todo', { todo: true });

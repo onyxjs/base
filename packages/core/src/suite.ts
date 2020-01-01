@@ -20,13 +20,22 @@ export interface Stats {
   time: number;
 }
 
+export interface SuiteOptions extends RunnableOptions {
+  bail: boolean;
+}
+
 export default class Suite extends Runnable {
   public children: Runnable[];
   public [rootSymbol]?: boolean;
   public type = RunnableTypes.Suite;
+  public options: SuiteOptions;
 
-  constructor(description: string, options: Partial<RunnableOptions> = {}, parent?: Suite | null) {
+  constructor(description: string, options: Partial<SuiteOptions> = {}, parent?: Suite | null) {
     super(description, options, parent);
+    this.options = {
+      bail: false,
+      ...Runnable.normalizeOptions(options),
+    };
     this.children = [];
   }
 
@@ -62,15 +71,22 @@ export default class Suite extends Runnable {
     }
 
     this.doStart();
+    let failed = false;
 
     for (const child of this.children) {
       const result = child.run();
       this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
-      if (result.status === Status.Failed) { // TODO: make bail optional
-        return this.doFail();
+      if (result.status === Status.Failed) {
+        if (this.options.bail) {
+          return this.doFail();
+        }
+        failed = true;
       }
     }
 
+    if (failed) {
+      return this.doFail();
+    }
     return this.doPass();
   }
 
@@ -92,7 +108,7 @@ export default class Suite extends Runnable {
         this.result.addMessages(...r.messages.map((m) => `${child.description}: ${m}`));
         return r;
       }).catch((e) => {
-        this.doFail(`${child.description}: ${e}`); // TODO: make bail optional
+        this.doFail(`${child.description}: ${e}`); // TODO: make bail for async
         throw e;
       }));
     }

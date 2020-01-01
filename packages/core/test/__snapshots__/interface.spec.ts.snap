@@ -13,6 +13,7 @@ Suite {
       "children": Array [],
       "description": "test 2",
       "options": Object {
+        "bail": false,
         "skip": false,
         "todo": false,
       },
@@ -29,6 +30,7 @@ Suite {
   ],
   "description": "root",
   "options": Object {
+    "bail": false,
     "skip": false,
     "todo": false,
   },
@@ -65,6 +67,7 @@ Test {
     ],
     "description": "test 5",
     "options": Object {
+      "bail": false,
       "skip": true,
       "todo": false,
     },
@@ -77,6 +80,7 @@ Test {
       ],
       "description": "root",
       "options": Object {
+        "bail": false,
         "skip": false,
         "todo": false,
       },
@@ -119,6 +123,7 @@ Suite {
   "children": Array [],
   "description": "test 1",
   "options": Object {
+    "bail": false,
     "skip": false,
     "todo": false,
   },
@@ -131,6 +136,7 @@ Suite {
     ],
     "description": "root",
     "options": Object {
+      "bail": false,
       "skip": false,
       "todo": false,
     },
@@ -176,6 +182,7 @@ Test {
     ],
     "description": "test 4",
     "options": Object {
+      "bail": false,
       "skip": true,
       "todo": false,
     },
@@ -188,6 +195,7 @@ Test {
       ],
       "description": "root",
       "options": Object {
+        "bail": false,
         "skip": false,
         "todo": false,
       },
@@ -242,6 +250,7 @@ Test {
     ],
     "description": "test 5",
     "options": Object {
+      "bail": false,
       "skip": true,
       "todo": false,
     },
@@ -254,6 +263,7 @@ Test {
       ],
       "description": "root",
       "options": Object {
+        "bail": false,
         "skip": false,
         "todo": false,
       },
@@ -387,6 +397,7 @@ Suite {
           ],
           "description": "component 1",
           "options": Object {
+            "bail": false,
             "skip": false,
             "todo": false,
           },
@@ -493,6 +504,7 @@ Suite {
               ],
               "description": "method 1",
               "options": Object {
+                "bail": false,
                 "skip": false,
                 "todo": false,
               },
@@ -554,6 +566,7 @@ Suite {
               ],
               "description": "method 2",
               "options": Object {
+                "bail": false,
                 "skip": false,
                 "todo": false,
               },
@@ -570,6 +583,7 @@ Suite {
           ],
           "description": "component 2",
           "options": Object {
+            "bail": false,
             "skip": false,
             "todo": false,
           },
@@ -586,6 +600,7 @@ Suite {
       ],
       "description": "module",
       "options": Object {
+        "bail": false,
         "skip": false,
         "todo": false,
       },
@@ -602,6 +617,7 @@ Suite {
   ],
   "description": "root",
   "options": Object {
+    "bail": false,
     "skip": false,
     "todo": false,
   },

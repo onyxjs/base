@@ -27,6 +27,14 @@ export interface RunnableOptions {
  * @param {boolean} skip
  */
 export default class Runnable extends EventEmitter {
+
+  public static normalizeOptions(options: Partial<RunnableOptions>): RunnableOptions {
+    return {
+      skip: false,
+      todo: false,
+      ...options,
+    };
+  }
   public description: string;
   public result: Result;
   public options: RunnableOptions;
@@ -41,11 +49,7 @@ export default class Runnable extends EventEmitter {
     super();
     this.description = description;
     this.result = new Result();
-    this.options = {
-      skip: false,
-      todo: false,
-      ...options,
-    };
+    this.options = Runnable.normalizeOptions(options);
     this.parent = parent || null;
   }
 
