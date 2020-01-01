@@ -8,7 +8,7 @@ describe('Suite', () => {
     const child = new Suite('child');
     const spy = jest.spyOn(child, 'run');
     const parent = new Suite('parent');
-    parent.addChild(child);
+    parent.addChildren(child);
 
     const start = jest.fn();
     parent.on('start', start);
@@ -68,14 +68,15 @@ describe('Suite', () => {
     expect(suite.isRoot()).toBeTruthy();
   });
 
-  it('should push a child to children array', () => {
-    const child = new Suite('desc');
+  it('should push children to children array', () => {
+    const child1 = new Suite('desc');
+    const child2 = new Suite('desc');
     const suite = new Suite('Suite');
 
     expect(suite.children).toEqual([]);
 
-    suite.addChild(child);
-    expect(suite.children.length).toEqual(1);
+    suite.addChildren(child1, child2);
+    expect(suite.children.length).toEqual(2);
   });
 
   // tslint:disable-next-line:max-classes-per-file
@@ -89,7 +90,7 @@ describe('Suite', () => {
   it('should pass and collect messages', () => {
     const child = new PassingRunnable('desc');
     const suite = new Suite('Suite');
-    suite.addChild(child);
+    suite.addChildren(child);
 
     const start = jest.fn();
     suite.on('start', start);
@@ -117,7 +118,7 @@ describe('Suite', () => {
   it('should fail and collect messages', () => {
     const child = new FailingRunnable('desc');
     const suite = new Suite('Suite');
-    suite.addChild(child);
+    suite.addChildren(child);
 
     const start = jest.fn();
     suite.on('start', start);
@@ -145,7 +146,7 @@ describe('Suite', () => {
   it('filter children by status', () => {
     const child = new Suite('child');
     const parent = new Suite('parent');
-    parent.addChild(child);
+    parent.addChildren(child);
 
     expect(parent.filterChildrenByStatus(Status.Skipped)).toHaveLength(0);
     expect(parent.filterChildrenByStatus(Status.Pending)).toHaveLength(1);
@@ -164,10 +165,7 @@ describe('Suite', () => {
       throw new Error('FAIL!');
     });
     const parent = new Suite('parent');
-    parent.addChild(passing);
-    parent.addChild(skipped);
-    parent.addChild(todo);
-    parent.addChild(failing);
+    parent.addChildren(passing, skipped, todo, failing);
 
     expect(parent.getStats()).toMatchSnapshot({
       time: expect.any(Number),
@@ -184,7 +182,7 @@ describe('Suite', () => {
     it('should pass', async () => {
       const child = new Test('child', () => null);
       const parent = new Suite('parent');
-      parent.addChild(child);
+      parent.addChildren(child);
 
       const start = jest.fn();
       parent.on('start', start);
@@ -206,7 +204,7 @@ describe('Suite', () => {
       const err = new Error('FAIL!');
       const child = new Test('child', () => { throw err; });
       const parent = new Suite('parent');
-      parent.addChild(child);
+      parent.addChildren(child);
 
       const start = jest.fn();
       parent.on('start', start);

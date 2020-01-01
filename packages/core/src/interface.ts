@@ -21,7 +21,7 @@ function _it(description: string, fn: () => void, skip = false, todo = false) {
 
   const test = new Test(description, fn, skip, todo, currentRoot);
 
-  currentRoot.addChild(test);
+  currentRoot.addChildren(test);
   return test;
 }
 
@@ -47,7 +47,7 @@ function _describe(description: string, fn: () => void, skip = false, todo = fal
   }
   currentRoot = currentRoot.parent || root;
 
-  currentRoot.addChild(suite);
+  currentRoot.addChildren(suite);
   return suite;
 }
 

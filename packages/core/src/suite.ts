@@ -30,13 +30,15 @@ export default class Suite extends Runnable {
   }
 
   /**
-   * @description Add a `Runnable` to the `children` array.
-   * @param {Runnable} child
+   * @description Add one or more `Runnable` instances to the `children` array.
+   * @param {Runnable[]} ...children
    * @returns {Void}
    */
-  public addChild(child: Runnable): void {
-    child.parent = this;
-    this.children.push(child);
+  public addChildren(...children: Runnable[]): void {
+    for (const child of children) {
+      child.parent = this;
+    }
+    this.children.push(...children);
   }
 
   /**
