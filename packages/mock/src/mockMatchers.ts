@@ -60,6 +60,19 @@ const extension = {
     return m.returns.length > 0;
   },
 
+  toHaveLastReturned: (m: unknown, returnValue: any): boolean => {
+    if (!isMock(m)) {
+      throw new TypeError('expected value is not a mock function');
+    }
+
+    if (!m.returns.length) {
+      return false;
+    }
+
+    const lastReturned = m.returns[m.returns.length - 1];
+    return isEqual(lastReturned, returnValue);
+  },
+
 };
 
 type Extension = typeof extension;

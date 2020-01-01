@@ -85,4 +85,21 @@ describe('Mock function matchers', () => {
       mockFn(1, 2);
       expect(() => $expect(mockFn).toHaveReturned()).not.toThrow();
     });
+
+  it('toHaveLastReturned', () => {
+      expect(() => $expect({}).toHaveLastReturned(2)).toThrow(TypeError);
+
+      const mockFn = mock((a: any, b: any) => a + b);
+
+      expect(() => $expect(mockFn).toHaveLastReturned('string')).toThrow();
+      expect(() => $expect(mockFn).toHaveLastReturned(1)).toThrow();
+
+      mockFn(1, 2);
+      expect(() => $expect(mockFn).toHaveLastReturned(3)).not.toThrow();
+      expect(() => $expect(mockFn).toHaveLastReturned(1)).toThrow();
+
+      mockFn('hello ', 'world');
+      expect(() => $expect(mockFn).toHaveLastReturned('hello world')).not.toThrow();
+      expect(() => $expect(mockFn).toHaveLastReturned(5)).toThrow();
+    });
 });
