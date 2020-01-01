@@ -76,4 +76,13 @@ describe('Mock function matchers', () => {
     expect(() => $expect(mockFn).toHaveBeenNthCalledWith(2, 1, 2)).toThrow();
     expect(() => $expect(mockFn).toHaveBeenNthCalledWith(2, 3)).not.toThrow();
   });
+
+  it('toHaveReturned', () => {
+      expect(() => $expect({}).toHaveReturned()).toThrow(TypeError);
+
+      const mockFn = mock((a: any, b: any) => a + b);
+
+      mockFn(1, 2);
+      expect(() => $expect(mockFn).toHaveReturned()).not.toThrow();
+    });
 });

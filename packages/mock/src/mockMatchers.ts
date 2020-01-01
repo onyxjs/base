@@ -51,6 +51,15 @@ const extension = {
     const nthCall = m.calls[n];
     return isEqual(nthCall.slice(0, args.length), args);
   },
+
+  toHaveReturned: (m: unknown, ...args: any[]): boolean => {
+    if (!isMock(m)) {
+      throw new TypeError('expected value is not a mock function');
+    }
+
+    return m.returns.length > 0;
+  },
+
 };
 
 type Extension = typeof extension;
