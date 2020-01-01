@@ -17,8 +17,8 @@ export enum RunnableTypes {
 }
 
 export interface RunnableOptions {
-  skip?: boolean;
-  todo?: boolean;
+  skip: boolean;
+  todo: boolean;
 }
 
 /**
@@ -37,11 +37,15 @@ export default class Runnable extends EventEmitter {
   public time: number = 0;
   private start: number = 0;
 
-  constructor(description: string, options: RunnableOptions = {}, parent?: Suite | null) {
+  constructor(description: string, options: Partial<RunnableOptions> = {}, parent?: Suite | null) {
     super();
     this.description = description;
     this.result = new Result();
-    this.options = options;
+    this.options = {
+      skip: false,
+      todo: false,
+      ...options,
+    };
     this.parent = parent || null;
   }
 
