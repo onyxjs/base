@@ -26,7 +26,7 @@ describe('Suite', () => {
   });
 
   it('should skip', () => {
-    const suite = new Suite('parent', true);
+    const suite = new Suite('parent', { skip: true });
 
     const start = jest.fn();
     suite.on('start', start);
@@ -43,7 +43,7 @@ describe('Suite', () => {
   });
 
   it('should work with todo option', () => {
-    const suite = new Suite('parent', false, true);
+    const suite = new Suite('parent', { todo: true });
 
     const start = jest.fn();
     suite.on('start', start);
@@ -159,8 +159,8 @@ describe('Suite', () => {
 
   it('should collect stats', () => {
     const passing = new Suite('passing');
-    const skipped = new Suite('skipped', true);
-    const todo = new Suite('todo', false, true);
+    const skipped = new Suite('skipped', { skip: true });
+    const todo = new Suite('todo', { todo: true });
     const failing = new Test('failing', () => {
       throw new Error('FAIL!');
     });
@@ -226,7 +226,7 @@ describe('Suite', () => {
     });
 
     it('should skip', async () => {
-      const parent = new Suite('parent', true);
+      const parent = new Suite('parent', { skip: true });
 
       const start = jest.fn();
       parent.on('start', start);

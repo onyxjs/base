@@ -33,13 +33,13 @@ describe('Interface', () => {
   it('should create skipped suites', () => {
     const suite = $describe.skip('test 3', noop);
 
-    expect(suite.skip).toBeTruthy();
+    expect(suite.options.skip).toBeTruthy();
   });
 
   it('should create todo suites', () => {
     const suite = $describe.todo('test 3', noop);
 
-    expect(suite.todo).toBeTruthy();
+    expect(suite.options.todo).toBeTruthy();
   });
 
   it('should create tests inside of suites', () => {

@@ -16,6 +16,11 @@ export enum RunnableTypes {
   Test = 'test',
 }
 
+export interface RunnableOptions {
+  skip?: boolean;
+  todo?: boolean;
+}
+
 /**
  * @class
  * @param {String} description
@@ -24,8 +29,7 @@ export enum RunnableTypes {
 export default class Runnable extends EventEmitter {
   public description: string;
   public result: Result;
-  public skip: boolean;
-  public todo: boolean;
+  public options: RunnableOptions;
   public parent: Suite | null;
   public type: RunnableTypes = RunnableTypes.Runnable;
   public [runnableSymbol] = true;
@@ -33,12 +37,11 @@ export default class Runnable extends EventEmitter {
   public time: number = 0;
   private start: number = 0;
 
-  constructor(description: string, skip?: boolean, todo?: boolean, parent?: Suite | null) {
+  constructor(description: string, options: RunnableOptions = {}, parent?: Suite | null) {
     super();
     this.description = description;
     this.result = new Result();
-    this.skip = skip || false;
-    this.todo = todo || false;
+    this.options = options;
     this.parent = parent || null;
   }
 
@@ -89,8 +92,8 @@ export default class Runnable extends EventEmitter {
    */
   // istanbul ignore next unimplemented
   public run(): Result {
-    if (this.skip || this.todo) {
-      return this.doSkip(this.todo);
+    if (this.options.skip || this.options.todo) {
+      return this.doSkip(this.options.todo);
     }
 
     this.doStart();
@@ -105,8 +108,8 @@ export default class Runnable extends EventEmitter {
    */
   // istanbul ignore next unimplemented
   public async asyncRun(): Promise<Result> {
-    if (this.skip || this.todo) {
-      return this.doSkip(this.todo);
+    if (this.options.skip || this.options.todo) {
+      return this.doSkip(this.options.todo);
     }
 
     this.doStart();

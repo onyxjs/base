@@ -34,7 +34,7 @@ describe('Test', () => {
 
   it('should skip', () => {
     const fn = jest.fn();
-    const test = new Test('test', fn, true);
+    const test = new Test('test', fn, { skip: true });
 
     const start = jest.fn();
     test.on('start', start);
@@ -54,7 +54,7 @@ describe('Test', () => {
 
   it('should skip', () => {
     const fn = jest.fn();
-    const test = new Test('test', fn, false, true);
+    const test = new Test('test', fn, { todo: true });
 
     const start = jest.fn();
     test.on('start', start);

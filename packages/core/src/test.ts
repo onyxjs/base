@@ -1,5 +1,5 @@
 import Result from './result';
-import Runnable, { isRunnable, RunnableTypes } from './runnable';
+import Runnable, { isRunnable, RunnableOptions, RunnableTypes } from './runnable';
 import Suite from './suite';
 
 export const isTest = (v: unknown): v is Test => {
@@ -11,8 +11,8 @@ export default class Test extends Runnable {
   public fn: () => void;
   public type = RunnableTypes.Test;
 
-  constructor(description: string, fn: () => void, skip?: boolean, todo?: boolean, parent?: Suite | null) {
-    super(description, skip || false, todo || false, parent);
+  constructor(description: string, fn: () => void, options: RunnableOptions = {}, parent?: Suite | null) {
+    super(description, options, parent);
     this.fn = fn;
   }
 
@@ -22,8 +22,8 @@ export default class Test extends Runnable {
    * @return {Result}
    */
   public run(): Result {
-    if (this.skip || this.todo) {
-      return this.doSkip(this.todo);
+    if (this.options.skip || this.options.todo) {
+      return this.doSkip(this.options.todo);
     }
 
     this.doStart();
@@ -43,8 +43,8 @@ export default class Test extends Runnable {
    * @return {Promise<Result>}
    */
   public async asyncRun(): Promise<Result> {
-    if (this.skip || this.todo) {
-      return this.doSkip(this.todo);
+    if (this.options.skip || this.options.todo) {
+      return this.doSkip(this.options.todo);
     }
 
     this.doStart();

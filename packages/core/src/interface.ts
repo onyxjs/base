@@ -19,7 +19,15 @@ function _it(description: string, fn: () => void, skip = false, todo = false) {
     throw new Error(`"${description}" "it" should not be called outside of "describe" block`);
   }
 
-  const test = new Test(description, fn, skip, todo, currentRoot);
+  const test = new Test(
+    description,
+    fn,
+    {
+      skip,
+      todo,
+    },
+    currentRoot,
+  );
 
   currentRoot.addChildren(test);
   return test;
@@ -38,11 +46,18 @@ it.todo = (description: string, fn: () => void) => _it(description, fn, false, t
 
 // istanbul ignore next internal
 function _describe(description: string, fn: () => void, skip = false, todo = false): Suite {
-  const suite = new Suite(description, skip, todo, currentRoot);
+  const suite = new Suite(
+    description,
+    {
+      skip,
+      todo,
+    },
+    currentRoot,
+  );
 
   currentRoot = suite;
   fn();
-  if (!suite.skip && !suite.todo && suite.children.length <= 0) {
+  if (!suite.options.skip && !suite.options.todo && suite.children.length <= 0) {
     console.warn(`suite "${suite.getFullDescription()}" doesn't have any child tests or suites.`);
   }
   currentRoot = currentRoot.parent || root;
