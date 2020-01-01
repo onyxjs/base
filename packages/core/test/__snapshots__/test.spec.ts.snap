@@ -29,3 +29,10 @@ Result {
   "internalStatus": "skipped",
 }
 `;
+
+exports[`Test should skip 2`] = `
+Result {
+  "internalMessages": Array [],
+  "internalStatus": "todo",
+}
+`;

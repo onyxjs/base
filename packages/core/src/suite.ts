@@ -14,7 +14,8 @@ export interface Stats {
   done: number;
   passed: number;
   failed: number;
-  skipped: number; // TODO: add TODO state
+  skipped: number;
+  todo: number;
   time: number;
 }
 
@@ -23,8 +24,8 @@ export default class Suite extends Runnable {
   public [rootSymbol]?: boolean;
   public type = RunnableTypes.Suite;
 
-  constructor(description: string, skip?: boolean, parent?: Suite | null) {
-    super(description, skip || false, parent);
+  constructor(description: string, skip?: boolean, todo?: boolean, parent?: Suite | null) {
+    super(description, skip || false, todo || false, parent);
     this.children = [];
   }
 
@@ -53,8 +54,8 @@ export default class Suite extends Runnable {
    * @returns {Result}
    */
   public run(): Result {
-    if (this.skip) {
-      return this.doSkip();
+    if (this.skip || this.todo) {
+      return this.doSkip(this.todo);
     }
 
     this.doStart();
@@ -76,8 +77,8 @@ export default class Suite extends Runnable {
    * @returns {Promise<Result>}
    */
   public async asyncRun(): Promise<Result> {
-    if (this.skip) {
-      return this.doSkip();
+    if (this.skip || this.todo) {
+      return this.doSkip(this.todo);
     }
 
     this.doStart();
@@ -120,6 +121,7 @@ export default class Suite extends Runnable {
       running: this.filterChildrenByStatus(Status.Running).length,
       skipped: this.filterChildrenByStatus(Status.Skipped).length,
       time: this.time,
+      todo: this.filterChildrenByStatus(Status.Todo).length,
       total: this.children.length,
     };
   }

@@ -4,6 +4,7 @@ export enum Status {
   Passed = 'passed',
   Failed = 'failed',
   Skipped = 'skipped',
+  Todo = 'todo',
 }
 
 export default class Result {

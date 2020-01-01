@@ -11,8 +11,8 @@ export default class Test extends Runnable {
   public fn: () => void;
   public type = RunnableTypes.Test;
 
-  constructor(description: string, fn: () => void, skip?: boolean, parent?: Suite | null) {
-    super(description, skip || false, parent);
+  constructor(description: string, fn: () => void, skip?: boolean, todo?: boolean, parent?: Suite | null) {
+    super(description, skip || false, todo || false, parent);
     this.fn = fn;
   }
 
@@ -22,8 +22,8 @@ export default class Test extends Runnable {
    * @return {Result}
    */
   public run(): Result {
-    if (this.skip) {
-      return this.doSkip();
+    if (this.skip || this.todo) {
+      return this.doSkip(this.todo);
     }
 
     this.doStart();
@@ -43,8 +43,8 @@ export default class Test extends Runnable {
    * @return {Promise<Result>}
    */
   public async asyncRun(): Promise<Result> {
-    if (this.skip) {
-      return this.doSkip();
+    if (this.skip || this.todo) {
+      return this.doSkip(this.todo);
     }
 
     this.doStart();

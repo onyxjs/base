@@ -1,28 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Suite get stats 1`] = `
+exports[`Suite should collect stats 1`] = `
 Object {
   "done": 0,
   "failed": 0,
   "passed": 0,
-  "pending": 1,
+  "pending": 4,
   "running": 0,
   "skipped": 0,
   "time": Any<Number>,
-  "total": 1,
+  "todo": 0,
+  "total": 4,
 }
 `;
 
-exports[`Suite get stats 2`] = `
+exports[`Suite should collect stats 2`] = `
 Object {
-  "done": 1,
-  "failed": 0,
+  "done": 4,
+  "failed": 1,
   "passed": 1,
   "pending": 0,
   "running": 0,
-  "skipped": 0,
+  "skipped": 1,
   "time": Any<Number>,
-  "total": 1,
+  "todo": 1,
+  "total": 4,
 }
 `;
 

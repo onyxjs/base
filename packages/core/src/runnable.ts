@@ -25,6 +25,7 @@ export default class Runnable extends EventEmitter {
   public description: string;
   public result: Result;
   public skip: boolean;
+  public todo: boolean;
   public parent: Suite | null;
   public type: RunnableTypes = RunnableTypes.Runnable;
   public [runnableSymbol] = true;
@@ -32,11 +33,12 @@ export default class Runnable extends EventEmitter {
   public time: number = 0;
   private start: number = 0;
 
-  constructor(description: string, skip?: boolean, parent?: Suite | null) {
+  constructor(description: string, skip?: boolean, todo?: boolean, parent?: Suite | null) {
     super();
     this.description = description;
     this.result = new Result();
     this.skip = skip || false;
+    this.todo = todo || false;
     this.parent = parent || null;
   }
 
@@ -70,9 +72,9 @@ export default class Runnable extends EventEmitter {
     return this.result;
   }
 
-  public doSkip(): Result { // TODO: add TODO tests support
-    this.result.status = Status.Skipped;
-    this.emit('skip', this);
+  public doSkip(todo: boolean = false): Result {
+    this.result.status = todo ? Status.Todo : Status.Skipped;
+    this.emit('skip', this, todo);
     this.doEnd();
 
     return this.result;
@@ -85,8 +87,8 @@ export default class Runnable extends EventEmitter {
    */
   // istanbul ignore next unimplemented
   public run(): Result {
-    if (this.skip) {
-      return this.doSkip();
+    if (this.skip || this.todo) {
+      return this.doSkip(this.todo);
     }
 
     this.doStart();
@@ -101,8 +103,8 @@ export default class Runnable extends EventEmitter {
    */
   // istanbul ignore next unimplemented
   public async asyncRun(): Promise<Result> {
-    if (this.skip) {
-      return this.doSkip();
+    if (this.skip || this.todo) {
+      return this.doSkip(this.todo);
     }
 
     this.doStart();

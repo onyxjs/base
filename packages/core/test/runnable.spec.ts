@@ -1,7 +1,6 @@
 import { Status } from '../src/result';
 import Runnable from '../src/runnable';
 import Suite, { rootSymbol } from '../src/suite';
-import Test, { isTest } from '../src/test';
 
 describe('Runnable', () => {
   it('should get full description', () => {
@@ -74,11 +73,31 @@ describe('Runnable', () => {
 
       const end = jest.fn();
       runnable.on('end', end);
+      const skip = jest.fn();
+      runnable.on('skip', skip);
 
       runnable.doSkip();
       expect(runnable.result.status).toBe(Status.Skipped);
       expect(fn).toHaveBeenCalledTimes(1);
       expect(end).toHaveBeenCalledTimes(1);
+      expect(skip).toHaveBeenCalledWith(runnable, false);
+    });
+
+    it('skip(todo)', () => {
+      const runnable = new Runnable('runnable');
+      const fn = jest.fn();
+      runnable.on('skip', fn);
+
+      const end = jest.fn();
+      runnable.on('end', end);
+      const skip = jest.fn();
+      runnable.on('skip', skip);
+
+      runnable.doSkip(true);
+      expect(runnable.result.status).toBe(Status.Todo);
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(end).toHaveBeenCalledTimes(1);
+      expect(skip).toHaveBeenCalledWith(runnable, true);
     });
 
     it('end', () => {

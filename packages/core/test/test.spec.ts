@@ -48,6 +48,27 @@ describe('Test', () => {
 
     expect(start).not.toHaveBeenCalled();
     expect(skip).toHaveBeenCalledTimes(1);
+    expect(skip).toHaveBeenCalledWith(test, false);
+    expect(end).toHaveBeenCalledTimes(1);
+  });
+
+  it('should skip', () => {
+    const fn = jest.fn();
+    const test = new Test('test', fn, false, true);
+
+    const start = jest.fn();
+    test.on('start', start);
+    const skip = jest.fn();
+    test.on('skip', skip);
+    const end = jest.fn();
+    test.on('end', end);
+
+    expect(test.run()).toMatchSnapshot();
+    expect(fn).toHaveBeenCalledTimes(0);
+
+    expect(start).not.toHaveBeenCalled();
+    expect(skip).toHaveBeenCalledTimes(1);
+    expect(skip).toHaveBeenCalledWith(test, true);
     expect(end).toHaveBeenCalledTimes(1);
   });
 

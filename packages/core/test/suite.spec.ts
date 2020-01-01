@@ -38,6 +38,24 @@ describe('Suite', () => {
 
     expect(start).toHaveBeenCalledTimes(0);
     expect(skip).toHaveBeenCalledTimes(1);
+    expect(skip).toHaveBeenCalledWith(suite, false);
+    expect(end).toHaveBeenCalledTimes(1);
+  });
+
+  it('should work with todo option', () => {
+    const suite = new Suite('parent', false, true);
+
+    const start = jest.fn();
+    suite.on('start', start);
+    const skip = jest.fn();
+    suite.on('skip', skip);
+    const end = jest.fn();
+    suite.on('end', end);
+    suite.run();
+
+    expect(start).toHaveBeenCalledTimes(0);
+    expect(skip).toHaveBeenCalledTimes(1);
+    expect(skip).toHaveBeenCalledWith(suite, true);
     expect(end).toHaveBeenCalledTimes(1);
   });
 
@@ -138,10 +156,18 @@ describe('Suite', () => {
     expect(parent.filterChildrenByStatus(Status.Pending)).toHaveLength(0);
   });
 
-  it('get stats', () => {
-    const child = new Suite('child');
+  it('should collect stats', () => {
+    const passing = new Suite('passing');
+    const skipped = new Suite('skipped', true);
+    const todo = new Suite('todo', false, true);
+    const failing = new Test('failing', () => {
+      throw new Error('FAIL!');
+    });
     const parent = new Suite('parent');
-    parent.addChild(child);
+    parent.addChild(passing);
+    parent.addChild(skipped);
+    parent.addChild(todo);
+    parent.addChild(failing);
 
     expect(parent.getStats()).toMatchSnapshot({
       time: expect.any(Number),

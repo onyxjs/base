@@ -36,6 +36,12 @@ describe('Interface', () => {
     expect(suite.skip).toBeTruthy();
   });
 
+  it('should create todo suites', () => {
+    const suite = $describe.todo('test 3', noop);
+
+    expect(suite.todo).toBeTruthy();
+  });
+
   it('should create tests inside of suites', () => {
     const suite = $describe.skip('test 4', () => {
       $it('child 1', noop);
@@ -48,6 +54,14 @@ describe('Interface', () => {
   it('should create skipped tests inside of suites', () => {
     const suite = $describe.skip('test 5', () => {
       $it.skip('child 1', noop);
+    });
+
+    expect(suite.children[0]).toMatchSnapshot();
+  });
+
+  it('should create todo tests inside of suites', () => {
+    const suite = $describe.skip('test 5', () => {
+      $it.todo('child 1', noop);
     });
 
     expect(suite.children[0]).toMatchSnapshot();
