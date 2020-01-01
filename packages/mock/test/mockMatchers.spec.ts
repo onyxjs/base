@@ -124,4 +124,25 @@ describe('Mock function matchers', () => {
       expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 6)).not.toThrow();
       expect(() => $expect(mockFn).toHaveNthReturnedWith(2, 6)).toThrow();
     });
+
+  it('toHaveReturnedTimes', () => {
+      expect(() => $expect({}).toHaveReturnedTimes(1)).toThrow(TypeError);
+
+      const mockFn = mock((a: any, b: any) => a + b);
+
+      expect(() => $expect(mockFn).toHaveReturnedTimes(0)).not.toThrow();
+
+      mockFn(1, 5);
+      expect(() => $expect(mockFn).toHaveReturnedTimes(1)).not.toThrow();
+      expect(() => $expect(mockFn).toHaveReturnedTimes(0)).toThrow();
+
+      mockFn(2, 3);
+      expect(() => $expect(mockFn).toHaveReturnedTimes(2)).not.toThrow();
+      expect(() => $expect(mockFn).toHaveReturnedTimes(1)).toThrow();
+
+      mockFn.reset();
+      mockFn(1, 1);
+      expect(() => $expect(mockFn).toHaveReturnedTimes(1)).not.toThrow();
+      expect(() => $expect(mockFn).toHaveReturnedTimes(0)).toThrow();
+    });
 });

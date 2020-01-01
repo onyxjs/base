@@ -87,6 +87,13 @@ const extension = {
     return isEqual(nthReturn, returnValue);
   },
 
+  toHaveReturnedTimes: (m: unknown, times: number): boolean => {
+    if (!isMock(m)) {
+      throw new TypeError('expected value is not a mock function');
+    }
+
+    return m.returns.length === times;
+  },
 };
 
 type Extension = typeof extension;
