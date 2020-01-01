@@ -52,6 +52,14 @@ const extension = {
     return isEqual(nthCall.slice(0, args.length), args);
   },
 
+  toHaveReturned: (m: unknown): boolean => {
+    if (!isMock(m)) {
+      throw new TypeError('expected value is not a mock function');
+    }
+
+    return m.returns.length > 0;
+  },
+
   toHaveReturnedWith: (m: unknown, ...args: any[]): boolean => {
     if (!isMock(m)) {
       throw new TypeError('expected value is not a mock function');
@@ -92,7 +100,7 @@ const extension = {
       throw new TypeError('expected value is not a mock function');
     }
 
-    return m.returns.length === times;
+    return isEqual(m.returns.length, times);
   },
 };
 
