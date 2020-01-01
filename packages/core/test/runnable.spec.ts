@@ -81,6 +81,7 @@ describe('Runnable', () => {
       expect(fn).toHaveBeenCalledTimes(1);
       expect(end).toHaveBeenCalledTimes(1);
       expect(skip).toHaveBeenCalledWith(runnable, false);
+      expect(runnable.time).toBe(0);
     });
 
     it('skip(todo)', () => {
@@ -98,6 +99,7 @@ describe('Runnable', () => {
       expect(fn).toHaveBeenCalledTimes(1);
       expect(end).toHaveBeenCalledTimes(1);
       expect(skip).toHaveBeenCalledWith(runnable, true);
+      expect(runnable.time).toBe(0);
     });
 
     it('end', () => {

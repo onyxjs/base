@@ -49,7 +49,9 @@ export default class Runnable extends EventEmitter {
   }
 
   public doEnd(): void {
-    this.time = performance.now() - this.start;
+    if (this.result.status !== Status.Skipped && this.result.status !== Status.Todo) {
+      this.time = performance.now() - this.start;
+    }
     this.emit('end', this, this.time);
   }
 
