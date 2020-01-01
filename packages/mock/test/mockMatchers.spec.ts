@@ -102,4 +102,26 @@ describe('Mock function matchers', () => {
       expect(() => $expect(mockFn).toHaveLastReturnedWith('hello world')).not.toThrow();
       expect(() => $expect(mockFn).toHaveLastReturnedWith(5)).toThrow();
     });
+
+  it('toHaveNthReturnedWith', () => {
+      expect(() => $expect({}).toHaveNthReturnedWith(1, 1)).toThrow(TypeError);
+
+      const mockFn = mock((a: any, b: any) => a + b);
+
+      expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 1)).toThrow();
+      expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 'string')).toThrow();
+
+      mockFn('hello ', 'world');
+      expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 'hello world')).not.toThrow();
+      expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 'world')).toThrow();
+
+      mockFn(1, 5);
+      expect(() => $expect(mockFn).toHaveNthReturnedWith(2, 6)).not.toThrow();
+      expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 1)).toThrow();
+
+      mockFn.reset();
+      mockFn(1, 5);
+      expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 6)).not.toThrow();
+      expect(() => $expect(mockFn).toHaveNthReturnedWith(2, 6)).toThrow();
+    });
 });

@@ -73,6 +73,20 @@ const extension = {
     return isEqual(lastReturned, returnValue);
   },
 
+  toHaveNthReturnedWith: (m: unknown, n: number, returnValue: any): boolean => {
+    if (!isMock(m)) {
+      throw new TypeError('expected value is not a mock function');
+    }
+
+    n--;
+    if (n < 0 || n >= m.returns.length) {
+      return false;
+    }
+
+    const nthReturn = m.returns[n];
+    return isEqual(nthReturn, returnValue);
+  },
+
 };
 
 type Extension = typeof extension;
