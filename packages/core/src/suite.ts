@@ -101,15 +101,6 @@ export default class Suite extends Runnable {
   }
 
   /**
-   * @description Returns all of the `Suite` children with matching status:
-   * @public
-   * @returns {Runnable[]}
-   */
-  public filterChildrenByStatus(status: Status): Runnable[] {
-    return this.children.filter((c) => c.result.status === status);
-  }
-
-  /**
    * @description Returns `Suite` stats in a `Stats` object
    * @public
    * @returns {Stats}
@@ -117,13 +108,13 @@ export default class Suite extends Runnable {
   public getStats(): Stats {
     return {
       done: this.children.filter((c) => c.result.isDone()).length,
-      failed: this.filterChildrenByStatus(Status.Failed).length,
-      passed: this.filterChildrenByStatus(Status.Passed).length,
-      pending: this.filterChildrenByStatus(Status.Pending).length,
-      running: this.filterChildrenByStatus(Status.Running).length,
-      skipped: this.filterChildrenByStatus(Status.Skipped).length,
+      failed: this.children.filter((c) => c.result.status === Status.Failed).length,
+      passed: this.children.filter((c) => c.result.status === Status.Passed).length,
+      pending: this.children.filter((c) => c.result.status === Status.Pending).length,
+      running: this.children.filter((c) => c.result.status === Status.Running).length,
+      skipped: this.children.filter((c) => c.result.status === Status.Skipped).length,
       time: this.time,
-      todo: this.filterChildrenByStatus(Status.Todo).length,
+      todo: this.children.filter((c) => c.result.status === Status.Todo).length,
       total: this.children.length,
     };
   }

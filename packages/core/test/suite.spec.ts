@@ -143,20 +143,6 @@ describe('Suite', () => {
     expect(isSuite(new Suite('a suite'))).toBeTruthy();
   });
 
-  it('filter children by status', () => {
-    const child = new Suite('child');
-    const parent = new Suite('parent');
-    parent.addChildren(child);
-
-    expect(parent.filterChildrenByStatus(Status.Skipped)).toHaveLength(0);
-    expect(parent.filterChildrenByStatus(Status.Pending)).toHaveLength(1);
-
-    parent.run();
-
-    expect(parent.filterChildrenByStatus(Status.Passed)).toHaveLength(1);
-    expect(parent.filterChildrenByStatus(Status.Pending)).toHaveLength(0);
-  });
-
   it('should collect stats', () => {
     const passing = new Suite('passing');
     const skipped = new Suite('skipped', { skip: true });
