@@ -5,26 +5,26 @@ Object {
   "done": 0,
   "failed": 0,
   "passed": 0,
-  "pending": 4,
+  "pending": 2,
   "running": 0,
   "skipped": 0,
   "time": Any<Number>,
   "todo": 0,
-  "total": 4,
+  "total": 2,
 }
 `;
 
 exports[`Suite should collect stats 2`] = `
 Object {
-  "done": 4,
+  "done": 2,
   "failed": 1,
   "passed": 1,
   "pending": 0,
   "running": 0,
-  "skipped": 1,
+  "skipped": 0,
   "time": Any<Number>,
-  "todo": 1,
-  "total": 4,
+  "todo": 0,
+  "total": 2,
 }
 `;
 

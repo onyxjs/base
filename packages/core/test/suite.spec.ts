@@ -145,6 +145,9 @@ describe('Suite', () => {
 
   it('should collect stats', () => {
     const passing = new Suite('passing');
+    passing.addChildren(
+      new Test('passing test', () => null),
+    );
     const skipped = new Suite('skipped', { skip: true });
     const todo = new Suite('todo', { todo: true });
     const failing = new Test('failing', () => {

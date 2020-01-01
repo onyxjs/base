@@ -1,5 +1,6 @@
 import Result, { Status } from './result';
 import Runnable, { isRunnable, RunnableOptions, RunnableTypes } from './runnable';
+import Test, { isTest } from './test';
 
 export const isSuite = (v: unknown): v is Suite => {
   if (!isRunnable(v)) { return false; }
@@ -107,15 +108,28 @@ export default class Suite extends Runnable {
    */
   public getStats(): Stats {
     return {
-      done: this.children.filter((c) => c.result.isDone()).length,
-      failed: this.children.filter((c) => c.result.status === Status.Failed).length,
-      passed: this.children.filter((c) => c.result.status === Status.Passed).length,
-      pending: this.children.filter((c) => c.result.status === Status.Pending).length,
-      running: this.children.filter((c) => c.result.status === Status.Running).length,
-      skipped: this.children.filter((c) => c.result.status === Status.Skipped).length,
+      done: this.flatten(this.children).filter((c) => c.result.isDone()).length,
+      failed: this.flatten(this.children).filter((c) => c.result.status === Status.Failed).length,
+      passed: this.flatten(this.children).filter((c) => c.result.status === Status.Passed).length,
+      pending: this.flatten(this.children).filter((c) => c.result.status === Status.Pending).length,
+      running: this.flatten(this.children).filter((c) => c.result.status === Status.Running).length,
+      skipped: this.flatten(this.children).filter((c) => c.result.status === Status.Skipped).length,
       time: this.time,
-      todo: this.children.filter((c) => c.result.status === Status.Todo).length,
-      total: this.children.length,
+      todo: this.flatten(this.children).filter((c) => c.result.status === Status.Todo).length,
+      total: this.flatten(this.children).length,
     };
+  }
+
+  private flatten(array: Runnable[]): Test[] {
+    const flatTree: Test[] = [];
+    for (const child of array) {
+      if (isTest(child)) {
+        flatTree.push(child);
+      } else if (isSuite(child)) {
+        flatTree.push(...this.flatten(child.children));
+      }
+    }
+
+    return flatTree;
   }
 }
