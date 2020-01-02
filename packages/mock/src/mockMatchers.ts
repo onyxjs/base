@@ -60,12 +60,16 @@ const extension = {
     return m.returns.length > 0;
   },
 
-  toHaveReturnedWith: (m: unknown, ...args: any[]): boolean => {
+  toHaveReturnedWith: (m: unknown, returnValue: any): boolean => {
     if (!isMock(m)) {
       throw new TypeError('expected value is not a mock function');
     }
 
-    return m.returns.length > 0;
+    if (!m.returns.length) {
+      return false;
+    }
+
+    return isEqual(m.returns[0], returnValue);
   },
 
   toHaveLastReturnedWith: (m: unknown, returnValue: any): boolean => {

@@ -89,12 +89,13 @@ describe('Mock function matchers', () => {
   });
 
   it('toHaveReturnedWith', () => {
-      expect(() => $expect({}).toHaveReturnedWith()).toThrow(TypeError);
+      expect(() => $expect({}).toHaveReturnedWith(1)).toThrow(TypeError);
 
       const mockFn = mock((a: any, b: any) => a + b);
 
       mockFn(1, 2);
-      expect(() => $expect(mockFn).toHaveReturnedWith()).not.toThrow();
+      expect(() => $expect(mockFn).toHaveReturnedWith(3)).not.toThrow();
+      expect(() => $expect(mockFn).toHaveReturnedWith(1)).toThrow();
     });
 
   it('toHaveLastReturnedWith', () => {
