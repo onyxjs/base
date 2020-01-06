@@ -126,11 +126,7 @@ const extension = {
       }
     });
 
-    if (count === times) {
-      return true;
-    }
-
-    return false;
+    return isEqual(count, times);
   },
 };
 
