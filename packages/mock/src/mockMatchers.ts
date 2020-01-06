@@ -1,5 +1,6 @@
 import { extendMatchers } from '@onyx/matchers/src';
 import isEqual from 'lodash.isequal';
+import { mock } from '.';
 import { isMock } from './mock';
 
 const extension = {
@@ -57,6 +58,10 @@ const extension = {
       throw new TypeError('expected value is not a mock function');
     }
 
+    if (m.errors.length > 0) {
+      return false;
+    }
+
     return m.returns.length > 0;
   },
 
@@ -103,8 +108,29 @@ const extension = {
     if (!isMock(m)) {
       throw new TypeError('expected value is not a mock function');
     }
+    const returns = m.returns.filter((v) => v).length;
 
-    return isEqual(m.returns.length, times);
+    return isEqual(returns, times);
+  },
+
+  toHaveReturnedTimesWith: (m: unknown, times: number, value: any): boolean => {
+    if (!isMock(m)) {
+      throw new TypeError('expected value is not a mock function');
+    }
+
+    let count = 0;
+
+    m.returns.filter((v) => {
+      if (v === value) {
+        count++;
+      }
+    });
+
+    if (count === times) {
+      return true;
+    }
+
+    return false;
   },
 };
 

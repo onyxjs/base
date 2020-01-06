@@ -89,72 +89,90 @@ describe('Mock function matchers', () => {
   });
 
   it('toHaveReturnedWith', () => {
-      expect(() => $expect({}).toHaveReturnedWith(1)).toThrow(TypeError);
+    expect(() => $expect({}).toHaveReturnedWith(1)).toThrow(TypeError);
 
-      const mockFn = mock((a: any, b: any) => a + b);
+    const mockFn = mock((a: any, b: any) => a + b);
 
-      mockFn(1, 2);
-      expect(() => $expect(mockFn).toHaveReturnedWith(3)).not.toThrow();
-      expect(() => $expect(mockFn).toHaveReturnedWith(1)).toThrow();
-    });
+    mockFn(1, 2);
+    expect(() => $expect(mockFn).toHaveReturnedWith(3)).not.toThrow();
+    expect(() => $expect(mockFn).toHaveReturnedWith(1)).toThrow();
+  });
 
   it('toHaveLastReturnedWith', () => {
-      expect(() => $expect({}).toHaveLastReturnedWith(2)).toThrow(TypeError);
+    expect(() => $expect({}).toHaveLastReturnedWith(2)).toThrow(TypeError);
 
-      const mockFn = mock((a: any, b: any) => a + b);
+    const mockFn = mock((a: any, b: any) => a + b);
 
-      expect(() => $expect(mockFn).toHaveLastReturnedWith('string')).toThrow();
-      expect(() => $expect(mockFn).toHaveLastReturnedWith(1)).toThrow();
+    expect(() => $expect(mockFn).toHaveLastReturnedWith('string')).toThrow();
+    expect(() => $expect(mockFn).toHaveLastReturnedWith(1)).toThrow();
 
-      mockFn(1, 2);
-      expect(() => $expect(mockFn).toHaveLastReturnedWith(3)).not.toThrow();
-      expect(() => $expect(mockFn).toHaveLastReturnedWith(1)).toThrow();
+    mockFn(1, 2);
+    expect(() => $expect(mockFn).toHaveLastReturnedWith(3)).not.toThrow();
+    expect(() => $expect(mockFn).toHaveLastReturnedWith(1)).toThrow();
 
-      mockFn('hello ', 'world');
-      expect(() => $expect(mockFn).toHaveLastReturnedWith('hello world')).not.toThrow();
-      expect(() => $expect(mockFn).toHaveLastReturnedWith(5)).toThrow();
-    });
+    mockFn('hello ', 'world');
+    expect(() => $expect(mockFn).toHaveLastReturnedWith('hello world')).not.toThrow();
+    expect(() => $expect(mockFn).toHaveLastReturnedWith(5)).toThrow();
+  });
 
   it('toHaveNthReturnedWith', () => {
-      expect(() => $expect({}).toHaveNthReturnedWith(1, 1)).toThrow(TypeError);
+    expect(() => $expect({}).toHaveNthReturnedWith(1, 1)).toThrow(TypeError);
 
-      const mockFn = mock((a: any, b: any) => a + b);
+    const mockFn = mock((a: any, b: any) => a + b);
 
-      expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 1)).toThrow();
-      expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 'string')).toThrow();
+    expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 1)).toThrow();
+    expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 'string')).toThrow();
 
-      mockFn('hello ', 'world');
-      expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 'hello world')).not.toThrow();
-      expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 'world')).toThrow();
+    mockFn('hello ', 'world');
+    expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 'hello world')).not.toThrow();
+    expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 'world')).toThrow();
 
-      mockFn(1, 5);
-      expect(() => $expect(mockFn).toHaveNthReturnedWith(2, 6)).not.toThrow();
-      expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 1)).toThrow();
+    mockFn(1, 5);
+    expect(() => $expect(mockFn).toHaveNthReturnedWith(2, 6)).not.toThrow();
+    expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 1)).toThrow();
 
-      mockFn.reset();
-      mockFn(1, 5);
-      expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 6)).not.toThrow();
-      expect(() => $expect(mockFn).toHaveNthReturnedWith(2, 6)).toThrow();
-    });
+    mockFn.reset();
+    mockFn(1, 5);
+    expect(() => $expect(mockFn).toHaveNthReturnedWith(1, 6)).not.toThrow();
+    expect(() => $expect(mockFn).toHaveNthReturnedWith(2, 6)).toThrow();
+  });
 
   it('toHaveReturnedTimes', () => {
-      expect(() => $expect({}).toHaveReturnedTimes(1)).toThrow(TypeError);
+    expect(() => $expect({}).toHaveReturnedTimes(1)).toThrow(TypeError);
 
-      const mockFn = mock((a: any, b: any) => a + b);
+    const mockFn = mock((a: any, b: any) => a + b);
 
-      expect(() => $expect(mockFn).toHaveReturnedTimes(0)).not.toThrow();
+    expect(() => $expect(mockFn).toHaveReturnedTimes(0)).not.toThrow();
 
-      mockFn(1, 5);
-      expect(() => $expect(mockFn).toHaveReturnedTimes(1)).not.toThrow();
-      expect(() => $expect(mockFn).toHaveReturnedTimes(0)).toThrow();
+    mockFn(1, 5);
+    expect(() => $expect(mockFn).toHaveReturnedTimes(1)).not.toThrow();
+    expect(() => $expect(mockFn).toHaveReturnedTimes(0)).toThrow();
 
-      mockFn(2, 3);
-      expect(() => $expect(mockFn).toHaveReturnedTimes(2)).not.toThrow();
-      expect(() => $expect(mockFn).toHaveReturnedTimes(1)).toThrow();
+    mockFn(2, 3);
+    expect(() => $expect(mockFn).toHaveReturnedTimes(2)).not.toThrow();
+    expect(() => $expect(mockFn).toHaveReturnedTimes(1)).toThrow();
 
-      mockFn.reset();
-      mockFn(1, 1);
-      expect(() => $expect(mockFn).toHaveReturnedTimes(1)).not.toThrow();
-      expect(() => $expect(mockFn).toHaveReturnedTimes(0)).toThrow();
-    });
+    mockFn.reset();
+    mockFn(1, 1);
+    expect(() => $expect(mockFn).toHaveReturnedTimes(1)).not.toThrow();
+    expect(() => $expect(mockFn).toHaveReturnedTimes(0)).toThrow();
+  });
+
+  it('toHaveReturnedTimesWith', () => {
+    expect(() => $expect({}).toHaveReturnedTimesWith(1, 1)).toThrow(TypeError);
+
+    const mockFn = mock((a: any) => a.length);
+
+    expect(() => $expect(mockFn).toHaveReturnedTimesWith(1, 1)).toThrow();
+
+    mockFn('string');
+    expect(() => $expect(mockFn).toHaveReturnedTimesWith(1, 6)).not.toThrow();
+
+    mockFn('string');
+    expect(() => $expect(mockFn).toHaveReturnedTimesWith(1, 6)).toThrow();
+    expect(() => $expect(mockFn).toHaveReturnedTimesWith(2, 6)).not.toThrow();
+
+    mockFn.reset();
+    expect(() => $expect(mockFn).toHaveReturnedTimesWith(2, 6)).toThrow();
+  });
 });
