@@ -58,11 +58,7 @@ const extension = {
       throw new TypeError('expected value is not a mock function');
     }
 
-    if (m.errors.length > 0) {
-      return false;
-    }
-
-    return m.returns.length > 0;
+    return m.errors.length <= 0;
   },
 
   toHaveReturnedWith: (m: unknown, returnValue: any): boolean => {
