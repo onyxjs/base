@@ -81,21 +81,38 @@ describe('Mock function matchers', () => {
     expect(() => $expect({}).toHaveReturned()).toThrow(TypeError);
 
     const mockFn = mock((a: any, b: any) => a + b);
-
-    expect(() => $expect(mockFn).toHaveReturned()).toThrow();
+    const mockErr = mock(() => { throw new Error(); });
 
     mockFn(1, 2);
     expect(() => $expect(mockFn).toHaveReturned()).not.toThrow();
+    expect(() => $expect(mockFn).toHaveReturned()).toBeTruthy();
+
+    try {
+      mockErr();
+    } catch {
+      //
+    }
+
+    expect(() => $expect(mockErr).toHaveReturned()).toThrow();
   });
 
   it('toHaveReturnedWith', () => {
     expect(() => $expect({}).toHaveReturnedWith(1)).toThrow(TypeError);
 
     const mockFn = mock((a: any, b: any) => a + b);
+    const mockErr = mock(() => { throw new Error(); });
 
     mockFn(1, 2);
     expect(() => $expect(mockFn).toHaveReturnedWith(3)).not.toThrow();
     expect(() => $expect(mockFn).toHaveReturnedWith(1)).toThrow();
+
+    try {
+      mockErr();
+    } catch {
+      //
+    }
+
+    expect(() => $expect(mockErr).toHaveReturnedWith(typeof Error)).toThrow();
   });
 
   it('toHaveLastReturnedWith', () => {
@@ -171,6 +188,7 @@ describe('Mock function matchers', () => {
     mockFn('string');
     expect(() => $expect(mockFn).toHaveReturnedTimesWith(1, 6)).toThrow();
     expect(() => $expect(mockFn).toHaveReturnedTimesWith(2, 6)).not.toThrow();
+    expect(() => $expect(mockFn).toHaveReturnedTimesWith(2, 3)).toThrow();
 
     mockFn.reset();
     expect(() => $expect(mockFn).toHaveReturnedTimesWith(2, 6)).toThrow();

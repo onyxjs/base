@@ -50,11 +50,13 @@ describe('Mock function', () => {
     const mockFn = mock(() => { throw new Error(); });
 
     expect(mockFn.errors).toEqual([]);
+
     try {
       mockFn();
     } catch {
       // no-op
     }
+
     expect(mockFn.errors).toHaveLength(1);
   });
 });
