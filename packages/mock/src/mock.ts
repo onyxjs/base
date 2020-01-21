@@ -12,24 +12,17 @@ export interface Mock extends Function {
 // tslint:disable-next-line:ban-types
 export default function mock(fn: Function, cb?: (args: any[], result: any) => any): Mock {
   const instance = ((...args: any[]) => {
-    try {
-      const result = fn(...args);
-      if (cb) { cb(args, result); }
-      instance.calls.push(args);
-      instance.returns.push(result);
-      return result;
-    } catch (e) {
-      instance.errors.push(e);
-      throw e;
-    }
+    const result = fn(...args);
+    if (cb) { cb(args, result); }
+    instance.calls.push(args);
+    instance.returns.push(result);
+    return result;
   }) as unknown as Mock;
   instance.calls = [] as any[][];
   instance.returns = [] as any[];
-  instance.errors = [] as any[];
   instance.reset = () => {
     instance.calls = [];
     instance.returns = [];
-    instance.errors = [];
   };
   instance[mockSymbol] = true;
 
