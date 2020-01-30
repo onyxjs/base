@@ -28,5 +28,9 @@
     "ts-loader": "^6.0.4",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "lodash.isequal": "^4.5.0",
+    "@onyx/matchers": "*"
   }
 }

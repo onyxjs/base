@@ -20,5 +20,7 @@ describe('toThrow', () => {
     expect(toThrow(throwingFn2, DemoError)).toBeTruthy();
     expect(toThrow(throwingFn2, 'demo')).toBeFalsy();
     expect(toThrow(throwingFn2, TypeError)).toBeFalsy();
+    expect(toThrow(throwingFn)).toBeTruthy();
+    expect(toThrow(() => null)).toBeFalsy();
   });
 });

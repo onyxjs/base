@@ -12,8 +12,9 @@ export interface Mock extends Function {
 // tslint:disable-next-line:ban-types
 export default function mock(fn: Function, cb?: (args: any[], result: any) => any): Mock {
   const instance = ((...args: any[]) => {
+    const result = fn(...args);
+
     try {
-      const result = fn(...args);
       if (cb) { cb(args, result); }
       instance.calls.push(args);
       instance.returns.push(result);
@@ -25,7 +26,7 @@ export default function mock(fn: Function, cb?: (args: any[], result: any) => an
   }) as unknown as Mock;
   instance.calls = [] as any[][];
   instance.returns = [] as any[];
-  instance.errors = [] as any[];
+  instance.errors = [] as Error[];
   instance.reset = () => {
     instance.calls = [];
     instance.returns = [];
