@@ -1,7 +1,7 @@
 import Suite, { isSuite, rootSymbol } from './suite';
 import Test from './test';
 
-const root = new Suite('root');
+const root = new Suite('root', { bail: false, skip: false, todo: false }, null);
 root[rootSymbol] = true;
 let currentRoot: Suite = root;
 
