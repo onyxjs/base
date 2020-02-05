@@ -12,9 +12,8 @@ export interface Mock extends Function {
 // tslint:disable-next-line:ban-types
 export default function mock(fn: Function, cb?: (args: any[], result: any) => any): Mock {
   const instance = ((...args: any[]) => {
-    const result = fn(...args);
-
     try {
+      const result = fn(...args);
       if (cb) { cb(args, result); }
       instance.calls.push(args);
       instance.returns.push(result);

@@ -50,15 +50,24 @@ describe('Mock function', () => {
 
   it('should throw an error', () => {
     const mockErr = mock(() => {
-      throw new Error();
+      throw Error();
     });
 
+    const fn = (a: any, b: number) => {
+      if (typeof a !== typeof b) { throw Error(); }
+
+      return a + b;
+    };
+
+    const mockFn = mock(fn);
+
     try {
-      mockErr();
+      mockFn('string', 1);
     } catch {
       // no-op
     }
 
+    expect(mockFn.errors).toHaveLength(1);
     expect(mockErr).toThrow();
   });
 });
