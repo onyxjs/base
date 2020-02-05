@@ -50,7 +50,7 @@ export default class Runnable extends EventEmitter {
     this.description = description;
     this.result = new Result();
     this.options = Runnable.normalizeOptions(options);
-    this.parent = parent || null;
+    this.parent = parent;
   }
 
   public doStart(): void {

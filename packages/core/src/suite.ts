@@ -30,7 +30,7 @@ export default class Suite extends Runnable {
   public type = RunnableTypes.Suite;
   public options: SuiteOptions;
 
-  constructor(description: string, options: Partial<SuiteOptions> = {}, parent?: Suite | null) {
+  constructor(description: string, options: Partial<SuiteOptions> = {}, parent: Suite | null) {
     super(description, options, parent);
     this.options = {
       bail: false,

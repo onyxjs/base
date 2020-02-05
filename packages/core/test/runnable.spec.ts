@@ -4,16 +4,17 @@ import Suite, { rootSymbol } from '../src/suite';
 
 describe('Runnable', () => {
   const defaultOpts = { skip: false, todo: false };
+  const defaultSuiteOpts = { bail: false, skip: false, todo: false };
 
   it('should get full description', () => {
-    const parent = new Suite('parent');
+    const parent = new Suite('parent', defaultSuiteOpts, null);
     const child = new Runnable('child', defaultOpts, parent);
 
     expect(child.getFullDescription()).toBe('parent -> child');
   });
 
   it('should ignore root in full description', () => {
-    const parent = new Suite('parent');
+    const parent = new Suite('parent', defaultSuiteOpts, null);
     parent[rootSymbol] = true;
     const child = new Runnable('child', defaultOpts, parent);
 
