@@ -45,7 +45,7 @@ export default class Runnable extends EventEmitter {
   public time: number = 0;
   private start: number = 0;
 
-  constructor(description: string, options: Partial<RunnableOptions> = {}, parent?: Suite | null) {
+  constructor(description: string, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
     super();
     this.description = description;
     this.result = new Result();

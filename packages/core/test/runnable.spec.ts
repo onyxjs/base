@@ -3,10 +3,11 @@ import Runnable from '../src/runnable';
 import Suite, { rootSymbol } from '../src/suite';
 
 describe('Runnable', () => {
+  const opts = { todo: false, skip: false };
+
   it('should get full description', () => {
     const parent = new Suite('parent');
-    const child = new Runnable('child');
-    child.parent = parent;
+    const child = new Runnable('child', opts, parent);
 
     expect(child.getFullDescription()).toBe('parent -> child');
   });
@@ -14,21 +15,20 @@ describe('Runnable', () => {
   it('should ignore root in full description', () => {
     const parent = new Suite('parent');
     parent[rootSymbol] = true;
-    const child = new Runnable('child');
-    child.parent = parent;
+    const child = new Runnable('child', opts, parent);
 
     expect(child.getFullDescription()).toBe('child');
   });
 
   it('should run asynchronously', async () => {
-    const runnable = new Runnable('runnable');
+    const runnable = new Runnable('runnable', opts, null);
 
     expect((await runnable.asyncRun()).status).toBe(Status.Skipped);
   });
 
   describe('events', () => {
     it('start', () => {
-      const runnable = new Runnable('runnable');
+      const runnable = new Runnable('runnable', opts, null);
 
       const fn = jest.fn();
       runnable.on('start', fn);
@@ -39,7 +39,7 @@ describe('Runnable', () => {
     });
 
     it('pass', () => {
-      const runnable = new Runnable('runnable');
+      const runnable = new Runnable('runnable', opts, null);
       const fn = jest.fn();
       runnable.on('pass', fn);
 
@@ -53,7 +53,7 @@ describe('Runnable', () => {
     });
 
     it('fail', () => {
-      const runnable = new Runnable('runnable');
+      const runnable = new Runnable('runnable', opts, null);
       const fn = jest.fn();
       runnable.on('fail', fn);
 
@@ -67,7 +67,7 @@ describe('Runnable', () => {
     });
 
     it('skip', () => {
-      const runnable = new Runnable('runnable');
+      const runnable = new Runnable('runnable', opts, null);
       const fn = jest.fn();
       runnable.on('skip', fn);
 
@@ -85,7 +85,7 @@ describe('Runnable', () => {
     });
 
     it('skip(todo)', () => {
-      const runnable = new Runnable('runnable');
+      const runnable = new Runnable('runnable', opts, null);
       const fn = jest.fn();
       runnable.on('skip', fn);
 
@@ -103,7 +103,7 @@ describe('Runnable', () => {
     });
 
     it('end', () => {
-      const runnable = new Runnable('runnable');
+      const runnable = new Runnable('runnable', opts, null);
       const end = jest.fn();
       runnable.on('end', end);
 
