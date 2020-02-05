@@ -34,7 +34,7 @@ Suite {
     "skip": false,
     "todo": false,
   },
-  "parent": undefined,
+  "parent": null,
   "result": Result {
     "internalMessages": Array [],
     "internalStatus": "pending",
@@ -84,7 +84,7 @@ Test {
         "skip": false,
         "todo": false,
       },
-      "parent": undefined,
+      "parent": null,
       "result": Result {
         "internalMessages": Array [],
         "internalStatus": "pending",
@@ -140,7 +140,7 @@ Suite {
       "skip": false,
       "todo": false,
     },
-    "parent": undefined,
+    "parent": null,
     "result": Result {
       "internalMessages": Array [],
       "internalStatus": "pending",
@@ -199,7 +199,7 @@ Test {
         "skip": false,
         "todo": false,
       },
-      "parent": undefined,
+      "parent": null,
       "result": Result {
         "internalMessages": Array [],
         "internalStatus": "pending",
@@ -267,7 +267,7 @@ Test {
         "skip": false,
         "todo": false,
       },
-      "parent": undefined,
+      "parent": null,
       "result": Result {
         "internalMessages": Array [],
         "internalStatus": "pending",
@@ -621,7 +621,7 @@ Suite {
     "skip": false,
     "todo": false,
   },
-  "parent": undefined,
+  "parent": null,
   "result": Result {
     "internalMessages": Array [],
     "internalStatus": "pending",
