@@ -3,9 +3,11 @@ import Suite from '../src/suite';
 import Test, { isTest } from '../src/test';
 
 describe('Test', () => {
+  const defaultOpts = { skip: false, todo: false };
+
   it('should run', () => {
     const fn = jest.fn();
-    const test = new Test('test', fn);
+    const test = new Test('test', fn, defaultOpts, null);
 
     const start = jest.fn();
     test.on('start', start);
@@ -25,7 +27,7 @@ describe('Test', () => {
   });
 
   it('should return isDone', () => {
-    const test = new Test('test', () => null);
+    const test = new Test('test', () => null, defaultOpts, null);
 
     expect(test.isDone()).toBeFalsy();
     test.run();
@@ -33,8 +35,9 @@ describe('Test', () => {
   });
 
   it('should skip', () => {
+    const opts = { skip: true, todo: false };
     const fn = jest.fn();
-    const test = new Test('test', fn, { skip: true });
+    const test = new Test('test', fn, opts, null);
 
     const start = jest.fn();
     test.on('start', start);
@@ -53,8 +56,9 @@ describe('Test', () => {
   });
 
   it('should skip', () => {
+    const opts = { skip: false, todo: true };
     const fn = jest.fn();
-    const test = new Test('test', fn, { todo: true });
+    const test = new Test('test', fn, opts, null);
 
     const start = jest.fn();
     test.on('start', start);
@@ -76,7 +80,7 @@ describe('Test', () => {
     const fn = () => {
       throw new Error('Fatal error');
     };
-    const test = new Test('test', fn);
+    const test = new Test('test', fn, defaultOpts, null);
 
     const start = jest.fn();
     test.on('start', start);
@@ -95,15 +99,15 @@ describe('Test', () => {
   it('should check if is test', () => {
     expect(isTest(null)).toBeFalsy();
     expect(isTest({})).toBeFalsy();
-    expect(isTest(new Runnable('not a test'))).toBeFalsy();
-    expect(isTest(new Suite('not a test'))).toBeFalsy();
-    expect(isTest(new Test('a test', () => null))).toBeTruthy();
+    expect(isTest(new Runnable('not a test', defaultOpts, null))).toBeFalsy();
+    expect(isTest(new Suite('not a test', defaultOpts, null))).toBeFalsy();
+    expect(isTest(new Test('a test', () => null, defaultOpts, null))).toBeTruthy();
   });
 
   describe('async', () => {
     it('should run', async () => {
       const fn = jest.fn();
-      const test = new Test('test', fn);
+      const test = new Test('test', fn, defaultOpts, null);
 
       const start = jest.fn();
       test.on('start', start);
@@ -126,7 +130,7 @@ describe('Test', () => {
       const fn = () => {
         throw err;
       };
-      const test = new Test('test', fn);
+      const test = new Test('test', fn, defaultOpts, null);
 
       const start = jest.fn();
       test.on('start', start);

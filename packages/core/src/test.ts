@@ -11,9 +11,10 @@ export default class Test extends Runnable {
   public fn: () => void;
   public type = RunnableTypes.Test;
 
-  constructor(description: string, fn: () => void, options: Partial<RunnableOptions> = {}, parent?: Suite | null) {
+  constructor(description: string, fn: () => void, options: Partial<RunnableOptions> = {}, parent: Suite) {
     super(description, options, parent);
     this.fn = fn;
+    this.parent = parent || null;
   }
 
   /**
