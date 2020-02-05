@@ -4,10 +4,16 @@ import Suite, { isSuite, rootSymbol } from '../src/suite';
 import Test from '../src/test';
 
 describe('Suite', () => {
+  const defaultOpts = {
+    bail: false,
+    skip: false,
+    todo: false,
+  };
+
   it('should run children', () => {
-    const child = new Suite('child');
+    const parent = new Suite('parent', defaultOpts, null);
+    const child = new Suite('child', defaultOpts, parent);
     const spy = jest.spyOn(child, 'run');
-    const parent = new Suite('parent');
     parent.addChildren(child);
 
     const start = jest.fn();
@@ -26,7 +32,7 @@ describe('Suite', () => {
   });
 
   it('should skip', () => {
-    const suite = new Suite('parent', { skip: true });
+    const suite = new Suite('parent', { skip: true }, null);
 
     const start = jest.fn();
     suite.on('start', start);
@@ -43,7 +49,7 @@ describe('Suite', () => {
   });
 
   it('should work with todo option', () => {
-    const suite = new Suite('parent', { todo: true });
+    const suite = new Suite('parent', { todo: true }, null);
 
     const start = jest.fn();
     suite.on('start', start);
@@ -60,7 +66,7 @@ describe('Suite', () => {
   });
 
   it('should check if is root', () => {
-    const suite = new Suite('suite');
+    const suite = new Suite('suite', defaultOpts, null);
 
     expect(suite.isRoot()).toBeFalsy();
 
@@ -69,9 +75,9 @@ describe('Suite', () => {
   });
 
   it('should push children to children array', () => {
-    const child1 = new Suite('desc');
-    const child2 = new Suite('desc');
-    const suite = new Suite('Suite');
+    const suite = new Suite('Suite', defaultOpts, null);
+    const child1 = new Suite('desc', defaultOpts, suite);
+    const child2 = new Suite('desc', defaultOpts, suite);
 
     expect(suite.children).toEqual([]);
 
@@ -88,8 +94,8 @@ describe('Suite', () => {
     }
   }
   it('should pass and collect messages', () => {
-    const child = new PassingRunnable('desc');
-    const suite = new Suite('Suite');
+    const suite = new Suite('Suite', defaultOpts, null);
+    const child = new PassingRunnable('desc', defaultOpts, null);
     suite.addChildren(child);
 
     const start = jest.fn();
@@ -116,8 +122,8 @@ describe('Suite', () => {
     }
   }
   it('should fail and collect messages', () => {
-    const child = new FailingRunnable('desc');
-    const suite = new Suite('Suite');
+    const suite = new Suite('Suite', defaultOpts, null);
+    const child = new FailingRunnable('desc', defaultOpts, suite);
     suite.addChildren(child);
 
     const start = jest.fn();
@@ -136,9 +142,9 @@ describe('Suite', () => {
   });
 
   it('should not bail out', () => {
-    const child1 = new FailingRunnable('desc');
-    const child2 = new PassingRunnable('desc');
-    const suite = new Suite('Suite');
+    const suite = new Suite('Suite', defaultOpts, null);
+    const child1 = new FailingRunnable('desc', defaultOpts, suite);
+    const child2 = new PassingRunnable('desc', defaultOpts, suite);
     suite.addChildren(child1, child2);
 
     suite.run();
@@ -146,9 +152,9 @@ describe('Suite', () => {
   });
 
   it('should bail out', () => {
-    const child1 = new FailingRunnable('desc');
-    const child2 = new PassingRunnable('desc');
-    const suite = new Suite('Suite', { bail: true });
+    const suite = new Suite('Suite', { bail: true }, null);
+    const child1 = new FailingRunnable('desc', defaultOpts, suite);
+    const child2 = new PassingRunnable('desc', defaultOpts, suite);
     suite.addChildren(child1, child2);
 
     suite.run();
@@ -158,22 +164,22 @@ describe('Suite', () => {
   it('should check if is suite', () => {
     expect(isSuite(null)).toBeFalsy();
     expect(isSuite({})).toBeFalsy();
-    expect(isSuite(new Runnable('not a suite'))).toBeFalsy();
-    expect(isSuite(new Test('not a suite', () => null))).toBeFalsy();
-    expect(isSuite(new Suite('a suite'))).toBeTruthy();
+    expect(isSuite(new Runnable('not a suite', defaultOpts, null))).toBeFalsy();
+    expect(isSuite(new Test('not a suite', () => null, defaultOpts, null))).toBeFalsy();
+    expect(isSuite(new Suite('a suite', defaultOpts, null))).toBeTruthy();
   });
 
   it('should collect stats', () => {
-    const passing = new Suite('passing');
+    const passing = new Suite('passing', defaultOpts, null);
     passing.addChildren(
-      new PassingRunnable('passing runnable'),
+      new PassingRunnable('passing runnable', defaultOpts, null),
     );
-    const skipped = new Suite('skipped', { skip: true });
-    const todo = new Suite('todo', { todo: true });
+    const skipped = new Suite('skipped', { skip: true }, null);
+    const todo = new Suite('todo', { todo: true }, null);
     const failing = new Test('failing', () => {
       throw new Error('FAIL!');
-    });
-    const parent = new Suite('parent');
+    }, defaultOpts, null);
+    const parent = new Suite('parent', defaultOpts, null);
     parent.addChildren(passing, skipped, todo, failing);
 
     expect(parent.getStats()).toMatchSnapshot({
@@ -189,8 +195,8 @@ describe('Suite', () => {
 
   describe('async', () => { // TODO: check this for races
     it('should pass', async () => {
-      const child = new Test('child', () => null);
-      const parent = new Suite('parent');
+      const child = new Test('child', () => null, defaultOpts, null);
+      const parent = new Suite('parent', defaultOpts, null);
       parent.addChildren(child);
 
       const start = jest.fn();
@@ -211,8 +217,8 @@ describe('Suite', () => {
 
     it('should fail', async () => {
       const err = new Error('FAIL!');
-      const child = new Test('child', () => { throw err; });
-      const parent = new Suite('parent');
+      const child = new Test('child', () => { throw err; }, defaultOpts, null);
+      const parent = new Suite('parent', defaultOpts, null);
       parent.addChildren(child);
 
       const start = jest.fn();
@@ -235,7 +241,7 @@ describe('Suite', () => {
     });
 
     it('should skip', async () => {
-      const parent = new Suite('parent', { skip: true });
+      const parent = new Suite('parent', { skip: true }, null);
 
       const start = jest.fn();
       parent.on('start', start);
