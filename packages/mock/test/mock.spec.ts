@@ -1,4 +1,4 @@
-import mock from '../src/mock';
+import mock, { isMock, mockSymbol } from '../src/mock';
 
 describe('Mock function', () => {
   it('should create a mocking function', () => {
@@ -31,5 +31,18 @@ describe('Mock function', () => {
 
     mockFn(1, 2);
     expect(cb).toHaveBeenCalledWith([1, 2], 3);
+  });
+
+  it('should check if mock', () => {
+    const fn = (a: number, b: number) => a + b;
+    const mockFn = mock(fn);
+
+    expect(isMock(mockFn)).toBeTruthy();
+    expect(isMock(fn)).toBeFalsy();
+    expect(isMock(null)).toBeFalsy();
+    expect(isMock({})).toBeFalsy();
+    expect(isMock({
+      [mockSymbol]: true,
+    })).toBeFalsy();
   });
 });
