@@ -4,7 +4,7 @@ import Suite, { rootSymbol } from '../src/suite';
 
 describe('Runnable', () => {
   const defaultOpts = { skip: false, todo: false };
-  const defaultSuiteOpts = { bail: false, skip: false, todo: false };
+  const defaultSuiteOpts = { skip: false, todo: false };
 
   it('should get full description', () => {
     const parent = new Suite('parent', defaultSuiteOpts, null);

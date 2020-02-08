@@ -137,7 +137,7 @@ describe('Interface', () => {
     setCurrentRoot({} as Suite);
     expect(getCurrentRoot()).toBe(root);
 
-    setCurrentRoot(new Suite('new root', { bail: false, skip: false, todo: false }, null));
+    setCurrentRoot(new Suite('new root', { skip: false, todo: false }, null));
     expect(getCurrentRoot().description).toBe('new root');
 
     setCurrentRoot(root);
