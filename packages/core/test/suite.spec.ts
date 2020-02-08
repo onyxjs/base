@@ -5,7 +5,6 @@ import Test from '../src/test';
 
 describe('Suite', () => {
   const defaultOpts = {
-    bail: false,
     skip: false,
     todo: false,
   };
@@ -149,16 +148,6 @@ describe('Suite', () => {
 
     suite.run();
     expect(suite.getStats().done).toBe(2);
-  });
-
-  it('should bail out', () => {
-    const suite = new Suite('Suite', { bail: true }, null);
-    const child1 = new FailingRunnable('desc', defaultOpts, suite);
-    const child2 = new PassingRunnable('desc', defaultOpts, suite);
-    suite.addChildren(child1, child2);
-
-    suite.run();
-    expect(suite.getStats().done).toBe(1);
   });
 
   it('should check if is suite', () => {

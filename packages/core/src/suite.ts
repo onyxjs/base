@@ -20,20 +20,15 @@ export interface Stats {
   time: number;
 }
 
-export interface SuiteOptions extends RunnableOptions {
-  bail: boolean;
-}
-
 export default class Suite extends Runnable {
   public children: Runnable[];
   public [rootSymbol]?: boolean;
   public type = RunnableTypes.Suite;
-  public options: SuiteOptions;
+  public options: RunnableOptions;
 
-  constructor(description: string, options: Partial<SuiteOptions> = {}, parent: Suite | null) {
+  constructor(description: string, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
     super(description, options, parent);
     this.options = {
-      bail: false,
       ...Runnable.normalizeOptions(options),
     };
     this.children = [];
@@ -77,9 +72,6 @@ export default class Suite extends Runnable {
       const result = child.run();
       this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
       if (result.status === Status.Failed) {
-        if (this.options.bail) {
-          return this.doFail();
-        }
         failed = true;
       }
     }
