@@ -16,7 +16,9 @@
     "lint:fix": "lerna run --no-bail lint:fix --stream",
     "build": "lerna run build --stream",
     "dev": "lerna run dev --stream",
-    "watch": "lerna run watch --stream"
+    "watch": "lerna run watch --stream",
+    "dev:docs": "lerna run dev --stream --scope @onyx/docs",
+    "build:docs": "lerna run build --stream --scope @onyx/docs"
   },
   "husky": {
     "hooks": {
