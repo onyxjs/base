@@ -8,8 +8,7 @@
       true,
       "single"
     ],
-    "radix": false,
-    "interface-name": false
+    "radix": false
   },
   "jsRules": {
     "quotemark": [

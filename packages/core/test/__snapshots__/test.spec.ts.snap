@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test should error 1`] = `
+Result {
+  "internalMessages": Array [
+    "Error: Fatal error",
+  ],
+  "internalStatus": 2,
+}
+`;
+
+exports[`Test should fail 1`] = `
+Result {
+  "internalMessages": Array [
+    "ExpectError: Expect failed",
+  ],
+  "internalStatus": 1,
+}
+`;
+
+exports[`Test should run 1`] = `
+Result {
+  "internalMessages": Array [],
+  "internalStatus": 0,
+}
+`;
+
+exports[`Test should skip 1`] = `
+Result {
+  "internalMessages": Array [],
+  "internalStatus": 3,
+}
+`;

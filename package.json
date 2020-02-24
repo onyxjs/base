@@ -1,7 +1,7 @@
 {
   "name": "onyx",
   "version": "0.0.0",
-  "description": "A simple Javascript unit testing library.",
+  "description": "WIP: A modular modern TypeScript testing framework.",
   "repository": "git@github.com:onyxjs/onyx.git",
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
   "license": "MIT",

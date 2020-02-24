@@ -1,7 +1,7 @@
 {
-  "name": "@onyx/matchers",
+  "name": "@onyx/core",
   "version": "0.0.0",
-  "description": "Onyx matchers",
+  "description": "Onyx core",
   "main": "dist/index.js",
   "repository": "git@github.com:onyxjs/onyx.git",
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
@@ -28,8 +28,5 @@
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"
   },
-  "dependencies": {
-    "core-js": "^3.1.4",
-    "lodash.isequal": "^4.5.0"
-  }
+  "dependencies": {}
 }
