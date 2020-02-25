@@ -46,7 +46,7 @@ module.exports = {
               "/matchers/matchers/to-equal",
               "/matchers/matchers/to-have-length",
               "/matchers/matchers/to-strictly-equal",
-              "/matchers/matchers/to-throw.md"
+              "/matchers/matchers/to-throw"
             ]
           },
           "/mock/"
@@ -58,7 +58,7 @@ module.exports = {
         editLinkText: "Редактировать эту страницу на GitHub",
         sidebar: ["/ru/", "/ru/matchers/", "/ru/mock/"]
       },
-      "/zh-Hant/": {
+      "/zh/": {
         selectText: "語言",
         label: "中文",
         editLinkText: "在Github中編輯此頁面",
@@ -68,28 +68,23 @@ module.exports = {
             title: "@onyx/matchers",
             path: "/zh/matchers/",
             children: [
-              "/matchers/matchers/to-be",
-              "/matchers/matchers/to-be-defined",
-              "/matchers/matchers/to-be-false",
-              "/matchers/matchers/to-be-instance-of",
-              "/matchers/matchers/to-be-nan",
-              "/matchers/matchers/to-be-null",
-              "/matchers/matchers/to-be-true",
-              "/matchers/matchers/to-be-type-of",
-              "/matchers/matchers/to-be-undefined",
-              "/matchers/matchers/to-contain",
-              "/matchers/matchers/to-equal",
-              "/matchers/matchers/to-have-length",
-              "/matchers/matchers/to-strictly-equal",
-              "/matchers/matchers/to-throw.md"
+              "/zh/matchers/matchers/to-be",
+              "/zh/matchers/matchers/to-be-defined",
+              "/zh/matchers/matchers/to-be-false",
+              "/zh/matchers/matchers/to-be-instance-of",
+              "/zh/matchers/matchers/to-be-nan",
+              "/zh/matchers/matchers/to-be-null",
+              "/zh/matchers/matchers/to-be-true",
+              "/zh/matchers/matchers/to-be-type-of",
+              "/zh/matchers/matchers/to-be-undefined",
+              "/zh/matchers/matchers/to-contain",
+              "/zh/matchers/matchers/to-equal",
+              "/zh/matchers/matchers/to-have-length",
+              "/zh/matchers/matchers/to-strictly-equal",
+              "/zh/matchers/matchers/to-throw"
             ]
           },
-          "/zh/mock/",
-          {
-            title: "@onyx/mock",
-            path: "/zh/mock",
-            children: ["/zh/mock.md", "/zh/README.md"]
-          }
+          "/mock/"
         ]
       }
     }
@@ -105,7 +100,7 @@ module.exports = {
       title: "Onyx",
       description: "Onyx это фреймворк для тестирования JavaScript кода."
     },
-    "/zh-Hant/": {
+    "/zh/": {
       lang: "zh-TW",
       title: "Onyx",
       description: "Onyx是一個JavaScript測試框架。"
