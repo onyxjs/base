@@ -84,7 +84,11 @@ module.exports = {
               "/zh/matchers/matchers/to-throw"
             ]
           },
-          "/mock/"
+          {
+            title: "@onyx/mock",
+            path: "/zh/mock/",
+            children: []
+          }
         ]
       }
     }

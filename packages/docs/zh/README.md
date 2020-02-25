@@ -1,5 +1,7 @@
-# @onyx/matchers
-
+# Onyx
 ![Onyx logo](/onyx/onyx-logo-sm.svg)
 
-該軟件包提供了可以在測試中比較，驗證和區分（TODO）值的匹配器。
+[![建置状态](https://travis-ci.org/onyxjs/onyx.svg?branch=master)](https://travis-ci.org/onyxjs/onyx)
+[![codecov](https://codecov.io/gh/onyxjs/onyx/branch/master/graph/badge.svg)](https://codecov.io/gh/onyxjs/onyx)
+
+> Onyx是一个JavaScript测试框架

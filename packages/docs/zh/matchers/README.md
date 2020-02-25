@@ -1,4 +1,4 @@
-# @onyx/mock
+# @onyx/matchers
 
 ![Onyx logo](/onyx/onyx-logo-sm.svg)
 
