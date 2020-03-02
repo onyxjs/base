@@ -15,6 +15,10 @@ module.exports = {
         "/zh-Hant/": {
           message: "新內容可用。",
           buttonText: "刷新"
+        }, 
+        "/yor/": {
+          message: "",
+          buttonText: ""
         }
       }
     },
@@ -87,6 +91,24 @@ module.exports = {
           {
             title: "@onyx/mock",
             path: "/zh/mock/",
+            children: []
+          }
+        ]
+      },
+      "/yor/": {
+        selectText: "",
+        label: "",
+        editLinkText: "",
+        sidebar: [
+          "/yor",
+          {
+            title: "@onyx/matchers",
+            path: "/yor/matchers/",
+            children: []
+          },
+          {
+            title: "@onyx/mock",
+            path: "/yor/mock/",
             children: []
           }
         ]
