@@ -104,7 +104,22 @@ module.exports = {
           {
             title: "@onyx/matchers",
             path: "/yor/matchers/",
-            children: []
+            children: [
+              "/yor/matchers/matchers/to-be",
+              "/yor/matchers/matchers/to-be-defined",
+              "/yor/matchers/matchers/to-be-false",
+              "/yor/matchers/matchers/to-be-instance-of",
+              "/yor/matchers/matchers/to-be-nan",
+              "/yor/matchers/matchers/to-be-null",
+              "/yor/matchers/matchers/to-be-true",
+              "/yor/matchers/matchers/to-be-type-of",
+              "/yor/matchers/matchers/to-be-undefined",
+              "/yor/matchers/matchers/to-contain",
+              "/yor/matchers/matchers/to-equal",
+              "/yor/matchers/matchers/to-have-length",
+              "/yor/matchers/matchers/to-strictly-equal",
+              "/yor/matchers/matchers/to-throw"
+            ]
           },
           {
             title: "@onyx/mock",
@@ -130,6 +145,11 @@ module.exports = {
       lang: "zh-TW",
       title: "Onyx",
       description: "Onyx是一個JavaScript測試框架。"
+    },
+    "/yor/": {
+      lang: "yor-NIG",
+      title: "Onyx",
+      description: ""
     }
   }
 };
