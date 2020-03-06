@@ -1,0 +1,18 @@
+## Matcher functions
+Gbogbo ise matcher ni owa ni ibibi:
+- [toBe](to-be)
+- [toBeDefined](to-be-defined)
+- [toBeFalse](to-be-false)
+- [toBeFalsy](to-be-falsy)
+- [toBeInstanceOf](to-be-instance-of)
+- [toBeNaN](to-be-nan)
+- [toBeNull](to-be-null)
+- [toBeTrue](to-be-true)
+- [toBeTruthy](to-be-truthy)
+- [toBeTypeOf](to-be-type-of)
+- [toBeUndefined](to-be-undefined)
+- [toContain](to-contain)
+- [toEqual](to-equal)
+- [toHaveLength](to-have-length)
+- [toStrictlyEqual](to-strictly-equal)
+- [toThrow](to-throw)
