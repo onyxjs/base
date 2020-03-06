@@ -100,7 +100,7 @@ module.exports = {
         label: "",
         editLinkText: "",
         sidebar: [
-          "/yor",
+          "/yor/",
           {
             title: "@onyx/matchers",
             path: "/yor/matchers/",
