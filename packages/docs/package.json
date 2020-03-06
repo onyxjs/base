@@ -1,0 +1,19 @@
+{
+  "name": "@onyx/docs",
+  "version": "0.0.0",
+  "description": "Onyx docs",
+  "repository": "git@github.com:onyxjs/onyx.git",
+  "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "vuepress dev .",
+    "build": "vuepress build ."
+  },
+  "devDependencies": {
+    "@vuepress/plugin-back-to-top": "^1.0.0-rc.1",
+    "@vuepress/plugin-nprogress": "^1.0.0-rc.1",
+    "@vuepress/plugin-pwa": "^1.0.0-rc.1",
+    "vuepress": "^1.0.3"
+  }
+}
