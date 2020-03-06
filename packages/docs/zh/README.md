@@ -5,3 +5,5 @@
 [![codecov](https://codecov.io/gh/onyxjs/onyx/branch/master/graph/badge.svg)](https://codecov.io/gh/onyxjs/onyx)
 
 > Onyx是一个JavaScript测试框架
+
+Translated by: [Kevin Wang](https://github.com/NinjaEagle) kcwang06@gmail.com
