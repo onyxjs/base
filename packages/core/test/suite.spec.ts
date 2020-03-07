@@ -205,6 +205,46 @@ describe('Suite', () => {
     });
   });
 
+  it('should invoke hooks', () => {
+    const error = console.error;
+    console.error = jest.fn();
+
+    const parent = new Suite('parent', {}, null);
+    parent.addChildren(
+      new Test('passing', () => null, {}, parent),
+      new Test('failing', () => { throw new Error('Fail'); }, {}, parent),
+    );
+    const calls: string[] = [];
+
+    parent.hooks.beforeAll.push(
+      () => calls.push('beforeAll1'),
+      () => calls.push('beforeAll2'),
+    );
+    parent.hooks.beforeEach.push(
+      () => calls.push('beforeEach1'),
+      () => calls.push('beforeEach2'),
+      () => { throw new Error('beforeEach hook error'); },
+    );
+    parent.hooks.afterEach.push(
+      () => calls.push('afterEach1'),
+      () => calls.push('afterEach2'),
+    );
+    parent.hooks.afterAll.push(
+      () => calls.push('afterAll1'),
+      () => calls.push('afterAll2'),
+      () => { throw new Error('afterAll hook error'); },
+    );
+
+    parent.run();
+    expect(calls).toMatchSnapshot();
+
+    expect(console.error).toHaveBeenCalledTimes(3);
+    expect(console.error).toHaveBeenCalledWith('Error in beforeEach hook: Error: beforeEach hook error');
+    expect(console.error).toHaveBeenCalledWith('Error in afterAll hook: Error: afterAll hook error');
+
+    console.error = error;
+  });
+
   describe('async', () => { // TODO: check this for races
     it('should pass', async () => {
       const child = new Test('child', () => null, defaultOpts, null);
@@ -267,6 +307,50 @@ describe('Suite', () => {
       expect(skip).toHaveBeenCalledTimes(1);
       expect(end).toHaveBeenCalledTimes(1);
       expect((await promise).status).toBe(Status.Skipped);
+    });
+
+    it('should invoke hooks', async () => {
+      const error = console.error;
+      console.error = jest.fn();
+
+      const parent = new Suite('parent', {}, null);
+      parent.addChildren(
+        new Test('passing', () => null, {}, parent),
+        new Test('failing', () => { throw new Error('Fail'); }, {}, parent),
+      );
+      const calls: string[] = [];
+
+      parent.hooks.beforeAll.push(
+        () => calls.push('beforeAll1'),
+        () => calls.push('beforeAll2'),
+      );
+      parent.hooks.beforeEach.push(
+        async () => await calls.push('beforeEach1'),
+        () => calls.push('beforeEach2'),
+        () => { throw new Error('beforeEach hook error'); },
+      );
+      parent.hooks.afterEach.push(
+        () => calls.push('afterEach1'),
+        () => calls.push('afterEach2'),
+      );
+      parent.hooks.afterAll.push(
+        () => calls.push('afterAll1'),
+        async () => await calls.push('afterAll2'),
+        async () => { throw new Error('afterAll hook error'); },
+      );
+
+      try {
+        await parent.asyncRun();
+      } catch {
+        // noop
+      }
+      expect(calls).toMatchSnapshot();
+
+      expect(console.error).toHaveBeenCalledTimes(3);
+      expect(console.error).toHaveBeenCalledWith('Error in beforeEach hook: Error: beforeEach hook error');
+      expect(console.error).toHaveBeenCalledWith('Error in afterAll hook: Error: afterAll hook error');
+
+      console.error = error;
     });
   });
 });

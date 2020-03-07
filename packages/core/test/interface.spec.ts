@@ -1,4 +1,15 @@
-import { currentRoot, describe as $describe, getCurrentRoot, it as $it, root, setCurrentRoot } from '../src/interface';
+import {
+  afterAll as $afterAll,
+  afterEach as $afterEach,
+  beforeAll as $beforeAll,
+  beforeEach as $beforeEach,
+  currentRoot,
+  describe as $describe,
+  getCurrentRoot,
+  it as $it,
+  root,
+  setCurrentRoot,
+} from '../src/interface';
 import Suite from '../src/suite';
 
 const noop = () => null;
@@ -142,5 +153,24 @@ describe('Interface', () => {
 
     setCurrentRoot(root);
     expect(getCurrentRoot()).toBe(root);
+  });
+
+  it('should add hooks to current suite', () => {
+    $describe('root', () => {
+      $beforeAll(() => null);
+      $afterEach(() => null);
+      $describe('child', () => {
+        $it('test', () => null);
+
+        $beforeAll(() => null);
+        $beforeAll(() => undefined);
+        $beforeEach(() => null);
+        $afterEach(async () => null);
+        $afterAll(() => null);
+
+        expect(currentRoot.hooks).toMatchSnapshot();
+      });
+      expect(currentRoot.hooks).toMatchSnapshot();
+    });
   });
 });

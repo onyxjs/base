@@ -1,3 +1,4 @@
+import { HookName, Hooks } from './hooks';
 import Result, { Status } from './result';
 import Runnable, { isRunnable, RunnableOptions, RunnableTypes } from './runnable';
 import { RunOptions } from './runner';
@@ -25,6 +26,7 @@ export default class Suite extends Runnable {
   public [rootSymbol]?: boolean;
   public type = RunnableTypes.Suite;
   public options: RunnableOptions;
+  public hooks: Hooks;
   private failed: number;
 
   constructor(description: string, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
@@ -34,6 +36,35 @@ export default class Suite extends Runnable {
     };
     this.children = [];
     this.failed = 0;
+
+    this.hooks = {
+      afterAll: [],
+      afterEach: [],
+      beforeAll: [],
+      beforeEach: [],
+    };
+  }
+
+  public invokeHook(name: HookName) {
+    const hook = this.hooks[name];
+    for (const fn of hook) {
+      try {
+        fn();
+      } catch (err) {
+        console.error(`Error in ${name} hook: ${err}`);
+      }
+    }
+  }
+
+  public async invokeAsyncHook(name: HookName) {
+    const hook = this.hooks[name];
+    for (const fn of hook) {
+      try {
+        await fn();
+      } catch (err) {
+        console.error(`Error in ${name} hook: ${err}`);
+      }
+    }
   }
 
   /**
@@ -68,10 +99,14 @@ export default class Suite extends Runnable {
     }
 
     this.doStart();
+    this.invokeHook('beforeAll');
+
     let failed = false;
 
     for (const child of this.children) {
+      this.invokeHook('beforeEach');
       const result = child.run(options);
+      this.invokeHook('afterEach');
       this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
       if (result.status === Status.Failed) {
         ++this.failed;
@@ -79,14 +114,17 @@ export default class Suite extends Runnable {
 
         if (options && options.bail) {
           if (typeof options.bail === 'number' && this.failed === options.bail) {
+            this.invokeHook('afterAll');
             return this.doFail();
           } else if (options.bail === true) {
+            this.invokeHook('afterAll');
             return this.doFail();
           }
         }
       }
     }
 
+    this.invokeHook('afterAll');
     if (failed) {
       return this.doFail();
     }
@@ -105,19 +143,29 @@ export default class Suite extends Runnable {
     }
 
     this.doStart();
+    await this.invokeAsyncHook('beforeAll');
 
     const promises: Array<Promise<Result>> = [];
     for (const child of this.children) {
-      promises.push(child.asyncRun(options).then((r) => {
-        this.result.addMessages(...r.messages.map((m) => `${child.description}: ${m}`));
-        return r;
-      }).catch((e) => {
-        this.doFail(`${child.description}: ${e}`); // TODO: make bail for async
-        throw e;
-      }));
+      promises.push((async () => {
+        try {
+          await this.invokeAsyncHook('beforeEach');
+          const result = await child.asyncRun(options);
+          this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
+          await this.invokeAsyncHook('afterEach');
+          return result;
+        } catch (e) {
+          await this.invokeAsyncHook('afterEach');
+          await this.invokeAsyncHook('afterAll');
+          this.doFail(`${child.description}: ${e}`); // TODO: make bail for async
+          throw e;
+        }
+      })());
     }
 
     await Promise.all(promises);
+
+    await this.invokeAsyncHook('afterAll');
     return this.doPass();
   }
 
