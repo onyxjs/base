@@ -150,6 +150,29 @@ describe('Suite', () => {
     expect(suite.getStats().done).toBe(2);
   });
 
+  it('should bail out when bail is set to true', () => {
+    const suite = new Suite('Suite', defaultOpts, null);
+    const child1 = new FailingRunnable('desc', defaultOpts, suite);
+    const child2 = new PassingRunnable('desc', defaultOpts, suite);
+    suite.addChildren(child1, child2);
+
+    suite.run({ bail: true, timeout: 0 });
+    expect(suite.getStats().done).toBe(1);
+  });
+
+  it('should bail out after n tests when bail is a number', () => {
+    const suite = new Suite('Suite', defaultOpts, null);
+    const child = new PassingRunnable('desc', defaultOpts, suite);
+    const child1 = new FailingRunnable('desc', defaultOpts, suite);
+    const child2 = new FailingRunnable('desc', defaultOpts, suite);
+    const child3 = new FailingRunnable('desc', defaultOpts, suite);
+    const child4 = new PassingRunnable('desc', defaultOpts, suite);
+    suite.addChildren(child, child1, child2, child3, child4);
+
+    suite.run({ bail: 2, timeout: 0 });
+    expect(suite.getStats().done).toBe(3);
+  });
+
   it('should check if is suite', () => {
     expect(isSuite(null)).toBeFalsy();
     expect(isSuite({})).toBeFalsy();

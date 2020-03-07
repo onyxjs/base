@@ -1,7 +1,6 @@
 import Result, { Status } from './result';
 import Runnable, { isRunnable, RunnableOptions, RunnableTypes } from './runnable';
 import { RunOptions } from './runner';
-import Test, { isTest } from './test';
 
 export const isSuite = (v: unknown): v is Suite => {
   if (!isRunnable(v)) { return false; }
@@ -26,6 +25,7 @@ export default class Suite extends Runnable {
   public [rootSymbol]?: boolean;
   public type = RunnableTypes.Suite;
   public options: RunnableOptions;
+  private failed: number;
 
   constructor(description: string, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
     super(description, options, parent);
@@ -33,6 +33,7 @@ export default class Suite extends Runnable {
       ...Runnable.normalizeOptions(options),
     };
     this.children = [];
+    this.failed = 0;
   }
 
   /**
@@ -73,7 +74,16 @@ export default class Suite extends Runnable {
       const result = child.run(options);
       this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
       if (result.status === Status.Failed) {
+        ++this.failed;
         failed = true;
+
+        if (options && options.bail) {
+          if (typeof options.bail === 'number' && this.failed === options.bail) {
+            return this.doFail();
+          } else if (options.bail === true) {
+            return this.doFail();
+          }
+        }
       }
     }
 
