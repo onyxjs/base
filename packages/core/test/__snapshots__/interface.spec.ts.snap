@@ -12,6 +12,7 @@ Suite {
       "_maxListeners": undefined,
       "children": Array [],
       "description": "test 2",
+      "failed": 0,
       "options": Object {
         "skip": false,
         "todo": false,
@@ -28,6 +29,7 @@ Suite {
     },
   ],
   "description": "root",
+  "failed": 0,
   "options": Object {
     "skip": false,
     "todo": false,
@@ -64,6 +66,7 @@ Test {
       [Circular],
     ],
     "description": "test 5",
+    "failed": 0,
     "options": Object {
       "skip": true,
       "todo": false,
@@ -76,6 +79,7 @@ Test {
         [Circular],
       ],
       "description": "root",
+      "failed": 0,
       "options": Object {
         "skip": false,
         "todo": false,
@@ -118,6 +122,7 @@ Suite {
   "_maxListeners": undefined,
   "children": Array [],
   "description": "test 1",
+  "failed": 0,
   "options": Object {
     "skip": false,
     "todo": false,
@@ -130,6 +135,7 @@ Suite {
       [Circular],
     ],
     "description": "root",
+    "failed": 0,
     "options": Object {
       "skip": false,
       "todo": false,
@@ -175,6 +181,7 @@ Test {
       [Circular],
     ],
     "description": "test 4",
+    "failed": 0,
     "options": Object {
       "skip": true,
       "todo": false,
@@ -187,6 +194,7 @@ Test {
         [Circular],
       ],
       "description": "root",
+      "failed": 0,
       "options": Object {
         "skip": false,
         "todo": false,
@@ -241,6 +249,7 @@ Test {
       [Circular],
     ],
     "description": "test 5",
+    "failed": 0,
     "options": Object {
       "skip": true,
       "todo": false,
@@ -253,6 +262,7 @@ Test {
         [Circular],
       ],
       "description": "root",
+      "failed": 0,
       "options": Object {
         "skip": false,
         "todo": false,
@@ -386,6 +396,7 @@ Suite {
             },
           ],
           "description": "component 1",
+          "failed": 0,
           "options": Object {
             "skip": false,
             "todo": false,
@@ -492,6 +503,7 @@ Suite {
                 },
               ],
               "description": "method 1",
+              "failed": 0,
               "options": Object {
                 "skip": false,
                 "todo": false,
@@ -553,6 +565,7 @@ Suite {
                 },
               ],
               "description": "method 2",
+              "failed": 0,
               "options": Object {
                 "skip": false,
                 "todo": false,
@@ -569,6 +582,7 @@ Suite {
             },
           ],
           "description": "component 2",
+          "failed": 0,
           "options": Object {
             "skip": false,
             "todo": false,
@@ -585,6 +599,7 @@ Suite {
         },
       ],
       "description": "module",
+      "failed": 0,
       "options": Object {
         "skip": false,
         "todo": false,
@@ -601,6 +616,7 @@ Suite {
     },
   ],
   "description": "root",
+  "failed": 0,
   "options": Object {
     "skip": false,
     "todo": false,
