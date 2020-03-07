@@ -97,29 +97,6 @@ describe('runner', () => {
     expect(cb2).toHaveBeenCalledWith(opts);
   });
 
-  // it('should emit fail with errors', () => {
-  //   const err = new Error('error');
-  //   const rootSuite = new Suite('root', {}, null);
-  //   const childSuite = new Suite('child suite', {}, null);
-  //   const childTest = new Test('child test', () => {
-  //     throw err;
-  //   }, {}, null);
-
-  //   childSuite.addChildren(childTest);
-  //   rootSuite.addChildren(childSuite);
-  //   rootSuite[rootSymbol] = true;
-
-  //   const runner = new Runner(rootSuite);
-
-  //   const error = jest.fn();
-  //   runner.on('fail', error);
-
-  //   runner.run();
-
-  //   expect(error).toHaveBeenCalledTimes(1);
-  //   expect(error).toHaveBeenCalledWith(err);
-  // });
-
   describe('async', () => {
     it('should pass run options to children', async () => {
       const opts = { bail: true, timeout: 1234 };
