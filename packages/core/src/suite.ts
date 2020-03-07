@@ -157,7 +157,7 @@ export default class Suite extends Runnable {
         } catch (e) {
           await this.invokeAsyncHook('afterEach');
           await this.invokeAsyncHook('afterAll');
-          this.doFail(`${child.description}: ${e}`); // TODO: make bail for async
+          this.doFail(`${child.description}: ${e}`); // TODO: make bail optional for async
           throw e;
         }
       })());
