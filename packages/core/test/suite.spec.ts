@@ -268,10 +268,14 @@ describe('Suite', () => {
     });
 
     it('should fail', async () => {
+      const fn = jest.fn();
+
       const err = new Error('FAIL!');
-      const child = new Test('child', () => { throw err; }, defaultOpts, null);
+      const child = new Test('child 1', () => { throw err; }, defaultOpts, null);
+      const passingChild = new Test('child 2', fn, defaultOpts, null);
       const parent = new Suite('parent', defaultOpts, null);
       parent.addChildren(child);
+      parent.addChildren(passingChild);
 
       const start = jest.fn();
       parent.on('start', start);
@@ -280,17 +284,15 @@ describe('Suite', () => {
       const end = jest.fn();
       parent.on('end', end);
 
-      const fn = jest.fn();
-      const promise = parent.asyncRun().catch(fn);
+      expect((await parent.asyncRun()).status).toBe(Status.Failed);
 
+      expect(fn).toHaveBeenCalledTimes(1);
       expect(start).toHaveBeenCalledTimes(1);
-
-      await promise;
-
-      expect(fn).toHaveBeenCalledWith(err);
       expect(fail).toHaveBeenCalledTimes(1);
       expect(end).toHaveBeenCalledTimes(1);
     });
+
+    it.todo('should bail out');
 
     it('should skip', async () => {
       const parent = new Suite('parent', { skip: true }, null);

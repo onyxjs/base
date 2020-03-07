@@ -156,9 +156,14 @@ export default class Suite extends Runnable {
           return result;
         } catch (e) {
           await this.invokeAsyncHook('afterEach');
-          await this.invokeAsyncHook('afterAll');
-          this.doFail(`${child.description}: ${e}`); // TODO: make bail for async
-          throw e;
+
+          const error = `${child.description}: ${e}`;
+          this.result.addMessages(...child.result.messages.map((m) => `${child.description}: ${m}`), error);
+
+          this.result.status = Status.Failed;
+          this.emit('fail', this, error);
+
+          return child.result;
         }
       })());
     }
