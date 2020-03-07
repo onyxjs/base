@@ -1,5 +1,3 @@
-import { describe as $describe, it as $it } from '../src/interface';
-
 import { Status } from '../src/result';
 import Runnable from '../src/runnable';
 import Runner, { RunOptions } from '../src/runner';
