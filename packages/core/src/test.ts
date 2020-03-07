@@ -1,5 +1,6 @@
 import Result from './result';
 import Runnable, { isRunnable, RunnableOptions, RunnableTypes } from './runnable';
+import { RunOptions } from './runner';
 import Suite from './suite';
 
 export const isTest = (v: unknown): v is Test => {
@@ -22,7 +23,7 @@ export default class Test extends Runnable {
    * @public
    * @return {Result}
    */
-  public run(): Result {
+  public run(options?: RunOptions): Result {
     if (this.options.skip || this.options.todo) {
       return this.doSkip(this.options.todo);
     }
@@ -43,7 +44,7 @@ export default class Test extends Runnable {
    * @public
    * @return {Promise<Result>}
    */
-  public async asyncRun(): Promise<Result> {
+  public async asyncRun(options?: RunOptions): Promise<Result> { // TODO: timeout
     if (this.options.skip || this.options.todo) {
       return this.doSkip(this.options.todo);
     }

@@ -1,5 +1,6 @@
 import Result, { Status } from './result';
 import Runnable, { isRunnable, RunnableOptions, RunnableTypes } from './runnable';
+import { RunOptions } from './runner';
 import Test, { isTest } from './test';
 
 export const isSuite = (v: unknown): v is Suite => {
@@ -60,7 +61,7 @@ export default class Suite extends Runnable {
    * @public
    * @returns {Result}
    */
-  public run(): Result {
+  public run(options?: RunOptions): Result {
     if (this.options.skip || this.options.todo) {
       return this.doSkip(this.options.todo);
     }
@@ -69,7 +70,7 @@ export default class Suite extends Runnable {
     let failed = false;
 
     for (const child of this.children) {
-      const result = child.run();
+      const result = child.run(options);
       this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
       if (result.status === Status.Failed) {
         failed = true;
@@ -85,9 +86,10 @@ export default class Suite extends Runnable {
   /**
    * @description Runs a `Suite` instance asynchronously returning a `Result`:
    * @public
+   * @param {RunOptions} options
    * @returns {Promise<Result>}
    */
-  public async asyncRun(): Promise<Result> {
+  public async asyncRun(options?: RunOptions): Promise<Result> {
     if (this.options.skip || this.options.todo) {
       return this.doSkip(this.options.todo);
     }
@@ -96,7 +98,7 @@ export default class Suite extends Runnable {
 
     const promises: Array<Promise<Result>> = [];
     for (const child of this.children) {
-      promises.push(child.asyncRun().then((r) => {
+      promises.push(child.asyncRun(options).then((r) => {
         this.result.addMessages(...r.messages.map((m) => `${child.description}: ${m}`));
         return r;
       }).catch((e) => {
