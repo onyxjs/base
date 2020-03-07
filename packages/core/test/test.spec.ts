@@ -1,3 +1,4 @@
+import { Status } from '../src/result';
 import Runnable from '../src/runnable';
 import Suite from '../src/suite';
 import Test, { isTest } from '../src/test';
@@ -139,10 +140,7 @@ describe('Test', () => {
       const end = jest.fn();
       test.on('end', end);
 
-      const spy = jest.fn();
-      await test.asyncRun().catch(spy);
-
-      expect(spy).toHaveBeenCalledWith(err);
+      expect((await test.asyncRun()).status).toBe(Status.Failed);
 
       expect(start).toHaveBeenCalledTimes(1);
       expect(fail).toHaveBeenCalledTimes(1);

@@ -54,8 +54,7 @@ export default class Test extends Runnable {
     try {
       this.fn();
     } catch (error) {
-      this.doFail(error);
-      throw error;
+      return this.doFail(error);
     }
 
     return this.doPass();
