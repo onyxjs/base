@@ -101,8 +101,6 @@ export default class Suite extends Runnable {
     this.doStart();
     this.invokeHook('beforeAll');
 
-    let failed = false;
-
     for (const child of this.children) {
       this.invokeHook('beforeEach');
       const result = child.run(options);
@@ -110,10 +108,9 @@ export default class Suite extends Runnable {
       this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
       if (result.status === Status.Failed) {
         ++this.failed;
-        failed = true;
 
         if (options && options.bail) {
-          if (typeof options.bail === 'number' && this.failed === options.bail) {
+          if (typeof options.bail === 'number' && this.failed >= options.bail) {
             this.invokeHook('afterAll');
             return this.doFail();
           } else if (options.bail === true) {
@@ -125,7 +122,7 @@ export default class Suite extends Runnable {
     }
 
     this.invokeHook('afterAll');
-    if (failed) {
+    if (this.failed) {
       return this.doFail();
     }
     return this.doPass();
@@ -154,8 +151,7 @@ export default class Suite extends Runnable {
         await this.invokeAsyncHook('afterEach');
 
         if (result.status === Status.Failed) {
-          this.result.status = Status.Failed;
-          this.emit('fail', this, result.messages);
+          ++this.failed;
         }
       })());
     }
@@ -163,6 +159,9 @@ export default class Suite extends Runnable {
     await Promise.all(promises);
 
     await this.invokeAsyncHook('afterAll');
+    if (this.failed) {
+      return this.doFail();
+    }
     return this.doPass();
   }
 
