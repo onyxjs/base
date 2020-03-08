@@ -1,7 +1,7 @@
 import { HookName, Hooks } from './hooks';
 import Result, { Status } from './result';
 import Runnable, { isRunnable, RunnableOptions, RunnableTypes } from './runnable';
-import { RunOptions } from './runner';
+import { normalizeRunOptions, RunOptions } from './runner';
 
 export const isSuite = (v: unknown): v is Suite => {
   if (!isRunnable(v)) { return false; }
@@ -93,7 +93,9 @@ export default class Suite extends Runnable {
    * @public
    * @returns {Result}
    */
-  public run(options?: RunOptions): Result {
+  public run(options?: Partial<RunOptions>): Result {
+    options = normalizeRunOptions(options);
+
     if (this.options.skip || this.options.todo) {
       return this.doSkip(this.options.todo);
     }
@@ -109,14 +111,12 @@ export default class Suite extends Runnable {
       if (result.status === Status.Failed) {
         ++this.failed;
 
-        if (options && options.bail) {
-          if (typeof options.bail === 'number' && this.failed >= options.bail) {
-            this.invokeHook('afterAll');
-            return this.doFail();
-          } else if (options.bail === true) {
-            this.invokeHook('afterAll');
-            return this.doFail();
-          }
+        if (typeof options.bail === 'number' && this.failed >= options.bail) {
+          this.invokeHook('afterAll');
+          return this.doFail();
+        } else if (options.bail === true) {
+          this.invokeHook('afterAll');
+          return this.doFail();
         }
       }
     }
@@ -131,10 +131,12 @@ export default class Suite extends Runnable {
   /**
    * @description Runs a `Suite` instance asynchronously returning a `Result`:
    * @public
-   * @param {RunOptions} options
+   * @param {Partial<RunOptions>} options
    * @returns {Promise<Result>}
    */
-  public async asyncRun(options?: RunOptions): Promise<Result> {
+  public async asyncRun(options?: Partial<RunOptions>): Promise<Result> {
+    options = normalizeRunOptions(options);
+
     if (this.options.skip || this.options.todo) {
       return this.doSkip(this.options.todo);
     }
@@ -156,7 +158,7 @@ export default class Suite extends Runnable {
       })());
     }
 
-    if (options && options.sequential) {
+    if (options.sequential) {
       for (const promise of promises) {
         await promise;
       }

@@ -12,16 +12,20 @@ export const runnerDefaults: RunOptions = {
   timeout: 10000,
 };
 
+export function normalizeRunOptions(options: Partial<RunOptions> = {}): RunOptions {
+  return {
+    ...runnerDefaults,
+    ...options,
+  };
+}
+
 export default class Runner {
   public rootSuite: Suite;
   public options: RunOptions;
   public stats: Stats;
 
   constructor(suite: Suite, options: Partial<RunOptions> = {}) {
-    this.options = {
-      ...runnerDefaults,
-      ...options,
-    };
+    this.options = normalizeRunOptions(options);
     this.rootSuite = suite;
     this.stats = suite.getStats();
   }

@@ -1,12 +1,28 @@
 import { Status } from '../src/result';
 import Runnable from '../src/runnable';
-import Runner, { RunOptions } from '../src/runner';
+import Runner, { normalizeRunOptions, RunOptions } from '../src/runner';
 import Suite, { rootSymbol } from '../src/suite';
 import Test from '../src/test';
 
 const NOOP = () => null;
 
 describe('runner', () => {
+  it('should normalize passed options', () => {
+    expect(normalizeRunOptions()).toMatchObject({
+      bail: false,
+      sequential: false,
+      timeout: 10000,
+    });
+    expect(normalizeRunOptions({
+      bail: true,
+      timeout: 1000,
+    })).toMatchObject({
+      bail: true,
+      sequential: false,
+      timeout: 1000,
+    });
+  });
+
   it('should run a suite and children', () => {
     const rootSuite = new Suite('root', {}, null);
     const childSuite = new Suite('child suite', {}, null);

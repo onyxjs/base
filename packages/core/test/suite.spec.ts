@@ -156,7 +156,7 @@ describe('Suite', () => {
     const child2 = new PassingRunnable('desc', defaultOpts, suite);
     suite.addChildren(child1, child2);
 
-    suite.run({ bail: true, timeout: 0, sequential: false });
+    suite.run({ bail: true });
     expect(suite.getStats().done).toBe(1);
   });
 
@@ -169,7 +169,7 @@ describe('Suite', () => {
     const child4 = new PassingRunnable('desc', defaultOpts, suite);
     suite.addChildren(child, child1, child2, child3, child4);
 
-    suite.run({ bail: 2, timeout: 0, sequential: false });
+    suite.run({ bail: 2 });
     expect(suite.getStats().done).toBe(3);
   });
 
@@ -276,7 +276,7 @@ describe('Suite', () => {
       const child4 = new PassingRunnable('desc', defaultOpts, suite);
       suite.addChildren(child, child1, child2, child3, child4);
 
-      suite.run({ bail: 2, timeout: 0, sequential: true });
+      suite.run({ sequential: true });
       expect(suite.getStats().done).toBe(5);
     });
 

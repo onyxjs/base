@@ -100,7 +100,7 @@ export default class Runnable extends EventEmitter {
    * @return {Result}
    */
   // istanbul ignore next unimplemented
-  public run(options?: RunOptions): Result {
+  public run(options?: Partial<RunOptions>): Result {
     if (this.options.skip || this.options.todo) {
       return this.doSkip(this.options.todo);
     }
@@ -116,7 +116,7 @@ export default class Runnable extends EventEmitter {
    * @return {Promise}
    */
   // istanbul ignore next unimplemented
-  public async asyncRun(options?: RunOptions): Promise<Result> {
+  public async asyncRun(options?: Partial<RunOptions>): Promise<Result> {
     if (this.options.skip || this.options.todo) {
       return this.doSkip(this.options.todo);
     }
