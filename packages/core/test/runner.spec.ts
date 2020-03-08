@@ -72,7 +72,7 @@ describe('runner', () => {
     }
   }
   it('should pass run options to children', () => {
-    const opts = { bail: true, timeout: 1234 };
+    const opts = { bail: true, timeout: 1234, sequential: true };
 
     const rootSuite = new Suite('root', {}, null);
     const childSuite = new Suite('child', {}, null);
@@ -97,7 +97,7 @@ describe('runner', () => {
 
   describe('async', () => {
     it('should pass run options to children', async () => {
-      const opts = { bail: true, timeout: 1234 };
+      const opts = { bail: true, timeout: 1234, sequential: true };
 
       const rootSuite = new Suite('root', {}, null);
       const childSuite = new Suite('child', {}, null);

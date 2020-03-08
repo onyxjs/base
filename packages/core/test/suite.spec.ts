@@ -156,7 +156,7 @@ describe('Suite', () => {
     const child2 = new PassingRunnable('desc', defaultOpts, suite);
     suite.addChildren(child1, child2);
 
-    suite.run({ bail: true, timeout: 0 });
+    suite.run({ bail: true, timeout: 0, sequential: false });
     expect(suite.getStats().done).toBe(1);
   });
 
@@ -169,7 +169,7 @@ describe('Suite', () => {
     const child4 = new PassingRunnable('desc', defaultOpts, suite);
     suite.addChildren(child, child1, child2, child3, child4);
 
-    suite.run({ bail: 2, timeout: 0 });
+    suite.run({ bail: 2, timeout: 0, sequential: false });
     expect(suite.getStats().done).toBe(3);
   });
 
@@ -265,6 +265,19 @@ describe('Suite', () => {
       expect((await promise).status).toBe(Status.Passed);
       expect(pass).toHaveBeenCalledTimes(1);
       expect(end).toHaveBeenCalledTimes(1);
+    });
+
+    it('should run sequentially', () => {
+      const suite = new Suite('Suite', defaultOpts, null);
+      const child = new PassingRunnable('desc', defaultOpts, suite);
+      const child1 = new PassingRunnable('desc', defaultOpts, suite);
+      const child2 = new PassingRunnable('desc', defaultOpts, suite);
+      const child3 = new PassingRunnable('desc', defaultOpts, suite);
+      const child4 = new PassingRunnable('desc', defaultOpts, suite);
+      suite.addChildren(child, child1, child2, child3, child4);
+
+      suite.run({ bail: 2, timeout: 0, sequential: true });
+      expect(suite.getStats().done).toBe(5);
     });
 
     it('should fail', async () => {

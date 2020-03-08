@@ -156,7 +156,13 @@ export default class Suite extends Runnable {
       })());
     }
 
-    await Promise.all(promises);
+    if (options && options.sequential) {
+      for (const promise of promises) {
+        await promise;
+      }
+    } else {
+      await Promise.all(promises);
+    }
 
     await this.invokeAsyncHook('afterAll');
     if (this.failed) {

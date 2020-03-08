@@ -2,11 +2,13 @@ import Suite, { Stats } from './suite';
 
 export interface RunOptions {
   bail: boolean | number;
+  sequential: boolean;
   timeout: number;
 }
 
 export const runnerDefaults: RunOptions = {
   bail: false,
+  sequential: false,
   timeout: 10000,
 };
 
