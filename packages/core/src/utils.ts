@@ -1,4 +1,4 @@
-export async function asyncTimeout(ms: number, promise: () => Promise<any>): Promise<any> {
+export async function asyncTimeout<T>(ms: number, promise: () => Promise<T>): Promise<T> {
   let id: NodeJS.Timeout;
   const timeout = new Promise((reject) => {
     id = setTimeout(() => {
