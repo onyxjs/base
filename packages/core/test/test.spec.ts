@@ -28,7 +28,8 @@ describe('Test', () => {
   });
 
   it('should return isDone', () => {
-    const test = new Test('test', () => null, defaultOpts, null);
+    const fn = jest.fn();
+    const test = new Test('test', fn, defaultOpts, null);
 
     expect(test.isDone()).toBeFalsy();
     test.run();
@@ -98,11 +99,13 @@ describe('Test', () => {
   });
 
   it('should check if is test', () => {
+    const fn = jest.fn();
+
     expect(isTest(null)).toBeFalsy();
     expect(isTest({})).toBeFalsy();
     expect(isTest(new Runnable('not a test', defaultOpts, null))).toBeFalsy();
     expect(isTest(new Suite('not a test', defaultOpts, null))).toBeFalsy();
-    expect(isTest(new Test('a test', () => null, defaultOpts, null))).toBeTruthy();
+    expect(isTest(new Test('a test', fn, defaultOpts, null))).toBeTruthy();
   });
 
   describe('async', () => {
@@ -142,6 +145,40 @@ describe('Test', () => {
 
       expect((await test.asyncRun()).status).toBe(Status.Failed);
 
+      expect(start).toHaveBeenCalledTimes(1);
+      expect(fail).toHaveBeenCalledTimes(1);
+      expect(end).toHaveBeenCalledTimes(1);
+    });
+
+    it('should skip', async () => {
+      const test = new Test('test', jest.fn(), { skip: true, todo: false}, null);
+
+      expect((await test.asyncRun()).status).toBe('skipped');
+    });
+
+    it('should timeout', async () => {
+      jest.useRealTimers();
+      const fn = () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve('Shouldn\'t resolve');
+          }, 1001);
+        });
+      };
+
+      const test = new Test('test', fn, defaultOpts, null);
+
+      const start = jest.fn();
+      test.on('start', start);
+      const fail = jest.fn();
+      test.on('fail', fail);
+      const end = jest.fn();
+      test.on('end', end);
+
+      const result = await test.asyncRun({ timeout: 1000 });
+
+      expect(result.status).toBe('failed');
+      expect(result.messages[0]).toBe('Test has timed out: 1000ms');
       expect(start).toHaveBeenCalledTimes(1);
       expect(fail).toHaveBeenCalledTimes(1);
       expect(end).toHaveBeenCalledTimes(1);

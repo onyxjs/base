@@ -44,19 +44,43 @@ export default class Test extends Runnable {
    * @public
    * @return {Promise<Result>}
    */
-  public async asyncRun(options?: Partial<RunOptions>): Promise<Result> { // TODO: timeout
+  public async asyncRun(options?: Partial<RunOptions>): Promise<any> {
     if (this.options.skip || this.options.todo) {
       return this.doSkip(this.options.todo);
     }
 
     this.doStart();
 
-    try {
-      this.fn();
-    } catch (error) {
-      return this.doFail(error);
-    }
+    if (options && options.timeout) {
+      let timeoutID: NodeJS.Timeout;
+      return new Promise(async (resolve, reject) => {
+        timeoutID = setTimeout(() => {
+          reject(`Test has timed out: ${options.timeout}ms`);
+        }, options.timeout!);
 
-    return this.doPass();
+        let result;
+        try {
+          result = await this.fn();
+        } catch (error) {
+          reject(error);
+        }
+
+        return resolve();
+      }).then(() => {
+        clearTimeout(timeoutID);
+        return this.doPass();
+      }).catch((error) => {
+        clearTimeout(timeoutID);
+        return this.doFail(error);
+      });
+    } else {
+      try {
+        this.fn();
+      } catch (error) {
+        return this.doFail(error);
+      }
+
+      return this.doPass();
+    }
   }
 }
