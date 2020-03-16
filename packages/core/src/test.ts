@@ -3,6 +3,8 @@ import Runnable, { isRunnable, RunnableOptions, RunnableTypes } from './runnable
 import { RunOptions } from './runner';
 import Suite from './suite';
 
+// export type testFn = () => void | Promise<any>;
+
 export const isTest = (v: unknown): v is Test => {
   if (!isRunnable(v)) { return false; }
   return v.type === RunnableTypes.Test;
@@ -53,26 +55,29 @@ export default class Test extends Runnable {
 
     if (options && options.timeout) {
       let timeoutID: NodeJS.Timeout;
-      return new Promise(async (resolve, reject) => {
+      const test = new Promise(async (resolve, reject) => {
         timeoutID = setTimeout(() => {
           reject(`Test has timed out: ${options.timeout}ms`);
         }, options.timeout!);
 
-        let result;
         try {
-          result = await this.fn();
+          await this.fn();
         } catch (error) {
+          clearTimeout(timeoutID);
           reject(error);
         }
 
-        return resolve();
-      }).then(() => {
         clearTimeout(timeoutID);
-        return this.doPass();
-      }).catch((error) => {
-        clearTimeout(timeoutID);
-        return this.doFail(error);
+        resolve();
       });
+
+      try {
+        await test;
+      } catch (error) {
+        return this.doFail(error);
+      }
+
+      return this.doPass();
     } else {
       try {
         this.fn();
