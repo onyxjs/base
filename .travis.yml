@@ -11,6 +11,6 @@ before_script:
   - yarn global add codecov
 script:
   - lerna run lint
-  - lerna run test -- --coverage
+  - lerna run test -- --coverage --updateSnapshot
   - codecov
   
