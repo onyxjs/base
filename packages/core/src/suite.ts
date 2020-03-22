@@ -147,23 +147,43 @@ export default class Suite extends Runnable {
     const promises: Array<Promise<void>> = [];
     for (const child of this.children) {
       promises.push((async () => {
-        await this.invokeAsyncHook('beforeEach');
-        const result = await child.asyncRun(options);
-        this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
-        await this.invokeAsyncHook('afterEach');
+        let result;
+        try {
+          await this.invokeAsyncHook('beforeEach');
+          result = await child.asyncRun(options);
+          this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
+          await this.invokeAsyncHook('afterEach');
+        } catch (error) {
+          throw new Error(error);
+        }
 
         if (result.status === Status.Failed) {
           ++this.failed;
+          if (typeof options.bail === 'number' && this.failed >= options.bail) {
+            throw new Error('bailed');
+          } else if (options.bail === true && this.failed >= 1) {
+            throw new Error('bailed');
+          }
         }
       })());
     }
 
     if (options.sequential) {
       for (const promise of promises) {
-        await promise;
+        try {
+          await promise;
+        } catch (error) {
+          await this.invokeAsyncHook('afterAll');
+          return this.doFail(error);
+        }
       }
     } else {
-      await Promise.all(promises);
+      try {
+        await Promise.all(promises);
+      } catch (error) {
+        await this.invokeAsyncHook('afterAll');
+        return this.doFail(error);
+      }
     }
 
     await this.invokeAsyncHook('afterAll');

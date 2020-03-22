@@ -177,7 +177,7 @@ describe('Suite', () => {
     expect(isSuite(null)).toBeFalsy();
     expect(isSuite({})).toBeFalsy();
     expect(isSuite(new Runnable('not a suite', defaultOpts, null))).toBeFalsy();
-    expect(isSuite(new Test('not a suite', () => null, defaultOpts, null))).toBeFalsy();
+    expect(isSuite(new Test('not a suite', jest.fn(), defaultOpts, null))).toBeFalsy();
     expect(isSuite(new Suite('a suite', defaultOpts, null))).toBeTruthy();
   });
 
@@ -211,7 +211,7 @@ describe('Suite', () => {
 
     const parent = new Suite('parent', {}, null);
     parent.addChildren(
-      new Test('passing', () => null, {}, parent),
+      new Test('passing', jest.fn(), {}, parent),
       new Test('failing', () => { throw new Error('Fail'); }, {}, parent),
     );
     const calls: string[] = [];
@@ -247,7 +247,7 @@ describe('Suite', () => {
 
   describe('async', () => { // TODO: check this for races
     it('should pass', async () => {
-      const child = new Test('child', () => null, defaultOpts, null);
+      const child = new Test('child', jest.fn(), defaultOpts, null);
       const parent = new Suite('parent', defaultOpts, null);
       parent.addChildren(child);
 
@@ -305,7 +305,38 @@ describe('Suite', () => {
       expect(end).toHaveBeenCalledTimes(1);
     });
 
-    it.todo('should bail out');
+    it('should bail out', async () => {
+      jest.useRealTimers();
+
+      const err = new Error('FAIL!');
+      const parent = new Suite('parent', defaultOpts, null);
+      const parent2 = new Suite('parent2', defaultOpts, null);
+      const fn = () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve('Shouldn\'t resolve');
+          }, 1001);
+        });
+      };
+
+      const start = jest.fn();
+      parent.on('start', start);
+      const skip = jest.fn();
+      parent.on('skip', skip);
+      const end = jest.fn();
+      parent.on('end', end);
+
+      const failingChild = new Test('fail', () => { throw err; }, defaultOpts, null);
+      const passingChild = new Test('pass', fn, defaultOpts, null);
+
+      parent.addChildren(failingChild, failingChild, passingChild, passingChild, passingChild, passingChild);
+      parent2.addChildren(failingChild, failingChild, passingChild, passingChild, passingChild, passingChild);
+
+      expect((await parent.asyncRun({ bail: 2, sequential: true })).status).toBe(Status.Failed);
+      expect(parent.getStats().done).toBe(2);
+      expect((await parent2.asyncRun({ bail: 2 })).status).toBe(Status.Failed);
+      expect(parent2.getStats().done).toBe(2);
+    });
 
     it('should skip', async () => {
       const parent = new Suite('parent', { skip: true }, null);
@@ -330,7 +361,7 @@ describe('Suite', () => {
 
       const parent = new Suite('parent', {}, null);
       parent.addChildren(
-        new Test('passing', () => null, {}, parent),
+        new Test('passing', jest.fn(), {}, parent),
         new Test('failing', () => { throw new Error('Fail'); }, {}, parent),
       );
       const calls: string[] = [];
@@ -368,4 +399,9 @@ describe('Suite', () => {
       console.error = error;
     });
   });
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.log('Unhandled Rejection at:', promise, 'reason:', reason);
+  // Application specific logging, throwing an error, or other logic here
 });
