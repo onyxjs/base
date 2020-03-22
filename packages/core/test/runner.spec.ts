@@ -4,7 +4,7 @@ import Runner, { normalizeRunOptions, RunOptions } from '../src/runner';
 import Suite, { rootSymbol } from '../src/suite';
 import Test from '../src/test';
 
-const NOOP = () => null;
+const NOOP = jest.fn();
 
 describe('runner', () => {
   it('should normalize passed options', () => {

@@ -62,6 +62,7 @@ Suite {
       "start": 0,
       "time": 0,
       "type": "suite",
+      Symbol(kCapture): false,
       Symbol(isRunnable): true,
     },
   ],
@@ -85,6 +86,7 @@ Suite {
   "start": 0,
   "time": 0,
   "type": "suite",
+  Symbol(kCapture): false,
   Symbol(isRunnable): true,
   Symbol(isRoot): true,
 }
@@ -147,6 +149,7 @@ Test {
       "start": 0,
       "time": 0,
       "type": "suite",
+      Symbol(kCapture): false,
       Symbol(isRunnable): true,
       Symbol(isRoot): true,
     },
@@ -157,6 +160,7 @@ Test {
     "start": 0,
     "time": 0,
     "type": "suite",
+    Symbol(kCapture): false,
     Symbol(isRunnable): true,
   },
   "result": Result {
@@ -166,6 +170,7 @@ Test {
   "start": 0,
   "time": 0,
   "type": "test",
+  Symbol(kCapture): false,
   Symbol(isRunnable): true,
 }
 `;
@@ -215,6 +220,7 @@ Suite {
     "start": 0,
     "time": 0,
     "type": "suite",
+    Symbol(kCapture): false,
     Symbol(isRunnable): true,
     Symbol(isRoot): true,
   },
@@ -225,6 +231,7 @@ Suite {
   "start": 0,
   "time": 0,
   "type": "suite",
+  Symbol(kCapture): false,
   Symbol(isRunnable): true,
 }
 `;
@@ -286,6 +293,7 @@ Test {
       "start": 0,
       "time": 0,
       "type": "suite",
+      Symbol(kCapture): false,
       Symbol(isRunnable): true,
       Symbol(isRoot): true,
     },
@@ -296,6 +304,7 @@ Test {
     "start": 0,
     "time": 0,
     "type": "suite",
+    Symbol(kCapture): false,
     Symbol(isRunnable): true,
   },
   "result": Result {
@@ -305,6 +314,7 @@ Test {
   "start": 0,
   "time": 0,
   "type": "test",
+  Symbol(kCapture): false,
   Symbol(isRunnable): true,
 }
 `;
@@ -366,6 +376,7 @@ Test {
       "start": 0,
       "time": 0,
       "type": "suite",
+      Symbol(kCapture): false,
       Symbol(isRunnable): true,
       Symbol(isRoot): true,
     },
@@ -376,6 +387,7 @@ Test {
     "start": 0,
     "time": 0,
     "type": "suite",
+    Symbol(kCapture): false,
     Symbol(isRunnable): true,
   },
   "result": Result {
@@ -385,6 +397,7 @@ Test {
   "start": 0,
   "time": 0,
   "type": "test",
+  Symbol(kCapture): false,
   Symbol(isRunnable): true,
 }
 `;
@@ -418,6 +431,7 @@ Suite {
           "start": 0,
           "time": 0,
           "type": "test",
+          Symbol(kCapture): false,
           Symbol(isRunnable): true,
         },
         Test {
@@ -438,6 +452,7 @@ Suite {
           "start": 0,
           "time": 0,
           "type": "test",
+          Symbol(kCapture): false,
           Symbol(isRunnable): true,
         },
         Suite {
@@ -463,6 +478,7 @@ Suite {
               "start": 0,
               "time": 0,
               "type": "test",
+              Symbol(kCapture): false,
               Symbol(isRunnable): true,
             },
             Test {
@@ -483,6 +499,7 @@ Suite {
               "start": 0,
               "time": 0,
               "type": "test",
+              Symbol(kCapture): false,
               Symbol(isRunnable): true,
             },
           ],
@@ -506,6 +523,7 @@ Suite {
           "start": 0,
           "time": 0,
           "type": "suite",
+          Symbol(kCapture): false,
           Symbol(isRunnable): true,
         },
         Suite {
@@ -531,6 +549,7 @@ Suite {
               "start": 0,
               "time": 0,
               "type": "test",
+              Symbol(kCapture): false,
               Symbol(isRunnable): true,
             },
             Test {
@@ -551,6 +570,7 @@ Suite {
               "start": 0,
               "time": 0,
               "type": "test",
+              Symbol(kCapture): false,
               Symbol(isRunnable): true,
             },
             Suite {
@@ -576,6 +596,7 @@ Suite {
                   "start": 0,
                   "time": 0,
                   "type": "test",
+                  Symbol(kCapture): false,
                   Symbol(isRunnable): true,
                 },
                 Test {
@@ -596,6 +617,7 @@ Suite {
                   "start": 0,
                   "time": 0,
                   "type": "test",
+                  Symbol(kCapture): false,
                   Symbol(isRunnable): true,
                 },
               ],
@@ -619,6 +641,7 @@ Suite {
               "start": 0,
               "time": 0,
               "type": "suite",
+              Symbol(kCapture): false,
               Symbol(isRunnable): true,
             },
             Suite {
@@ -644,6 +667,7 @@ Suite {
                   "start": 0,
                   "time": 0,
                   "type": "test",
+                  Symbol(kCapture): false,
                   Symbol(isRunnable): true,
                 },
                 Test {
@@ -664,6 +688,7 @@ Suite {
                   "start": 0,
                   "time": 0,
                   "type": "test",
+                  Symbol(kCapture): false,
                   Symbol(isRunnable): true,
                 },
               ],
@@ -687,6 +712,7 @@ Suite {
               "start": 0,
               "time": 0,
               "type": "suite",
+              Symbol(kCapture): false,
               Symbol(isRunnable): true,
             },
           ],
@@ -710,6 +736,7 @@ Suite {
           "start": 0,
           "time": 0,
           "type": "suite",
+          Symbol(kCapture): false,
           Symbol(isRunnable): true,
         },
       ],
@@ -733,6 +760,7 @@ Suite {
       "start": 0,
       "time": 0,
       "type": "suite",
+      Symbol(kCapture): false,
       Symbol(isRunnable): true,
     },
   ],
@@ -756,6 +784,7 @@ Suite {
   "start": 0,
   "time": 0,
   "type": "suite",
+  Symbol(kCapture): false,
   Symbol(isRunnable): true,
   Symbol(isRoot): true,
 }
