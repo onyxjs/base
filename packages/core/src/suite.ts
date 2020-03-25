@@ -21,6 +21,14 @@ export interface Stats {
   time: number;
 }
 
+export class BailError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'BailError';
+  }
+}
+
+/* tslint:disable:max-classes-per-file */
 export default class Suite extends Runnable {
   public children: Runnable[];
   public [rootSymbol]?: boolean;
@@ -154,6 +162,7 @@ export default class Suite extends Runnable {
           this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
           await this.invokeAsyncHook('afterEach');
         } catch (error) {
+          ++this.failed;
           throw new Error(error);
         }
 
@@ -165,17 +174,14 @@ export default class Suite extends Runnable {
 
     if (options.sequential) {
       for (const promise of promises) {
-        try {
-          await promise;
-        } catch (error) {
-          await this.invokeAsyncHook('afterAll');
-          return this.doFail(error);
-        }
+        await promise;
 
         if (options && options.bail) {
           if (typeof options.bail === 'number' && this.failed >= options.bail) {
+            await this.invokeAsyncHook('afterAll');
             return this.doFail();
           } else if (options.bail === true && this.failed >= 1) {
+            await this.invokeAsyncHook('afterAll');
             return this.doFail();
           }
         }
@@ -183,17 +189,13 @@ export default class Suite extends Runnable {
     } else {
       try {
         await Promise.all(promises.map(async (p) => {
-          try {
-            await p;
-          } catch (error) {
-            throw new Error(error);
-          }
+          await p;
 
           if (options && options.bail) {
             if (typeof options.bail === 'number' && this.failed >= options.bail) {
-              throw new Error('bailed');
+              throw new BailError('bailed');
             } else if (options.bail === true && this.failed) {
-              throw new Error('bailed');
+              throw new BailError('bailed');
             }
           }
         }));
