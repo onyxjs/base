@@ -159,11 +159,6 @@ export default class Suite extends Runnable {
 
         if (result.status === Status.Failed) {
           ++this.failed;
-          if (typeof options.bail === 'number' && this.failed >= options.bail) {
-            throw new Error('bailed');
-          } else if (options.bail === true && this.failed >= 1) {
-            throw new Error('bailed');
-          }
         }
       })());
     }
@@ -176,10 +171,32 @@ export default class Suite extends Runnable {
           await this.invokeAsyncHook('afterAll');
           return this.doFail(error);
         }
+
+        if (options && options.bail) {
+          if (typeof options.bail === 'number' && this.failed >= options.bail) {
+            return this.doFail();
+          } else if (options.bail === true && this.failed >= 1) {
+            return this.doFail();
+          }
+        }
       }
     } else {
       try {
-        await Promise.all(promises);
+        await Promise.all(promises.map(async (p) => {
+          try {
+            await p;
+          } catch (error) {
+            throw new Error(error);
+          }
+
+          if (options && options.bail) {
+            if (typeof options.bail === 'number' && this.failed >= options.bail) {
+              throw new Error('bailed');
+            } else if (options.bail === true && this.failed) {
+              throw new Error('bailed');
+            }
+          }
+        }));
       } catch (error) {
         await this.invokeAsyncHook('afterAll');
         return this.doFail(error);
