@@ -168,16 +168,19 @@ export default class Suite extends Runnable {
 
     if (options.sequential) {
       for (const promise of promises) {
-        await promise;
+        try {
+          await promise;
 
-        if (options && options.bail) {
-          if (typeof options.bail === 'number' && this.failed >= options.bail) {
-            await this.invokeAsyncHook('afterAll');
-            return this.doFail();
-          } else if (options.bail === true && this.failed >= 1) {
-            await this.invokeAsyncHook('afterAll');
-            return this.doFail();
+          if (options && options.bail) {
+            if (typeof options.bail === 'number' && this.failed >= options.bail) {
+              throw new BailError('bailed');
+            } else if (options.bail === true && this.failed >= 1) {
+              throw new BailError('bailed');
+            }
           }
+        } catch (error) {
+          await this.invokeAsyncHook('afterAll');
+          return this.doFail(error);
         }
       }
     } else {
@@ -188,7 +191,7 @@ export default class Suite extends Runnable {
           if (options && options.bail) {
             if (typeof options.bail === 'number' && this.failed >= options.bail) {
               throw new BailError('bailed');
-            } else if (options.bail === true && this.failed) {
+            } else if (options.bail === true && this.failed >= 1) {
               throw new BailError('bailed');
             }
           }
