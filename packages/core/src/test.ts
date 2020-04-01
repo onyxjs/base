@@ -3,7 +3,7 @@ import Runnable, { isRunnable, RunnableOptions, RunnableTypes } from './runnable
 import { RunOptions } from './runner';
 import Suite from './suite';
 
-// export type testFn = () => void | Promise<any>;
+export type testFn = () => void | Promise<any>;
 
 export const isTest = (v: unknown): v is Test => {
   if (!isRunnable(v)) { return false; }
@@ -11,34 +11,13 @@ export const isTest = (v: unknown): v is Test => {
 };
 
 export default class Test extends Runnable {
-  public fn: () => void;
+  public fn: testFn;
   public type = RunnableTypes.Test;
 
-  constructor(description: string, fn: () => void, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
+  constructor(description: string, fn: testFn, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
     super(description, options, parent);
     this.fn = fn;
     this.parent = parent;
-  }
-
-  /**
-   * Run a `Test` instance return `Runnable` status:
-   * @public
-   * @return {Result}
-   */
-  public run(options?: Partial<RunOptions>): Result {
-    if (this.options.skip || this.options.todo) {
-      return this.doSkip(this.options.todo);
-    }
-
-    this.doStart();
-
-    try {
-      this.fn();
-    } catch (error) {
-      return this.doFail(error);
-    }
-
-    return this.doPass();
   }
 
   /**
@@ -46,7 +25,7 @@ export default class Test extends Runnable {
    * @public
    * @return {Promise<Result>}
    */
-  public async asyncRun(options?: Partial<RunOptions>): Promise<any> {
+  public async asyncRun(options?: Partial<RunOptions>): Promise<Result> {
     if (this.options.skip || this.options.todo) {
       return this.doSkip(this.options.todo);
     }
