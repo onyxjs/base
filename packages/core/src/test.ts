@@ -25,7 +25,7 @@ export default class Test extends Runnable {
    * @public
    * @return {Promise<Result>}
    */
-  public async asyncRun(options?: Partial<RunOptions>): Promise<Result> {
+  public async run(options?: Partial<RunOptions>): Promise<Result> {
     if (this.options.skip || this.options.todo) {
       return this.doSkip(this.options.todo);
     }

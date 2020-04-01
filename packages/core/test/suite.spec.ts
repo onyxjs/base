@@ -11,7 +11,7 @@ describe('Suite', () => {
 
   // tslint:disable-next-line:max-classes-per-file
   class FailingRunnable extends Runnable {
-    public run() {
+    public async run() {
       this.result.addMessages('FAIL!');
       this.result.status = Status.Failed;
       return this.result;
@@ -20,7 +20,7 @@ describe('Suite', () => {
 
   // tslint:disable-next-line:max-classes-per-file
   class PassingRunnable extends Runnable {
-    public run() {
+    public async run() {
       this.result.addMessages('OK');
       this.result.status = Status.Passed;
       return this.result;
@@ -39,7 +39,7 @@ describe('Suite', () => {
     const end = jest.fn();
     parent.on('end', end);
 
-    const promise = parent.asyncRun();
+    const promise = parent.run();
 
     expect(start).toHaveBeenCalledTimes(1);
 
@@ -57,7 +57,7 @@ describe('Suite', () => {
     const child4 = new PassingRunnable('desc', defaultOpts, suite);
     suite.addChildren(child, child1, child2, child3, child4);
 
-    await suite.asyncRun({ sequential: true });
+    await suite.run({ sequential: true });
     expect(suite.getStats().done).toBe(5);
   });
 
@@ -78,7 +78,7 @@ describe('Suite', () => {
     const end = jest.fn();
     parent.on('end', end);
 
-    expect((await parent.asyncRun()).status).toBe(Status.Failed);
+    expect((await parent.run()).status).toBe(Status.Failed);
 
     expect(fn).toHaveBeenCalledTimes(1);
     expect(start).toHaveBeenCalledTimes(1);
@@ -127,25 +127,25 @@ describe('Suite', () => {
     parent3.addChildren(failingChild, passingChild, passingChild, failingChild2, passingChild, passingChild);
     parent4.addChildren(failingChild, failingChild2, failingChild, passingChild, passingChild, passingChild);
 
-    expect((await parent.asyncRun({ bail: 2, sequential: true })).status).toBe(Status.Failed);
+    expect((await parent.run({ bail: 2, sequential: true })).status).toBe(Status.Failed);
     expect(parent.getStats().done).toBe(2);
     expect(start).toHaveBeenCalledTimes(1);
     expect(end).toHaveBeenCalledTimes(1);
     expect(fail).toHaveBeenCalledTimes(1);
 
-    expect((await parent2.asyncRun({ bail: true })).status).toBe(Status.Failed);
+    expect((await parent2.run({ bail: true })).status).toBe(Status.Failed);
     expect(parent2.getStats().done).toBe(1);
     expect(start).toHaveBeenCalledTimes(1);
     expect(end).toHaveBeenCalledTimes(1);
     expect(fail).toHaveBeenCalledTimes(1);
 
-    expect((await parent3.asyncRun({ bail: true, sequential: true })).status).toBe(Status.Failed);
+    expect((await parent3.run({ bail: true, sequential: true })).status).toBe(Status.Failed);
     expect(parent3.getStats().done).toBe(1);
     expect(start).toHaveBeenCalledTimes(1);
     expect(end).toHaveBeenCalledTimes(1);
     expect(fail).toHaveBeenCalledTimes(1);
 
-    expect((await parent4.asyncRun({ bail: 2 })).status).toBe(Status.Failed);
+    expect((await parent4.run({ bail: 2 })).status).toBe(Status.Failed);
     expect(parent4.getStats().done).toBe(2);
     expect(start).toHaveBeenCalledTimes(1);
     expect(end).toHaveBeenCalledTimes(1);
@@ -162,7 +162,7 @@ describe('Suite', () => {
     const end = jest.fn();
     parent.on('end', end);
 
-    const promise = parent.asyncRun();
+    const promise = parent.run();
 
     expect(skip).toHaveBeenCalledTimes(1);
     expect(end).toHaveBeenCalledTimes(1);
@@ -200,7 +200,7 @@ describe('Suite', () => {
     );
 
     try {
-      await parent.asyncRun();
+      await parent.run();
     } catch {
       // noop
     }

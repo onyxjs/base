@@ -17,7 +17,7 @@ describe('Test', () => {
     test.on('end', end);
 
     expect(fn).toHaveBeenCalledTimes(0);
-    expect(await test.asyncRun()).toMatchSnapshot();
+    expect(await test.run()).toMatchSnapshot();
     expect(fn).toHaveBeenCalledTimes(1);
 
     expect(start).toHaveBeenCalledTimes(1);
@@ -39,7 +39,7 @@ describe('Test', () => {
     const end = jest.fn();
     test.on('end', end);
 
-    expect((await test.asyncRun()).status).toBe(Status.Failed);
+    expect((await test.run()).status).toBe(Status.Failed);
 
     expect(start).toHaveBeenCalledTimes(1);
     expect(fail).toHaveBeenCalledTimes(1);
@@ -49,7 +49,7 @@ describe('Test', () => {
   it('should skip', async () => {
     const test = new Test('test', jest.fn(), { skip: true, todo: false}, null);
 
-    expect((await test.asyncRun()).status).toBe('skipped');
+    expect((await test.run()).status).toBe('skipped');
   });
 
   it('should timeout', async () => {
@@ -71,7 +71,7 @@ describe('Test', () => {
     const end = jest.fn();
     test.on('end', end);
 
-    const result = await test.asyncRun({ timeout: 1000 });
+    const result = await test.run({ timeout: 1000 });
 
     expect(result.status).toBe('failed');
     expect(result.messages[0]).toBe('Test has timed out: 1000ms');

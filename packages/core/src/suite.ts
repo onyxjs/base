@@ -102,7 +102,7 @@ export default class Suite extends Runnable {
    * @param {Partial<RunOptions>} options
    * @returns {Promise<Result>}
    */
-  public async asyncRun(options?: Partial<RunOptions>): Promise<Result> {
+  public async run(options?: Partial<RunOptions>): Promise<Result> {
     options = normalizeRunOptions(options);
 
     if (this.options.skip || this.options.todo) {
@@ -116,7 +116,7 @@ export default class Suite extends Runnable {
     for (const child of this.children) {
       promises.push((async () => {
           await this.invokeAsyncHook('beforeEach');
-          const result = await child.asyncRun(options);
+          const result = await child.run(options);
           this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
           await this.invokeAsyncHook('afterEach');
 

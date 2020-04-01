@@ -17,14 +17,13 @@ describe('Runnable', () => {
     const parent = new Suite('parent', defaultSuiteOpts, null);
     parent[rootSymbol] = true;
     const child = new Runnable('child', defaultOpts, parent);
-
     expect(child.getFullDescription()).toBe('child');
   });
 
   it('should run asynchronously', async () => {
     const runnable = new Runnable('runnable', defaultOpts, null);
 
-    expect((await runnable.asyncRun()).status).toBe(Status.Skipped);
+    expect((await runnable.run()).status).toBe(Status.Skipped);
   });
 
   describe('events', () => {

@@ -38,22 +38,7 @@ describe('runner', () => {
       this.cb = cb || NOOP;
     }
 
-    public run(options?: RunOptions) {
-      if (this.options.skip || this.options.todo) {
-        return this.doSkip(this.options.todo);
-      }
-
-      this.doStart();
-
-      this.result.addMessages('OK');
-      this.result.status = Status.Passed;
-
-      this.cb(options);
-
-      return this.doPass();
-    }
-
-    public async asyncRun(options?: RunOptions) {
+    public async run(options?: RunOptions) {
       if (this.options.skip || this.options.todo) {
         return this.doSkip(this.options.todo);
       }
@@ -87,7 +72,7 @@ describe('runner', () => {
 
     const runner = new Runner(rootSuite, opts);
 
-    await runner.asyncRun();
+    await runner.run();
 
     expect(cb1).toHaveBeenCalledWith(opts);
     expect(cb2).toHaveBeenCalledWith(opts);
@@ -107,7 +92,7 @@ describe('runner', () => {
 
     expect(runner.stats.pending).toBe(2);
 
-    expect(await runner.asyncRun()).toBe(runner.stats);
+    expect(await runner.run()).toBe(runner.stats);
 
     expect(runner.stats.passed).toBe(2);
   });
