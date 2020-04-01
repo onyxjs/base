@@ -23,25 +23,6 @@ describe('runner', () => {
     });
   });
 
-  it('should run a suite and children', () => {
-    const rootSuite = new Suite('root', {}, null);
-    const childSuite = new Suite('child suite', {}, null);
-    const childTest = new Test('child test', NOOP, {}, null);
-    const childTestTwo = new Test('child test two', NOOP, {}, null);
-
-    childSuite.addChildren(childTest, childTestTwo);
-    rootSuite.addChildren(childSuite);
-    rootSuite[rootSymbol] = true;
-
-    const runner = new Runner(rootSuite);
-
-    expect(runner.stats.pending).toBe(2);
-
-    expect(runner.run()).toBe(runner.stats);
-
-    expect(runner.stats.passed).toBe(2);
-  });
-
   // tslint:disable-next-line:max-classes-per-file
   class TimeoutTestRunnable extends Runnable {
     private cb: (options?: RunOptions) => void;
@@ -87,7 +68,8 @@ describe('runner', () => {
       return this.doPass();
     }
   }
-  it('should pass run options to children', () => {
+
+  it('should pass run options to children', async () => {
     const opts = { bail: true, timeout: 1234, sequential: true };
 
     const rootSuite = new Suite('root', {}, null);
@@ -105,54 +87,28 @@ describe('runner', () => {
 
     const runner = new Runner(rootSuite, opts);
 
-    runner.run();
+    await runner.asyncRun();
 
     expect(cb1).toHaveBeenCalledWith(opts);
     expect(cb2).toHaveBeenCalledWith(opts);
   });
 
-  describe('async', () => {
-    it('should pass run options to children', async () => {
-      const opts = { bail: true, timeout: 1234, sequential: true };
+  it('should run a suite and children', async () => {
+    const rootSuite = new Suite('root', {}, null);
+    const childSuite = new Suite('child suite', {}, null);
+    const childTest = new Test('child test', NOOP, {}, null);
+    const childTestTwo = new Test('child test two', NOOP, {}, null);
 
-      const rootSuite = new Suite('root', {}, null);
-      const childSuite = new Suite('child', {}, null);
-      const cb1 = jest.fn();
-      childSuite.addChildren(new TimeoutTestRunnable('1', {}, null, cb1));
+    childSuite.addChildren(childTest, childTestTwo);
+    rootSuite.addChildren(childSuite);
+    rootSuite[rootSymbol] = true;
 
-      const grandchildSuite = new Suite('grandchild', {}, null);
-      const cb2 = jest.fn();
-      grandchildSuite.addChildren(new TimeoutTestRunnable('2', {}, null, cb2));
-      childSuite.addChildren(grandchildSuite);
+    const runner = new Runner(rootSuite);
 
-      rootSuite.addChildren(childSuite);
-      rootSuite[rootSymbol] = true;
+    expect(runner.stats.pending).toBe(2);
 
-      const runner = new Runner(rootSuite, opts);
+    expect(await runner.asyncRun()).toBe(runner.stats);
 
-      await runner.asyncRun();
-
-      expect(cb1).toHaveBeenCalledWith(opts);
-      expect(cb2).toHaveBeenCalledWith(opts);
-    });
-
-    it('should run a suite and children', async () => {
-      const rootSuite = new Suite('root', {}, null);
-      const childSuite = new Suite('child suite', {}, null);
-      const childTest = new Test('child test', NOOP, {}, null);
-      const childTestTwo = new Test('child test two', NOOP, {}, null);
-
-      childSuite.addChildren(childTest, childTestTwo);
-      rootSuite.addChildren(childSuite);
-      rootSuite[rootSymbol] = true;
-
-      const runner = new Runner(rootSuite);
-
-      expect(runner.stats.pending).toBe(2);
-
-      expect(await runner.asyncRun()).toBe(runner.stats);
-
-      expect(runner.stats.passed).toBe(2);
-    });
+    expect(runner.stats.passed).toBe(2);
   });
 });

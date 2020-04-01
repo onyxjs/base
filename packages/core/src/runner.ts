@@ -30,13 +30,6 @@ export default class Runner {
     this.stats = suite.getStats();
   }
 
-  public run() {
-    this.rootSuite.run(this.options);
-
-    this.stats = this.rootSuite.getStats();
-    return this.stats;
-  }
-
   public async asyncRun() {
     await this.rootSuite.asyncRun(this.options);
 
