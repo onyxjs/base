@@ -1,81 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Suite async should invoke hooks 1`] = `
-Array [
-  "beforeAll1",
-  "beforeAll2",
-  "beforeEach1",
-  "beforeEach1",
-  "beforeEach2",
-  "beforeEach2",
-  "afterEach1",
-  "afterEach1",
-  "afterEach2",
-  "afterEach2",
-  "afterAll1",
-  "afterAll2",
-]
-`;
-
-exports[`Suite should collect stats 1`] = `
-Object {
-  "done": 0,
-  "failed": 0,
-  "passed": 0,
-  "pending": 2,
-  "running": 0,
-  "skipped": 0,
-  "time": Any<Number>,
-  "todo": 0,
-  "total": 2,
-}
-`;
-
-exports[`Suite should collect stats 2`] = `
-Object {
-  "done": 2,
-  "failed": 1,
-  "passed": 1,
-  "pending": 0,
-  "running": 0,
-  "skipped": 0,
-  "time": Any<Number>,
-  "todo": 0,
-  "total": 2,
-}
-`;
-
-exports[`Suite should fail and collect messages 1`] = `
-Result {
-  "internalMessages": Array [
-    "desc: FAIL!",
-  ],
-  "internalStatus": "failed",
-}
-`;
-
 exports[`Suite should invoke hooks 1`] = `
 Array [
   "beforeAll1",
   "beforeAll2",
   "beforeEach1",
-  "beforeEach2",
-  "afterEach1",
-  "afterEach2",
   "beforeEach1",
   "beforeEach2",
+  "beforeEach2",
   "afterEach1",
+  "afterEach1",
+  "afterEach2",
   "afterEach2",
   "afterAll1",
   "afterAll2",
 ]
-`;
-
-exports[`Suite should pass and collect messages 1`] = `
-Result {
-  "internalMessages": Array [
-    "desc: OK",
-  ],
-  "internalStatus": "passed",
-}
 `;

@@ -97,46 +97,6 @@ export default class Suite extends Runnable {
   }
 
   /**
-   * @description Runs a `Suite` instance returning a `Result`:
-   * @public
-   * @returns {Result}
-   */
-  public run(options?: Partial<RunOptions>): Result {
-    options = normalizeRunOptions(options);
-
-    if (this.options.skip || this.options.todo) {
-      return this.doSkip(this.options.todo);
-    }
-
-    this.doStart();
-    this.invokeHook('beforeAll');
-
-    for (const child of this.children) {
-      this.invokeHook('beforeEach');
-      const result = child.run(options);
-      this.invokeHook('afterEach');
-      this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
-      if (result.status === Status.Failed) {
-        ++this.failed;
-
-        if (typeof options.bail === 'number' && this.failed >= options.bail) {
-          this.invokeHook('afterAll');
-          return this.doFail();
-        } else if (options.bail === true) {
-          this.invokeHook('afterAll');
-          return this.doFail();
-        }
-      }
-    }
-
-    this.invokeHook('afterAll');
-    if (this.failed) {
-      return this.doFail();
-    }
-    return this.doPass();
-  }
-
-  /**
    * @description Runs a `Suite` instance asynchronously returning a `Result`:
    * @public
    * @param {Partial<RunOptions>} options
