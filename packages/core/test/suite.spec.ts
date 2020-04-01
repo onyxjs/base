@@ -9,6 +9,15 @@ describe('Suite', () => {
     todo: false,
   };
 
+  it('should check if is root', () => {
+      const suite = new Suite('suite', defaultOpts, null);
+
+      expect(suite.isRoot()).toBeFalsy();
+
+      suite[rootSymbol] = true;
+      expect(suite.isRoot()).toBeTruthy();
+  });
+
   // tslint:disable-next-line:max-classes-per-file
   class FailingRunnable extends Runnable {
     public async run() {

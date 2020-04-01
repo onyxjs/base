@@ -53,17 +53,6 @@ export default class Suite extends Runnable {
     };
   }
 
-  public invokeHook(name: HookName) {
-    const hook = this.hooks[name];
-    for (const fn of hook) {
-      try {
-        fn();
-      } catch (err) {
-        console.error(`Error in ${name} hook: ${err}`);
-      }
-    }
-  }
-
   public async invokeAsyncHook(name: HookName) {
     const hook = this.hooks[name];
     for (const fn of hook) {

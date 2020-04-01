@@ -5,6 +5,26 @@ import Test, { isTest } from '../src/test';
 
 describe('Test', () => {
   const defaultOpts = { skip: false, todo: false };
+
+  it('should return isDone', () => {
+    const fn = jest.fn();
+    const test = new Test('test', fn, defaultOpts, null);
+
+    expect(test.isDone()).toBeFalsy();
+    test.run();
+    expect(test.isDone()).toBeTruthy();
+  });
+
+  it('should check if is test', () => {
+    const fn = jest.fn();
+
+    expect(isTest(null)).toBeFalsy();
+    expect(isTest({})).toBeFalsy();
+    expect(isTest(new Runnable('not a test', defaultOpts, null))).toBeFalsy();
+    expect(isTest(new Suite('not a test', defaultOpts, null))).toBeFalsy();
+    expect(isTest(new Test('a test', fn, defaultOpts, null))).toBeTruthy();
+  });
+
   it('should run', async () => {
     const fn = jest.fn();
     const test = new Test('test', fn, defaultOpts, null);
