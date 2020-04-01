@@ -23,7 +23,7 @@ export interface Stats {
 
 export class BailError extends Error {
   constructor(message: string) {
-    super(message);
+    super(message) /* istanbul ignore next */;
     this.name = 'BailError';
   }
 }
@@ -37,6 +37,7 @@ export default class Suite extends Runnable {
   public hooks: Hooks;
   private failed: number;
 
+  /* istanbul ignore next */
   constructor(description: string, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
     super(description, options, parent);
     this.options = {

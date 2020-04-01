@@ -14,6 +14,7 @@ export default class Test extends Runnable {
   public fn: testFn;
   public type = RunnableTypes.Test;
 
+  /* istanbul ignore next */
   constructor(description: string, fn: testFn, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
     super(description, options, parent);
     this.fn = fn;

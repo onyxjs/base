@@ -46,6 +46,7 @@ export default class Runnable extends EventEmitter {
   public time: number = 0;
   private start: number = 0;
 
+  /* istanbul ignore next */
   constructor(description: string, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
     super();
     this.description = description;
