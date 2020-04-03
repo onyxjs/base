@@ -96,7 +96,7 @@ export default class Runnable extends EventEmitter {
   }
 
   /**
-   * @description Run `Runnable` instance asynchronously.
+   * @description Run `Runnable` instance.
    * @public
    * @return {Promise}
    */
