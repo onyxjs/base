@@ -165,16 +165,17 @@ export default class Suite extends Runnable {
    * @returns {Stats}
    */
   public getStats(): Stats {
+    const childrenList = this.flatten(this.children);
     return {
-      done: this.flatten(this.children).filter((c) => c.result.isDone()).length,
-      failed: this.flatten(this.children).filter((c) => c.result.status === Status.Failed).length,
-      passed: this.flatten(this.children).filter((c) => c.result.status === Status.Passed).length,
-      pending: this.flatten(this.children).filter((c) => c.result.status === Status.Pending).length,
-      running: this.flatten(this.children).filter((c) => c.result.status === Status.Running).length,
-      skipped: this.flatten(this.children).filter((c) => c.result.status === Status.Skipped).length,
+      done: childrenList.filter((c) => c.result.isDone()).length,
+      failed: childrenList.filter((c) => c.result.status === Status.Failed).length,
+      passed: childrenList.filter((c) => c.result.status === Status.Passed).length,
+      pending: childrenList.filter((c) => c.result.status === Status.Pending).length,
+      running: childrenList.filter((c) => c.result.status === Status.Running).length,
+      skipped: childrenList.filter((c) => c.result.status === Status.Skipped).length,
       time: this.time,
-      todo: this.flatten(this.children).filter((c) => c.result.status === Status.Todo).length,
-      total: this.flatten(this.children).length,
+      todo: childrenList.filter((c) => c.result.status === Status.Todo).length,
+      total: childrenList.length,
     };
   }
 
