@@ -3,13 +3,16 @@ import Result, { Status } from './result';
 import Runnable, { isRunnable, RunnableOptions, RunnableTypes } from './runnable';
 import { normalizeRunOptions, RunOptions } from './runner';
 
+/**
+ * @description Checks if passed value is a `Runnable` instance of type `Suite`.
+ */
 export const isSuite = (v: unknown): v is Suite => {
   if (!isRunnable(v)) { return false; }
   return v.type === RunnableTypes.Suite;
 };
 export const rootSymbol = Symbol('isRoot');
 
-export interface Stats {
+export interface SuiteStats {
   total: number;
   pending: number;
   running: number;
@@ -54,7 +57,10 @@ export default class Suite extends Runnable {
     };
   }
 
-  public async invokeAsyncHook(name: HookName) {
+  /**
+   * @description Runs functions associated with the passed `HookName`.
+   */
+  public async invokeHook(name: HookName) {
     const hook = this.hooks[name];
     for (const fn of hook) {
       try {
@@ -66,9 +72,7 @@ export default class Suite extends Runnable {
   }
 
   /**
-   * @description Add one or more `Runnable` instances to the `children` array.
-   * @param {Runnable[]} ...children
-   * @returns {Void}
+   * @description Add one or more `Runnable` instances to `Suite.children`.
    */
   public addChildren(...children: Runnable[]): void {
     for (const child of children) {
@@ -78,19 +82,14 @@ export default class Suite extends Runnable {
   }
 
   /**
-   * @description Check that `Suite` is the root suite
-   * @public
-   * @return {boolean}
+   * @description Check that `Suite` is the root suite.
    */
   public isRoot(): boolean {
     return Boolean(this[rootSymbol]);
   }
 
   /**
-   * @description Runs a `Suite` instance asynchronously returning a `Result`:
-   * @public
-   * @param {Partial<RunOptions>} options
-   * @returns {Promise<Result>}
+   * @description Runs a `Suite` instance.
    */
   public async run(options?: Partial<RunOptions>): Promise<Result> {
     options = normalizeRunOptions(options);
@@ -100,15 +99,15 @@ export default class Suite extends Runnable {
     }
 
     this.doStart();
-    await this.invokeAsyncHook('beforeAll');
+    await this.invokeHook('beforeAll');
 
     const promises: Array<Promise<void>> = [];
     for (const child of this.children) {
       promises.push((async () => {
-          await this.invokeAsyncHook('beforeEach');
+          await this.invokeHook('beforeEach');
           const result = await child.run(options);
           this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
-          await this.invokeAsyncHook('afterEach');
+          await this.invokeHook('afterEach');
 
           if (result.status === Status.Failed) {
             ++this.failed;
@@ -129,7 +128,7 @@ export default class Suite extends Runnable {
             }
           }
         } catch (error) {
-          await this.invokeAsyncHook('afterAll');
+          await this.invokeHook('afterAll');
           return this.doFail(error);
         }
       }
@@ -147,12 +146,12 @@ export default class Suite extends Runnable {
           }
         }));
       } catch (error) {
-        await this.invokeAsyncHook('afterAll');
+        await this.invokeHook('afterAll');
         return this.doFail(error);
       }
     }
 
-    await this.invokeAsyncHook('afterAll');
+    await this.invokeHook('afterAll');
     if (this.failed) {
       return this.doFail();
     }
@@ -160,11 +159,9 @@ export default class Suite extends Runnable {
   }
 
   /**
-   * @description Returns `Suite` stats in a `Stats` object
-   * @public
-   * @returns {Stats}
+   * @description Collects the stats of all children on the current `Suite` instance.
    */
-  public getStats(): Stats {
+  public getStats(): SuiteStats {
     const childrenList = this.flatten(this.children);
     return {
       done: childrenList.filter((c) => c.result.isDone()).length,
@@ -179,6 +176,9 @@ export default class Suite extends Runnable {
     };
   }
 
+  /**
+   * @description Recursively creates a new array with all sub-array children added.
+   */
   private flatten(array: Runnable[]): Runnable[] {
     const flatTree: Runnable[] = [];
     for (const child of array) {
