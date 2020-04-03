@@ -5,7 +5,9 @@ export interface RunOptions {
   sequential: boolean;
   timeout: number;
 }
-
+/**
+ * @description Default runner options
+ */
 export const runnerDefaults: RunOptions = {
   bail: false,
   sequential: false,
@@ -30,6 +32,9 @@ export default class Runner {
     this.stats = suite.getStats();
   }
 
+  /**
+   * @description Calls run on the root suite, passing the current `Runner` instance options.
+   */
   public async run() {
     await this.rootSuite.run(this.options);
 
