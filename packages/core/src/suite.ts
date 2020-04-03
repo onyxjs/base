@@ -121,7 +121,7 @@ export default class Suite extends Runnable {
         try {
           await promise;
 
-          if (options && options.bail) {
+          if (options.bail) {
             if (typeof options.bail === 'number' && this.failed >= options.bail) {
               throw new BailError('bailed');
             } else if (options.bail === true && this.failed >= 1) {
