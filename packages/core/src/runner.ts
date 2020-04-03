@@ -1,4 +1,4 @@
-import Suite, { Stats } from './suite';
+import Suite, { SuiteStats } from './suite';
 
 export interface RunOptions {
   bail: boolean | number;
@@ -24,7 +24,7 @@ export function normalizeRunOptions(options: Partial<RunOptions> = {}): RunOptio
 export default class Runner {
   public rootSuite: Suite;
   public options: RunOptions;
-  public stats: Stats;
+  public stats: SuiteStats;
 
   constructor(suite: Suite, options: Partial<RunOptions> = {}) {
     this.options = normalizeRunOptions(options);
