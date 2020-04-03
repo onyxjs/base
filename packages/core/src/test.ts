@@ -15,7 +15,7 @@ export const isTest = (v: unknown): v is Test => {
 
 export default class Test extends Runnable {
   public fn: TestFn;
-  public type = RunnableTypes.Test;
+  public type: RunnableTypes.Test = RunnableTypes.Test;
 
   /* istanbul ignore next */
   constructor(description: string, fn: TestFn, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
