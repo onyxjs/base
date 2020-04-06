@@ -101,7 +101,7 @@ export default class Suite extends Runnable {
     this.doStart();
     await this.invokeHook('beforeAll');
 
-    const promises: Array<Promise<void>> = [];
+    const promises: Array<Promise<void | Result>> = [];
     for (const child of this.children) {
       promises.push((async () => {
           await this.invokeHook('beforeEach');
@@ -109,8 +109,9 @@ export default class Suite extends Runnable {
           this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`));
           await this.invokeHook('afterEach');
 
-          if (result.status === Status.Failed) {
+          if (result.status === Status.Failed && options.bail! >= this.failed) {
             ++this.failed;
+            return result;
           }
       })());
     }
@@ -118,13 +119,13 @@ export default class Suite extends Runnable {
     if (options.sequential) {
       for (const promise of promises) {
         try {
-          await promise;
+          const result = await promise;
 
-          if (options.bail) {
+          if (options.bail && result !== undefined) {
             if (typeof options.bail === 'number' && this.failed >= options.bail) {
-              throw new BailError('bailed');
+              throw new BailError(result.messages[0]);
             } else if (options.bail === true && this.failed >= 1) {
-              throw new BailError('bailed');
+              throw new BailError(result.messages[0]);
             }
           }
         } catch (error) {
@@ -134,14 +135,14 @@ export default class Suite extends Runnable {
       }
     } else {
       try {
-        await Promise.all(promises.map(async (p) => {
-          await p;
+        await Promise.all(promises.map(async (promise) => {
+          const result = await promise;
 
-          if (options && options.bail) {
+          if (options && options.bail && result !== undefined) {
             if (typeof options.bail === 'number' && this.failed >= options.bail) {
-              throw new BailError('bailed');
+              throw new BailError(result.messages[0]);
             } else if (options.bail === true && this.failed >= 1) {
-              throw new BailError('bailed');
+              throw new BailError(result.messages[0]);
             }
           }
         }));
