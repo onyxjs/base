@@ -52,7 +52,7 @@ export default class Result {
   }
 
   /**
-   * @description Adds messages to the internal messages if the `Runnable` has completed.
+   * @description Adds messages to the internal messages if the `Runnable` has not completed.
    */
   public addMessages(...messages: string[]) {
     if (this.isDone()) { return; }
