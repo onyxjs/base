@@ -94,7 +94,7 @@ describe('Test', () => {
     const result = await test.run({ timeout: 1000 });
 
     expect(result.status).toBe('failed');
-    expect(result.messages[0]).toBe('Test has timed out: 1000ms');
+    expect(result.messages[0]).toBe(`${test.description} has timed out: 1000ms`);
     expect(start).toHaveBeenCalledTimes(1);
     expect(fail).toHaveBeenCalledTimes(1);
     expect(end).toHaveBeenCalledTimes(1);

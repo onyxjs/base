@@ -38,7 +38,7 @@ export default class Test extends Runnable {
       let timeoutID: NodeJS.Timeout;
       const test = new Promise(async (resolve, reject) => {
         timeoutID = setTimeout(() => {
-          reject(`Test has timed out: ${options.timeout}ms`);
+          reject(`${this.getFullDescription()} has timed out: ${options.timeout}ms`);
         }, options.timeout!);
 
         try {
