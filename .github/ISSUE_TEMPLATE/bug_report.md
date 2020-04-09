@@ -9,7 +9,7 @@ assignees: ''
 
 ### Environment
 **OS:** [e.g. iOS]
-**Node Version:** [e.g. 10.16.2]
+**Node Version:** [e.g. 12]
 **Onyx Version:** [e.g. 0.0.1]
 
 ### Actual Behavior
@@ -23,7 +23,7 @@ assignees: ''
 
 ### Reproduction Link
 <!--
-Please provide a minimal repository on GitHub that reproduces the issue or bug you are experiencing.
+Please provide a minimal repository, gist, or online playground(Repl.it) that reproduces the issue or bug you are experiencing.
 Issues without a reproduction link are likely to be put behind issues containing reproduction links.
 -->
 
