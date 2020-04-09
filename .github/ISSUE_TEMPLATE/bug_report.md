@@ -23,8 +23,8 @@ assignees: ''
 
 ### Reproduction Link
 <!--
-Please provide a minimal repository, gist, or online playground(Repl.it) that reproduces the issue or bug you are experiencing.
-Issues without a reproduction link are likely to be put behind issues containing reproduction links.
+Please provide a minimal reproduction of the bug or issue you are experiencing in the form of inline code, repository, gist, or online playground(Repl.it).
+Issues without a reproduction link or code are likely to be put behind issues containing reproduction links.
 -->
 
 ### Additional Context
