@@ -6,6 +6,7 @@
   "repository": "git@github.com:onyxjs/onyx.git",
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
   "license": "MIT",
+  "types": "dist/index.d.ts",
   "scripts": {
     "lint:wotan": "wotan -m @fimbul/valtyr test/** src/** -e 'test/__snapshots__'",
     "lint:fix": "yarn run lint:wotan --fix",
