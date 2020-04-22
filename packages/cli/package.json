@@ -1,0 +1,29 @@
+{
+  "name": "@onyx/cli",
+  "version": "0.0.0",
+  "description": "Onyx CLI",
+  "main": "dist/index.js",
+  "repository": "git@github.com:onyxjs/onyx.git",
+  "author": "Elijah Kotyluk",
+  "license": "MIT",
+  "bin": {
+    "onyx-cli": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "test": "jest -c jest.config.js",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.13.1",
+    "@types/yargs": "^15.0.4",
+    "jest": "^25.4.0",
+    "ts-jest": "^25.4.0",
+    "ts-node": "^8.9.0",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "yargs": "^15.3.1"
+  }
+}
