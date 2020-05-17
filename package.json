@@ -31,9 +31,9 @@
     ]
   },
   "devDependencies": {
-    "commitizen": "^3.1.1",
+    "commitizen": "4.0.1",
     "husky": "^2.7.0",
-    "lerna": "^3.15.0",
+    "lerna": "3.21.0",
     "lint-staged": "^8.2.1"
   }
 }
