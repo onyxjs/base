@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 ### Environment
-**OS:** [e.g. iOS]
+**OS:** [e.g. macOS]
 **Node Version:** [e.g. 12]
 **Onyx Version:** [e.g. 0.0.1]
 
