@@ -1,7 +1,7 @@
 import Suite, { SuiteStats } from './suite';
 
 export interface RunOptions {
-  bail: boolean | number;
+  bail: boolean;
   sequential: boolean;
   timeout: number;
 }

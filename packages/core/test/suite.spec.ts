@@ -95,14 +95,8 @@ describe('Suite', () => {
     expect(end).toHaveBeenCalledTimes(1);
   });
 
-  it('should bail out on 1 or `n` failures', async () => {
+  it('should bail out on first failure', async () => {
     jest.useRealTimers();
-
-    const err = new Error('FAIL!');
-    const parent = new Suite('parent', defaultOpts, null);
-    const parent2 = new Suite('parent2', defaultOpts, null);
-    const parent3 = new Suite('parent3', defaultOpts, null);
-    const parent4 = new Suite('parent3', defaultOpts, null);
 
     const fn = () => {
       return new Promise((resolve) => {
@@ -113,52 +107,56 @@ describe('Suite', () => {
     };
 
     const errorFn = () => {
-      return new Promise((reject) => {
-        setTimeout(() => {
-          reject('Rejected promise');
-        }, 150);
-      });
+      throw Error();
     };
 
-    const start = jest.fn();
-    parent.on('start', start);
-    const end = jest.fn();
-    parent.on('end', end);
-    const fail = jest.fn();
-    parent.on('fail', fail);
+    // Non-sequential
+    const parent = new Suite('parent', defaultOpts, null);
+    const firstFail = new Test('firstFail', errorFn, defaultOpts, null);
+    const firstPass = new Test('firstPass', fn, defaultOpts, null);
+    const secondPass = new Test('secondPass', fn, defaultOpts, null);
 
-    const failingChild = new Test('fail', () => { throw err; }, defaultOpts, null);
-    const failingChild2 = new Test('fail 2', errorFn, defaultOpts, null);
-    const passingChild = new Test('pass', fn, defaultOpts, null);
+    parent.addChildren(firstFail, firstPass, secondPass);
 
-    parent.addChildren(failingChild, failingChild, passingChild, passingChild, passingChild, passingChild);
-    parent2.addChildren(failingChild, passingChild, passingChild, failingChild2, passingChild, passingChild);
-    parent3.addChildren(failingChild, passingChild, passingChild, failingChild2, passingChild, passingChild);
-    parent4.addChildren(failingChild, failingChild2, failingChild, passingChild, passingChild, passingChild);
+    const parentFail = jest.fn();
+    parent.on('fail', parentFail);
+    const parentPass = jest.fn();
+    parent.on('pass', parentPass);
+    const testFail = jest.fn();
+    firstFail.on('fail', testFail);
+    const testPass = jest.fn();
+    firstPass.on('pass', testPass);
 
-    expect((await parent.run({ bail: 2, sequential: true })).status).toBe(Status.Failed);
-    expect(parent.getStats().done).toBe(2);
-    expect(start).toHaveBeenCalledTimes(1);
-    expect(end).toHaveBeenCalledTimes(1);
-    expect(fail).toHaveBeenCalledTimes(1);
+    expect((await parent.run({ bail: true, sequential: false })).status).toBe(Status.Failed);
+    expect(parent.getStats().done).toBe(1);
+    expect(testPass).toHaveBeenCalledTimes(0);
+    expect(testFail).toHaveBeenCalledTimes(1);
+    expect(parentPass).toHaveBeenCalledTimes(0);
+    expect(parentFail).toHaveBeenCalledTimes(1);
 
-    expect((await parent2.run({ bail: true })).status).toBe(Status.Failed);
-    expect(parent2.getStats().done).toBe(1);
-    expect(start).toHaveBeenCalledTimes(1);
-    expect(end).toHaveBeenCalledTimes(1);
-    expect(fail).toHaveBeenCalledTimes(1);
+    // Sequential
+    const sequentialParent = new Suite('sequentialParent', defaultOpts, null);
+    const secondFail = new Test('secondFail', errorFn, defaultOpts, null);
+    const thirdPass = new Test('thirdPass', fn, defaultOpts, null);
+    const fourthPass = new Test('fourthPass', fn, defaultOpts, null);
 
-    expect((await parent3.run({ bail: true, sequential: true })).status).toBe(Status.Failed);
-    expect(parent3.getStats().done).toBe(1);
-    expect(start).toHaveBeenCalledTimes(1);
-    expect(end).toHaveBeenCalledTimes(1);
-    expect(fail).toHaveBeenCalledTimes(1);
+    const sequentialParentPass = jest.fn();
+    sequentialParent.on('pass', sequentialParentPass);
+    const sequentialParentFail = jest.fn();
+    sequentialParent.on('fail', sequentialParentFail);
+    const sequentialTestPass = jest.fn();
+    thirdPass.on('pass', sequentialTestPass);
+    const sequentialTestFail = jest.fn();
+    secondFail.on('fail', sequentialTestFail);
 
-    expect((await parent4.run({ bail: 2 })).status).toBe(Status.Failed);
-    expect(parent4.getStats().done).toBe(2);
-    expect(start).toHaveBeenCalledTimes(1);
-    expect(end).toHaveBeenCalledTimes(1);
-    expect(fail).toHaveBeenCalledTimes(1);
+    sequentialParent.addChildren(thirdPass, secondFail, fourthPass);
+
+    expect((await sequentialParent.run({ bail: true, sequential: true })).status).toBe(Status.Failed);
+    expect(sequentialParent.getStats().done).toBe(2);
+    expect(sequentialTestPass).toHaveBeenCalledTimes(1);
+    expect(sequentialTestFail).toHaveBeenCalledTimes(1);
+    expect(sequentialParentPass).toHaveBeenCalledTimes(0);
+    expect(sequentialParentFail).toHaveBeenCalledTimes(1);
   });
 
   it('should skip', async () => {
