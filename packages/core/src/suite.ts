@@ -72,7 +72,7 @@ export default class Suite extends Runnable {
   }
 
   /**
-   * @description Add one or more `Runnable` instances to `Suite.children`.
+   * @description Add one or more child `Runnable` instances.
    */
   public addChildren(...children: Runnable[]): void {
     for (const child of children) {
