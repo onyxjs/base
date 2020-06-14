@@ -6,7 +6,7 @@ import Suite from './suite';
 export type TestFn = () => (void | Promise<any>);
 
 /**
- * @description Checks if the passed value is a `Runnable` instance of type `Test`.
+ * @description Checks if the passed `Runnable` value is a `Test` instance.
  */
 export const isTest = (v: unknown): v is Test => {
   if (!isRunnable(v)) { return false; }
