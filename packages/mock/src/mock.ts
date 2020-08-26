@@ -4,6 +4,7 @@ export const mockSymbol = Symbol('isMock');
 export interface Mock extends Function {
   calls: any[][];
   returns: any[];
+  errors: any[];
   reset: () => void;
   [mockSymbol]: true;
 }
@@ -11,17 +12,24 @@ export interface Mock extends Function {
 // tslint:disable-next-line:ban-types
 export default function mock(fn: Function, cb?: (args: any[], result: any) => any): Mock {
   const instance = ((...args: any[]) => {
-    const result = fn(...args);
-    if (cb) { cb(args, result); }
-    instance.calls.push(args);
-    instance.returns.push(result);
-    return result;
+    try {
+      const result = fn(...args);
+      if (cb) { cb(args, result); }
+      instance.calls.push(args);
+      instance.returns.push(result);
+      return result;
+    } catch (e) {
+      instance.errors.push(e);
+      throw e;
+    }
   }) as unknown as Mock;
   instance.calls = [] as any[][];
   instance.returns = [] as any[];
+  instance.errors = [] as Error[];
   instance.reset = () => {
     instance.calls = [];
     instance.returns = [];
+    instance.errors = [];
   };
   instance[mockSymbol] = true;
 
