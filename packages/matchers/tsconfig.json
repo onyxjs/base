@@ -9,6 +9,7 @@
     "esModuleInterop": true,
     "strict": true,
     "moduleResolution": "node",
+    "preserveSymlinks": true,
     "lib": [
       "es2015",
       "es2016",
