@@ -1,0 +1,12 @@
+{
+  "name": "@onyx/types",
+  "version": "0.0.0",
+  "description": "Onyx library types.",
+  "main": "index.js",
+  "author": "Elijah Kotyluk",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.8.1",
+    "typescript": "^4.0.2"
+  }
+}
