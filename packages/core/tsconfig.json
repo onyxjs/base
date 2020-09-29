@@ -1,15 +1,8 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
-    "rootDir": "./src",
-    "module": "commonjs",
-    "target": "es5",
-    "allowJs": true,
-    "checkJs": true,
     "esModuleInterop": true,
+    "declaration": true,
     "strict": true,
-    "moduleResolution": "node",
-    "preserveSymlinks": true,
     "lib": [
       "es2015",
       "es2016",
@@ -19,7 +12,13 @@
       "es2020",
       "esnext"
     ],
-    "sourceMap": true
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./dist/",
+    "rootDir": "./src",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es5",
   },
   "exclude": [
     "**/*.spec.ts",

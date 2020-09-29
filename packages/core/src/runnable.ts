@@ -1,58 +1,143 @@
+import { EventEmitter } from 'events';
+import { performance } from 'perf_hooks';
 import Result, { Status } from './result';
+import { RunOptions } from './runner';
 import Suite from './suite';
 
+export const runnableSymbol = Symbol('isRunnable');
+
 /**
- * @class
- * @param {String} description
- * @param {boolean} skip
+ * @description Checks if passed value is an instance of `Runnable`.
  */
-export default class Runnable {
+export const isRunnable = (v: unknown): v is Runnable => {
+  if (typeof v === 'object' && v === null) { return false; }
+  return (v as Runnable)[runnableSymbol];
+};
+
+export enum RunnableTypes {
+  Runnable = 'runnable',
+  Suite = 'suite',
+  Test = 'test',
+}
+
+export interface RunnableOptions {
+  skip: boolean;
+  todo: boolean;
+}
+
+export default class Runnable extends EventEmitter {
+
+  /**
+   * @description Normalize passed options object with `Runnable` default options.
+   */
+  public static normalizeOptions(options: Partial<RunnableOptions>): RunnableOptions {
+    return {
+      skip: false,
+      todo: false,
+      ...options,
+    };
+  }
   public description: string;
   public result: Result;
-  public skip: boolean;
-  public parent: Suite | undefined;
+  public options: RunnableOptions;
+  public parent: Suite | null;
+  public type: RunnableTypes = RunnableTypes.Runnable;
+  public [runnableSymbol] = true;
 
-  constructor(description: string, skip = false) {
+  public time: number = 0;
+  private start: number = 0;
+
+  /* istanbul ignore next */
+  constructor(description: string, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
+    super();
     this.description = description;
     this.result = new Result();
-    this.skip = skip;
+    this.options = Runnable.normalizeOptions(options);
+    this.parent = parent;
   }
 
   /**
-   * Run a `Runnable` instance return `Runnable` status:
-   * @public
-   * @return {Result}
+   * @description Sets result status to `Running` and emits a `start` event with the `Runnable` instance and timestamp.
    */
-  public run(): Result {
-    this.result.status = Status.Skipped; // Should be implemented in children
+  public doStart(): void {
+    this.result.status = Status.Running;
+    this.emit('start', this);
+    this.start = performance.now();
+  }
+
+  /**
+   * @description Emits an `end` event with the completed `Runnable` instance and the time taken to complete.
+   */
+  public doEnd() {
+    if (this.result.status !== Status.Skipped && this.result.status !== Status.Todo) {
+      this.time = performance.now() - this.start;
+    }
+    this.emit('end', this, this.time);
+  }
+
+  /**
+   * @description Emits a `pass` event with the passing `Runnable` instance.
+   */
+  public doPass(): Result {
+    this.result.status = Status.Passed;
+    this.emit('pass', this);
+    this.doEnd();
+
     return this.result;
   }
 
   /**
-   * Run asynchronous `Test` or `Suite`:
-   * @public
-   * @return {Promise}
+   * @description Emits a `fail` event with the failed `Runnable` instance and passed error.
    */
-  public async asyncRun(): Promise<Result> {
-    return this.run();
+  public doFail(error?: Error | string): Result {
+    if (error) {
+      this.result.addMessages(String(error));
+    }
+    this.result.status = Status.Failed;
+    this.emit('fail', this, error);
+    this.doEnd();
+
+    return this.result;
   }
 
   /**
-   * Check if `Runnable` is done
-   * @return {boolean}
+   * @description Emits `skip` event with the skipped `Runnable` instance.
+   */
+  public doSkip(todo: boolean = false): Result {
+    this.result.status = todo ? Status.Todo : Status.Skipped;
+    this.emit('skip', this, todo);
+    this.doEnd();
+
+    return this.result;
+  }
+
+  /**
+   * @description Run a `Runnable` instance.
+   */
+  // istanbul ignore next unimplemented
+  public async run(options?: Partial<RunOptions>): Promise<Result> {
+    if (this.options.skip || this.options.todo) {
+      return this.doSkip(this.options.todo);
+    }
+
+    this.doStart();
+
+    return this.doSkip(); // To be replaced with real run function
+  }
+
+  /**
+   * @description Check that `Runnable` has completed.
    */
   public isDone() {
     return this.result.isDone();
   }
 
   /**
-   * Get a full description
-   * @public
-   * @return {string}
+   * @description Concatenate the Parent's description and the current `Runnable`'s description.
    */
   public getFullDescription(): string {
-    if (this.parent) {
-      return this.parent.getFullDescription() + ' ' + this.description;
+    if (this.parent && !this.parent.isRoot()) {
+      return `${this.parent.getFullDescription()} -> ${this.description}`;
     }
     return this.description;
   }
