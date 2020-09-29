@@ -1,39 +1,72 @@
-import Result, { Status } from './result';
-import Runnable from './runnable';
+import Result from './result';
+import Runnable, { isRunnable, RunnableOptions, RunnableTypes } from './runnable';
+import { RunOptions } from './runner';
+import Suite from './suite';
+
+export type TestFn = () => (void | Promise<any>);
+
+/**
+ * @description Checks if the passed `Runnable` value is a `Test` instance.
+ */
+export const isTest = (v: unknown): v is Test => {
+  if (!isRunnable(v)) { return false; }
+  return v.type === RunnableTypes.Test;
+};
 
 export default class Test extends Runnable {
-  public fn: () => void;
+  public fn: TestFn;
+  public type: RunnableTypes.Test = RunnableTypes.Test;
 
-  constructor(description: string, fn: () => void, skip = false) {
-    super(description, skip);
+  /* istanbul ignore next */
+  constructor(description: string, fn: TestFn, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
+    super(description, options, parent);
     this.fn = fn;
+    this.parent = parent;
   }
 
   /**
-   * Run a `Test` instance return `Runnable` status:
-   * @public
-   * @return {Result}
+   * @description Run a `Test` instance.
    */
-  public run(): Result {
-    if (this.skip) {
-      this.result.status = Status.Skipped;
-      return this.result;
+  public async run(options?: Partial<RunOptions>): Promise<Result> {
+    if (this.options.skip || this.options.todo) {
+      return this.doSkip(this.options.todo);
     }
 
-    try {
-      this.fn();
-    } catch (error) {
-      if (error.name === 'ExpectError') {
-        this.result.addMessages(String(error));
-        this.result.status = Status.Failed;
-      } else {
-        this.result.addMessages(String(error));
-        this.result.status = Status.Errored;
+    this.doStart();
+
+    if (options && options.timeout) {
+      let timeoutID: NodeJS.Timeout;
+      const test = new Promise(async (resolve, reject) => {
+        timeoutID = setTimeout(() => {
+          reject(`${this.getFullDescription()} has timed out: ${options.timeout}ms`);
+        }, options.timeout!);
+
+        try {
+          await this.fn();
+        } catch (error) {
+          clearTimeout(timeoutID);
+          reject(error);
+        }
+
+        clearTimeout(timeoutID);
+        resolve();
+      });
+
+      try {
+        await test;
+      } catch (error) {
+        return this.doFail(error);
       }
-      return this.result;
-    }
 
-    this.result.status = Status.Passed;
-    return this.result;
+      return this.doPass();
+    } else {
+      try {
+        this.fn();
+      } catch (error) {
+        return this.doFail(error);
+      }
+
+      return this.doPass();
+    }
   }
 }
