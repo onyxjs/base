@@ -53,8 +53,8 @@ describe('Suite', () => {
     expect(start).toHaveBeenCalledTimes(1);
 
     expect((await promise).status).toBe(Status.Passed);
-    expect(pass).toHaveBeenCalledTimes(1);
-    expect(end).toHaveBeenCalledTimes(1);
+    expect(pass).toHaveBeenCalledTimes(2);
+    expect(end).toHaveBeenCalledTimes(2);
   });
 
   it('should run sequentially', async () => {
@@ -90,9 +90,9 @@ describe('Suite', () => {
     expect((await parent.run()).status).toBe(Status.Failed);
 
     expect(fn).toHaveBeenCalledTimes(1);
-    expect(start).toHaveBeenCalledTimes(1);
-    expect(fail).toHaveBeenCalledTimes(1);
-    expect(end).toHaveBeenCalledTimes(1);
+    expect(start).toHaveBeenCalledTimes(3);
+    expect(fail).toHaveBeenCalledTimes(2);
+    expect(end).toHaveBeenCalledTimes(3);
   });
 
   it('should bail out on first failure', async () => {
@@ -130,9 +130,9 @@ describe('Suite', () => {
     expect((await parent.run({ bail: true, sequential: false })).status).toBe(Status.Failed);
     expect(parent.getStats().done).toBe(1);
     expect(testPass).toHaveBeenCalledTimes(0);
-    expect(testFail).toHaveBeenCalledTimes(1);
+    expect(testFail).toHaveBeenCalledTimes(0);
     expect(parentPass).toHaveBeenCalledTimes(0);
-    expect(parentFail).toHaveBeenCalledTimes(1);
+    expect(parentFail).toHaveBeenCalledTimes(2);
 
     // Sequential
     const sequentialParent = new Suite('sequentialParent', defaultOpts, null);
@@ -153,10 +153,10 @@ describe('Suite', () => {
 
     expect((await sequentialParent.run({ bail: true, sequential: true })).status).toBe(Status.Failed);
     expect(sequentialParent.getStats().done).toBe(2);
-    expect(sequentialTestPass).toHaveBeenCalledTimes(1);
-    expect(sequentialTestFail).toHaveBeenCalledTimes(1);
-    expect(sequentialParentPass).toHaveBeenCalledTimes(0);
-    expect(sequentialParentFail).toHaveBeenCalledTimes(1);
+    expect(sequentialTestPass).toHaveBeenCalledTimes(0);
+    expect(sequentialTestFail).toHaveBeenCalledTimes(0);
+    expect(sequentialParentPass).toHaveBeenCalledTimes(1);
+    expect(sequentialParentFail).toHaveBeenCalledTimes(2);
   });
 
   it('should skip', async () => {
