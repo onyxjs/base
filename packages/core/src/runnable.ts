@@ -61,7 +61,12 @@ export default class Runnable extends EventEmitter {
    */
   public doStart(): void {
     this.result.status = Status.Running;
-    this.emit('start', this);
+    if (this.parent) {
+      this.parent.emit('start', this);
+    } else {
+      this.emit('start', this);
+    }
+
     this.start = performance.now();
   }
 
@@ -72,7 +77,12 @@ export default class Runnable extends EventEmitter {
     if (this.result.status !== Status.Skipped && this.result.status !== Status.Todo) {
       this.time = performance.now() - this.start;
     }
-    this.emit('end', this, this.time);
+
+    if (this.parent) {
+      this.parent.emit('end', this, this.time);
+    } else {
+      this.emit('end', this, this.time);
+    }
   }
 
   /**
@@ -80,9 +90,13 @@ export default class Runnable extends EventEmitter {
    */
   public doPass(): Result {
     this.result.status = Status.Passed;
-    this.emit('pass', this);
-    this.doEnd();
+    if (this.parent) {
+      this.parent.emit('pass', this);
+    } else {
+      this.emit('pass', this);
+    }
 
+    this.doEnd();
     return this.result;
   }
 
@@ -94,8 +108,13 @@ export default class Runnable extends EventEmitter {
       this.result.addMessages(String(error));
     }
     this.result.status = Status.Failed;
-    this.emit('fail', this, error);
-    this.doEnd();
+    if (this.parent) {
+      this.parent.emit('fail', this, error);
+      this.parent.doEnd();
+    } else {
+      this.emit('fail', this, error);
+      this.doEnd();
+    }
 
     return this.result;
   }
@@ -105,24 +124,16 @@ export default class Runnable extends EventEmitter {
    */
   public doSkip(todo: boolean = false): Result {
     this.result.status = todo ? Status.Todo : Status.Skipped;
-    this.emit('skip', this, todo);
-    this.doEnd();
 
-    return this.result;
-  }
-
-  /**
-   * @description Run a `Runnable` instance.
-   */
-  // istanbul ignore next unimplemented
-  public async run(options?: Partial<RunOptions>): Promise<Result> {
-    if (this.options.skip || this.options.todo) {
-      return this.doSkip(this.options.todo);
+    if (this.parent) {
+      this.parent.emit('skip', this, todo);
+      this.parent.doEnd();
+    } else {
+      this.emit('skip', this, todo);
+      this.doEnd();
     }
 
-    this.doStart();
-
-    return this.doSkip(); // To be replaced with real run function
+    return this.result;
   }
 
   /**
