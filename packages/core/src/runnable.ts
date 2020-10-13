@@ -152,4 +152,18 @@ export default class Runnable extends EventEmitter {
     }
     return this.description;
   }
+
+  /**
+   * @description Run a `Runnable` instance.
+   */
+  // istanbul ignore next unimplemented
+  public async run(options?: Partial<RunOptions>): Promise<Result> {
+    if (this.options.skip || this.options.todo) {
+      return this.doSkip(this.options.todo);
+    }
+
+    this.doStart();
+
+    return this.doSkip(); // To be replaced with real run function
+  }
 }

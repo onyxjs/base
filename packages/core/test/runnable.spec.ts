@@ -20,12 +20,6 @@ describe('Runnable', () => {
     expect(child.getFullDescription()).toBe('child');
   });
 
-  it('should run asynchronously', async () => {
-    const runnable = new Runnable('runnable', defaultOpts, null);
-
-    expect((await runnable.run()).status).toBe(Status.Skipped);
-  });
-
   describe('events', () => {
     it('start', () => {
       const runnable = new Runnable('runnable', defaultOpts, null);
