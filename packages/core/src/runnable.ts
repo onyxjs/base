@@ -3,6 +3,8 @@ import { performance } from 'perf_hooks';
 import Result, { Status } from './result';
 import { RunOptions } from './runner';
 import Suite from './suite';
+import Test from './test';
+import { OnyxEvent, OnyxEvents } from './types';
 
 export const runnableSymbol = Symbol('isRunnable');
 
@@ -56,82 +58,69 @@ export default class Runnable extends EventEmitter {
     this.parent = parent;
   }
 
+  public _emit(event: OnyxEvent, runnable: Runnable | Test | Suite, error?: Error | string, todo?: boolean) {
+    if (this.parent) {
+      this.parent._emit(event, runnable, error, todo);
+    } else {
+      this.emit(event, runnable, error, todo);
+    }
+  }
+
   /**
-   * @description Sets result status to `Running` and emits a `start` event with the `Runnable` instance and timestamp.
+   * @description Sets result status to `Running` and _emits a `start` event with the `Runnable` instance and timestamp.
    */
   public doStart(): void {
     this.result.status = Status.Running;
-    if (this.parent) {
-      this.parent.emit('start', this);
-    } else {
-      this.emit('start', this);
-    }
+    this._emit(OnyxEvents.Start, this);
 
     this.start = performance.now();
   }
 
   /**
-   * @description Emits an `end` event with the completed `Runnable` instance and the time taken to complete.
+   * @description _emits an `end` event with the completed `Runnable` instance and the time taken to complete.
    */
   public doEnd() {
     if (this.result.status !== Status.Skipped && this.result.status !== Status.Todo) {
       this.time = performance.now() - this.start;
     }
 
-    if (this.parent) {
-      this.parent.emit('end', this, this.time);
-    } else {
-      this.emit('end', this, this.time);
-    }
+    this._emit(OnyxEvents.End, this);
   }
 
   /**
-   * @description Emits a `pass` event with the passing `Runnable` instance.
+   * @description _emits a `pass` event with the passing `Runnable` instance.
    */
   public doPass(): Result {
     this.result.status = Status.Passed;
-    if (this.parent) {
-      this.parent.emit('pass', this);
-    } else {
-      this.emit('pass', this);
-    }
+    this._emit(OnyxEvents.Pass, this);
 
     this.doEnd();
     return this.result;
   }
 
   /**
-   * @description Emits a `fail` event with the failed `Runnable` instance and passed error.
+   * @description _emits a `fail` event with the failed `Runnable` instance and passed error.
    */
   public doFail(error?: Error | string): Result {
     if (error) {
       this.result.addMessages(String(error));
     }
     this.result.status = Status.Failed;
-    if (this.parent) {
-      this.parent.emit('fail', this, error);
-      this.parent.doEnd();
-    } else {
-      this.emit('fail', this, error);
-      this.doEnd();
-    }
+    this._emit(OnyxEvents.Fail, this, error);
+
+    this.doEnd();
 
     return this.result;
   }
 
   /**
-   * @description Emits `skip` event with the skipped `Runnable` instance.
+   * @description _emits `skip` event with the skipped `Runnable` instance.
    */
   public doSkip(todo: boolean = false): Result {
     this.result.status = todo ? Status.Todo : Status.Skipped;
 
-    if (this.parent) {
-      this.parent.emit('skip', this, todo);
-      this.parent.doEnd();
-    } else {
-      this.emit('skip', this, todo);
-      this.doEnd();
-    }
+    this._emit(OnyxEvents.Skip, this, undefined, todo);
+    this.doEnd();
 
     return this.result;
   }
