@@ -41,8 +41,33 @@ describe('Mock function', () => {
     expect(isMock(fn)).toBeFalsy();
     expect(isMock(null)).toBeFalsy();
     expect(isMock({})).toBeFalsy();
-    expect(isMock({
-      [mockSymbol]: true,
-    })).toBeFalsy();
+    expect(
+      isMock({
+        [mockSymbol]: true,
+      }),
+    ).toBeFalsy();
+  });
+
+  it('should throw an error', () => {
+    const mockErr = mock(() => {
+      throw Error();
+    });
+
+    const fn = (a: any, b: number) => {
+      if (typeof a !== typeof b) { throw Error(); }
+
+      return a + b;
+    };
+
+    const mockFn = mock(fn);
+
+    try {
+      mockFn('string', 1);
+    } catch {
+      // no-op
+    }
+
+    expect(mockFn.errors).toHaveLength(1);
+    expect(mockErr).toThrow();
   });
 });

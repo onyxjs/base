@@ -6,6 +6,7 @@
   "repository": "git@github.com:onyxjs/onyx.git",
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
   "license": "MIT",
+  "types": "dist/index.d.ts",
   "scripts": {
     "lint:wotan": "wotan -m @fimbul/valtyr test/** src/** -e 'test/__snapshots__'",
     "lint:fix": "yarn run lint:wotan --fix",
@@ -13,18 +14,11 @@
     "build": "tsc"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.0",
-    "@babel/node": "^7.5.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.5.0",
-    "@babel/preset-env": "^7.5.0",
-    "@babel/preset-stage-2": "^7.0.0",
     "@fimbul/valtyr": "^0.21.0",
     "@fimbul/wotan": "^0.21.1",
     "@types/jest": "^24.0.16",
-    "babel-jest": "^24.8.0",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
-    "ts-loader": "^6.0.4",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"
   },
