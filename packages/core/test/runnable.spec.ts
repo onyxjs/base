@@ -74,7 +74,7 @@ describe('Runnable', () => {
       expect(runnable.result.status).toBe(Status.Skipped);
       expect(fn).toHaveBeenCalledTimes(1);
       expect(end).toHaveBeenCalledTimes(1);
-      expect(skip).toHaveBeenCalledWith(runnable, false);
+      expect(skip).toHaveBeenCalledTimes(1);
       expect(runnable.time).toBe(0);
     });
 
@@ -92,7 +92,7 @@ describe('Runnable', () => {
       expect(runnable.result.status).toBe(Status.Todo);
       expect(fn).toHaveBeenCalledTimes(1);
       expect(end).toHaveBeenCalledTimes(1);
-      expect(skip).toHaveBeenCalledWith(runnable, true);
+      expect(skip).toHaveBeenCalledTimes(1);
       expect(runnable.time).toBe(0);
     });
 
