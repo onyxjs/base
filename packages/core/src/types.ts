@@ -16,6 +16,11 @@ export enum OnyxEvents {
   TestPass = 'pass',
   TestSkip = 'skip',
   TestStart = 'start',
+  End = 'end',
+  Fail = 'fail',
+  Pass = 'pass',
+  Skip = 'skip',
+  Start = 'start',
 }
 
 export type OnyxEvent = OnyxEvents.SuiteEnd | OnyxEvents.SuiteFail | OnyxEvents.SuitePass
