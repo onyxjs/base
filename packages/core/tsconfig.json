@@ -2,7 +2,6 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "declaration": true,
-    "strict": true,
     "lib": [
       "es2015",
       "es2016",
