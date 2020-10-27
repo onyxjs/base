@@ -71,9 +71,8 @@ export default class Runnable extends EventEmitter {
    */
   public doStart(): void {
     this.result.status = Status.Running;
-    this._emit(OnyxEvents.Start, this);
-
     this.start = performance.now();
+    this._emit(OnyxEvents.Start, this);
   }
 
   /**
