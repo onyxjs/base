@@ -1,5 +1,4 @@
-// tslint:disable-next-line:ban-types
-export default function toThrow(a: (...args: any[]) => any, b?: string | ((...args: any[]) => any)): boolean {
+export default function toThrow(a: (...args: any[]) => any, b?: string | Function): boolean {
   try {
     a();
   } catch (e) {
