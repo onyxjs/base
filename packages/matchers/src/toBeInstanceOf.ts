@@ -1,4 +1,3 @@
-// tslint:disable-next-line:ban-types
-export default function toBeInstanceOf(a: any, b: Function) {
+export default function toBeInstanceOf(a: any, b: (...args: any[]) => any): boolean {
   return (a instanceof b);
 }

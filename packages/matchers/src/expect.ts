@@ -8,12 +8,12 @@ type Expectations<M extends AnyMatchers> = {
 export function expectations<M extends AnyMatchers = AnyMatchers>(
   currentMatchers: M,
   expectation: any,
-  not: boolean = false,
+  not = false,
 ): Expectations<M> {
   const entries = Object.entries(currentMatchers)
     .map(([key, value]) => [
       key,
-      (...args: any[]) => {
+      (...args: any[]): boolean => {
         const result = value(expectation, ...args);
         if (result === not) { throw new ExpectError(`${not ? 'not.' : ''}${key} failed`); } // TODO diff
         return result;
@@ -31,12 +31,12 @@ export default function expect<M extends onyx.Matchers = onyx.Matchers>(
 ): NegatedExpectations<M> {
   return {
     ...expectations<M>(matchers as M, expectation, false),
-    not: expectations<M>(matchers as M, expectation, true),
+    not: expectations<M>(matchers as M, expectation, true ),
   };
 }
 
 export class ExpectError extends Error {
-  constructor(message: string) {
+  public constructor(message: string) {
     super(message);
     this.name = 'ExpectError';
   }

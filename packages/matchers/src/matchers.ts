@@ -38,14 +38,11 @@ export let matchers = {
   toThrow,
 };
 type BuiltInMatchers = typeof matchers & AnyMatchers;
-
-// tslint:disable-next-line:no-namespace
 export namespace onyx {
-  // tslint:disable-next-line:no-empty-interface reason: extensibility
-  export interface Matchers extends BuiltInMatchers {}
+  export type Matchers = BuiltInMatchers;
 }
 
-export function extendMatchers(ext: AnyMatchers) {
+export function extendMatchers(ext: AnyMatchers): void {
   matchers = {
     ...matchers,
     ...ext,
