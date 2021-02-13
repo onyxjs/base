@@ -26,7 +26,7 @@ export interface SuiteStats {
 
 export class BailError extends Error {
   constructor(message: string) {
-    super(message) /* istanbul ignore next */;
+    super(message); /* istanbul ignore next */
     this.name = 'BailError';
   }
 }

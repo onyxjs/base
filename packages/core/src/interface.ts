@@ -5,8 +5,8 @@ const root = new Suite('root', { skip: false, todo: false }, null);
 root[rootSymbol] = true;
 let currentRoot: Suite = root;
 
-export const getCurrentRoot = () => currentRoot;
-export const setCurrentRoot = (v: Suite) => {
+export const getCurrentRoot: () => Suite = () => currentRoot;
+export const setCurrentRoot: (v: Suite) => void = (v: Suite) => {
   if (!isSuite(v)) { return; }
   currentRoot = v;
 };
@@ -14,7 +14,7 @@ export const setCurrentRoot = (v: Suite) => {
 export { root, currentRoot };
 
 // istanbul ignore next internal
-function _it(description: string, fn: () => void, skip = false, todo = false) {
+function _it(description: string, fn: () => void, skip = false, todo = false): Test {
   if (currentRoot.isRoot()) {
     throw new Error(`"${description}" "it" should not be called outside of "describe" block`);
   }
