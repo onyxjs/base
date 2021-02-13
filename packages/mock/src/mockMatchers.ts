@@ -1,6 +1,5 @@
 import { extendMatchers } from '@onyx/matchers/src';
 import isEqual from 'lodash.isequal';
-import { mock } from '.';
 import { isMock } from './mock';
 
 const extension = {
@@ -121,8 +120,7 @@ const extension = {
 type Extension = typeof extension;
 declare module '@onyx/matchers/src' {
   namespace onyx {
-    // tslint:disable-next-line:no-empty-interface
-    interface Matchers extends Extension {}
+    type MockMatchers = Extension;
   }
 }
 
