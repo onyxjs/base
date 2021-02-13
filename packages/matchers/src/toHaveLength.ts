@@ -1,4 +1,4 @@
-export default function toHaveLength(a: any, b: number) {
+export default function toHaveLength(a: any, b: number): boolean {
   if (!a) { return false; }
 
   if (typeof a === 'object') {

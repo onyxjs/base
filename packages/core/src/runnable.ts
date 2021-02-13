@@ -1,7 +1,6 @@
 import { EventEmitter } from 'events';
 import { performance } from 'perf_hooks';
 import Result, { Status } from './result';
-import { RunOptions } from './runner';
 import Suite from './suite';
 
 export const runnableSymbol = Symbol('isRunnable');
@@ -44,8 +43,8 @@ export default class Runnable extends EventEmitter {
   public type: RunnableTypes = RunnableTypes.Runnable;
   public [runnableSymbol] = true;
 
-  public time: number = 0;
-  private start: number = 0;
+  public time = 0;
+  private start = 0;
 
   /* istanbul ignore next */
   constructor(description: string, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
@@ -103,7 +102,7 @@ export default class Runnable extends EventEmitter {
   /**
    * @description Emits `skip` event with the skipped `Runnable` instance.
    */
-  public doSkip(todo: boolean = false): Result {
+  public doSkip(todo = false): Result {
     this.result.status = todo ? Status.Todo : Status.Skipped;
     this.emit('skip', this, todo);
     this.doEnd();
@@ -115,7 +114,7 @@ export default class Runnable extends EventEmitter {
    * @description Run a `Runnable` instance.
    */
   // istanbul ignore next unimplemented
-  public async run(options?: Partial<RunOptions>): Promise<Result> {
+  public async run(): Promise<Result> {
     if (this.options.skip || this.options.todo) {
       return this.doSkip(this.options.todo);
     }

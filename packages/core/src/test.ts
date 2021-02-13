@@ -39,7 +39,7 @@ export default class Test extends Runnable {
       const test: Promise<void> = new Promise(async (resolve, reject) => {
         timeoutID = setTimeout(() => {
           reject(`${this.getFullDescription()} has timed out: ${options.timeout}ms`);
-        }, options.timeout!);
+        }, options.timeout as number);
 
         try {
           await this.fn();

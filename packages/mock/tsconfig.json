@@ -24,7 +24,8 @@
   "exclude": [
     "**/*.spec.ts",
     "**/*.spec.js",
-    "node_modules"
+    "node_modules",
+    "jest.config.js"
   ],
   "include": [
     "src"

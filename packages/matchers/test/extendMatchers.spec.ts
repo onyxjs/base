@@ -3,7 +3,7 @@ import { extendMatchers } from '../src/matchers';
 
 declare module '../src/matchers' {
   namespace onyx {
-    export interface Matchers {
+    export interface MockMatchers {
       toBePrice: (a: any) => boolean; // Type extension that makes our matchers visible to TS
     }
   }
