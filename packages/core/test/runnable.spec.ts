@@ -1,14 +1,36 @@
 import { Status } from '../src/result';
-import Runnable from '../src/runnable';
+import Runnable, { RunnableOptions, RunnableTypes } from '../src/runnable';
 import Suite, { rootSymbol } from '../src/suite';
+import { TestFn } from '../src/test';
+
+class TestRunnable extends Runnable {
+  public fn: TestFn;
+  public type: RunnableTypes.Test = RunnableTypes.Test;
+
+  constructor(description: string, fn: TestFn, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
+    super(description, options, parent);
+    this.fn = fn;
+    this.parent = parent;
+  }
+
+  async run(): Promise<void> {
+    // no-op
+  }
+}
+
+const noop = () => { /*no-op*/ };
 
 describe('Runnable', () => {
   const defaultOpts = { skip: false, todo: false };
   const defaultSuiteOpts = { skip: false, todo: false };
 
+  it('should be extendable', () => {
+
+  });
+
   it('should get full description', () => {
     const parent = new Suite('parent', defaultSuiteOpts, null);
-    const child = new Runnable('child', defaultOpts, parent);
+    const child = new TestRunnable('child', noop, defaultOpts, parent);
 
     expect(child.getFullDescription()).toBe('parent -> child');
   });
@@ -16,19 +38,13 @@ describe('Runnable', () => {
   it('should ignore root in full description', () => {
     const parent = new Suite('parent', defaultSuiteOpts, null);
     parent[rootSymbol] = true;
-    const child = new Runnable('child', defaultOpts, parent);
+    const child = new TestRunnable('child', noop, defaultOpts, parent);
     expect(child.getFullDescription()).toBe('child');
   });
-
-  it('should run asynchronously', async () => {
-    const runnable = new Runnable('runnable', defaultOpts, null);
-
-    expect((await runnable.run()).status).toBe(Status.Skipped);
-  });
-
+  
   describe('events', () => {
     it('start', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null);
+      const runnable = new TestRunnable('runnable', noop, defaultOpts, null);
 
       const fn = jest.fn();
       runnable.on('start', fn);
@@ -39,7 +55,7 @@ describe('Runnable', () => {
     });
 
     it('pass', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null);
+      const runnable = new TestRunnable('runnable', noop, defaultOpts, null);
       const fn = jest.fn();
       runnable.on('pass', fn);
 
@@ -53,7 +69,7 @@ describe('Runnable', () => {
     });
 
     it('fail', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null);
+      const runnable = new TestRunnable('runnable', noop, defaultOpts, null);
       const fn = jest.fn();
       runnable.on('fail', fn);
 
@@ -67,7 +83,7 @@ describe('Runnable', () => {
     });
 
     it('skip', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null);
+      const runnable = new TestRunnable('runnable', noop, defaultOpts, null);
       const fn = jest.fn();
       runnable.on('skip', fn);
 
@@ -85,7 +101,7 @@ describe('Runnable', () => {
     });
 
     it('skip(todo)', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null);
+      const runnable = new TestRunnable('runnable', noop, defaultOpts, null);
       const fn = jest.fn();
       runnable.on('skip', fn);
 
@@ -103,7 +119,7 @@ describe('Runnable', () => {
     });
 
     it('end', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null);
+      const runnable = new TestRunnable('runnable', noop, defaultOpts, null);
       const end = jest.fn();
       runnable.on('end', end);
 

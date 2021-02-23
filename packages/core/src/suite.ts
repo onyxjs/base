@@ -1,3 +1,4 @@
+import { Test } from '.';
 import { HookName, Hooks } from './hooks';
 import Result, { Status } from './result';
 import Runnable, { isRunnable, RunnableOptions, RunnableTypes } from './runnable';
@@ -33,7 +34,7 @@ export class BailError extends Error {
 
 /* tslint:disable:max-classes-per-file */
 export default class Suite extends Runnable {
-  public children: Runnable[];
+  public children: (Suite | Test)[];
   public [rootSymbol]?: boolean;
   public type = RunnableTypes.Suite;
   public options: RunnableOptions;
@@ -74,7 +75,7 @@ export default class Suite extends Runnable {
   /**
    * @description Add one or more child `Runnable` instances.
    */
-  public addChildren(...children: Runnable[]): void {
+  public addChildren(...children: (Suite | Test)[]): void {
     for (const child of children) {
       child.parent = this;
     }

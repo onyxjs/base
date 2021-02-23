@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import { performance } from 'perf_hooks';
 import Result, { Status } from './result';
+import { RunOptions } from './runner';
 import Suite from './suite';
 
 export const runnableSymbol = Symbol('isRunnable');
@@ -24,7 +25,7 @@ export interface RunnableOptions {
   todo: boolean;
 }
 
-export default class Runnable extends EventEmitter {
+export default abstract class Runnable extends EventEmitter {
 
   /**
    * @description Normalize passed options object with `Runnable` default options.
@@ -54,6 +55,9 @@ export default class Runnable extends EventEmitter {
     this.options = Runnable.normalizeOptions(options);
     this.parent = parent;
   }
+
+  // Abstract methods
+  abstract run(options?: Partial<RunOptions>): void;
 
   /**
    * @description Sets result status to `Running` and emits a `start` event with the `Runnable` instance and timestamp.
@@ -108,20 +112,6 @@ export default class Runnable extends EventEmitter {
     this.doEnd();
 
     return this.result;
-  }
-
-  /**
-   * @description Run a `Runnable` instance.
-   */
-  // istanbul ignore next unimplemented
-  public async run(): Promise<Result> {
-    if (this.options.skip || this.options.todo) {
-      return this.doSkip(this.options.todo);
-    }
-
-    this.doStart();
-
-    return this.doSkip(); // To be replaced with real run function
   }
 
   /**
