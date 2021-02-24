@@ -1,6 +1,6 @@
 import { Status } from '../src/result';
 import Runnable from '../src/runnable';
-import Suite, { isSuite, rootSymbol } from '../src/suite';
+import Suite, { rootSymbol } from '../src/suite';
 import Test from '../src/test';
 
 describe('Suite', () => {
@@ -18,16 +18,14 @@ describe('Suite', () => {
       expect(suite.isRoot()).toBeTruthy();
   });
 
-  // tslint:disable-next-line:max-classes-per-file
-  class FailingRunnable extends Runnable {
+  /*class FailingRunnable extends Runnable {
     public async run() {
       this.result.addMessages('FAIL!');
       this.result.status = Status.Failed;
       return this.result;
     }
-  }
+  }*/
 
-  // tslint:disable-next-line:max-classes-per-file
   class PassingRunnable extends Runnable {
     public async run() {
       this.result.addMessages('OK');

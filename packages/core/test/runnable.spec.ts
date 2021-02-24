@@ -25,7 +25,7 @@ describe('Runnable', () => {
   const defaultSuiteOpts = { skip: false, todo: false };
 
   it('should be extendable', () => {
-
+    // no-op
   });
 
   it('should get full description', () => {
