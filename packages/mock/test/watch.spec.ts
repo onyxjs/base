@@ -11,12 +11,12 @@ describe('Watch', () => {
 
     expect(get).toHaveBeenCalledTimes(0);
 
-    // tslint:disable-next-line:no-unused-expression
+    // eslint-disable-next-line
     obj.a;
     expect(get).toHaveBeenCalledTimes(1);
     expect(get).toHaveBeenCalledWith('foo');
 
-    // tslint:disable-next-line:no-unused-expression
+    // eslint-disable-next-line
     obj.b; // Shouldn't trigger on other props' get
     expect(get).toHaveBeenCalledTimes(1);
   });

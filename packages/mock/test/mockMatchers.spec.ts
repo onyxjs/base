@@ -21,8 +21,8 @@ describe('Mock function matchers', () => {
     expect(() => $expect(mockFn).toHaveBeenCalledTimes(1)).not.toThrow();
     expect(() => $expect(mockFn).toHaveBeenCalledTimes(2)).toThrow();
 
-    mockFn(1, 2);
-    expect(() => $expect(mockFn).toHaveBeenCalledTimes(1)).not.toThrow();
+    mockFn(1, 2)
+    expect(() => $expect(mockFn).toHaveBeenCalledTimes(1)).not.toThrow()
     expect(() => $expect(mockFn).toHaveBeenCalledTimes(2)).not.toThrow();
   });
 

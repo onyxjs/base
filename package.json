@@ -20,12 +20,12 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lerna run lint:fix --concurrency 1 --since HEAD"
     }
   },
   "lint-staged": {
     "*.[jt]s": [
-      "lerna run lint:fix --",
+      "lerna run lint:fix",
       "git add",
       "lerna run test -- --bail --findRelatedTests"
     ]
