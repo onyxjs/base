@@ -11,51 +11,51 @@ export enum Status {
  * @todo Delete messages.
  */
 export default class Result {
-  private internalStatus: Status;
-  private internalMessages: string[];
+  private internalStatus: Status
+  private internalMessages: string[]
 
   constructor(status?: Status, messages: string | string[] = []) {
-    this.internalStatus = status || Status.Pending;
+    this.internalStatus = status || Status.Pending
     if (!Array.isArray(messages)) {
-      messages = [ messages ];
+      messages = [ messages ]
     }
-    this.internalMessages = messages;
+    this.internalMessages = messages
   }
 
   /**
    * @description Checks if the internal status is 'Pending' or 'Running'.
    */
   public isDone() {
-    return this.internalStatus !== Status.Pending && this.internalStatus !== Status.Running;
+    return this.internalStatus !== Status.Pending && this.internalStatus !== Status.Running
   }
 
   /**
    * @description Gets the internal status on the current `Result` instance.
    */
   public get status() {
-    return this.internalStatus;
+    return this.internalStatus
   }
 
   /**
    * @description Sets the internal status on the current `Result` instance.
    */
   public set status(v: Status) {
-    if (this.isDone()) { return; }
-    this.internalStatus = v;
+    if (this.isDone()) { return }
+    this.internalStatus = v
   }
 
   /**
    * @description Gets the internal messages on the current `Result` instance.
    */
   public get messages() {
-    return this.internalMessages;
+    return this.internalMessages
   }
 
   /**
    * @description Adds messages to the internal messages if the `Runnable` has not completed.
    */
   public addMessages(...messages: string[]) {
-    if (this.isDone()) { return; }
-    this.internalMessages.push(...messages);
+    if (this.isDone()) { return }
+    this.internalMessages.push(...messages)
   }
 }

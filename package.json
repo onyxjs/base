@@ -14,18 +14,19 @@
     "test": "lerna run test --stream",
     "lint": "lerna run --no-bail lint --stream",
     "lint:fix": "lerna run --no-bail lint:fix --stream",
+    "lint:all": "eslint .",
     "build": "lerna run build --stream",
     "dev": "lerna run dev --stream",
     "watch": "lerna run watch --stream"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lerna run lint:fix --concurrency 1 --since HEAD"
     }
   },
   "lint-staged": {
     "*.[jt]s": [
-      "lerna run lint:fix --",
+      "lerna run lint:fix",
       "git add",
       "lerna run test -- --bail --findRelatedTests"
     ]

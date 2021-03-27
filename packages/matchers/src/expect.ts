@@ -1,9 +1,9 @@
-import { AnyMatchers, matchers, onyx } from './matchers';
+import { AnyMatchers, matchers, onyx } from './matchers'
 
-type OmitFirstArg<F> = F extends (x: any, ...args: infer P) => infer R ? (...args: P) => R : never;
+type OmitFirstArg<F> = F extends (x: any, ...args: infer P) => infer R ? (...args: P) => R : never
 type Expectations<M extends AnyMatchers> = {
   [K in keyof M]: OmitFirstArg<M[K]>
-};
+}
 
 export function expectations<M extends AnyMatchers = AnyMatchers>(
   currentMatchers: M,
@@ -14,17 +14,17 @@ export function expectations<M extends AnyMatchers = AnyMatchers>(
     .map(([key, value]) => [
       key,
       (...args: any[]): boolean => {
-        const result = value(expectation, ...args);
-        if (result === not) { throw new ExpectError(`${not ? 'not.' : ''}${key} failed`); } // TODO diff
-        return result;
+        const result = value(expectation, ...args)
+        if (result === not) { throw new ExpectError(`${not ? 'not.' : ''}${key} failed`) } // TODO diff
+        return result
       },
-    ]);
-  return Object.assign({}, ...Array.from(entries, ([k, v]: any[]) => ({[k]: v}) ));
+    ])
+  return Object.assign({}, ...Array.from(entries, ([k, v]: any[]) => ({[k]: v}) ))
 }
 
 type NegatedExpectations<M extends AnyMatchers> = Expectations<M> & {
-  not: Expectations<M>;
-};
+  not: Expectations<M>
+}
 
 export default function expect<M extends onyx.Matchers = onyx.Matchers>(
   expectation: any,
@@ -32,12 +32,12 @@ export default function expect<M extends onyx.Matchers = onyx.Matchers>(
   return {
     ...expectations<M>(matchers as M, expectation, false),
     not: expectations<M>(matchers as M, expectation, true ),
-  };
+  }
 }
 
 export class ExpectError extends Error {
   public constructor(message: string) {
-    super(message);
-    this.name = 'ExpectError';
+    super(message)
+    this.name = 'ExpectError'
   }
 }

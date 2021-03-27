@@ -1,7 +1,7 @@
 {
-  "extends": "../../.eslintrc.json",
+  "extends": ["../../.eslintrc.json"],
   "parserOptions": {
-    "project": "./tsconfig.json",
+    "project": "../../tsconfig.eslint.json",
     "ecmaVersion": 2020,
     "sourceType": "module"
   }
