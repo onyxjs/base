@@ -34,11 +34,11 @@
       "error",
       {
      "multiline": {
-        "delimiter": "none", // 'none' or 'semi' or 'comma'
+        "delimiter": "none",
         "requireLast": true
       },
       "singleline": {
-        "delimiter": "comma", // 'semi' or 'comma'
+        "delimiter": "comma",
         "requireLast": false
       }
       }
