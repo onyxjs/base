@@ -1,7 +1,6 @@
 **/dist/**
 **/build/**
 **/node_modules/**
-test/*.spec.ts
 **/config-overrides.js
 **/coverage/**
 jest.config.js
