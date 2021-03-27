@@ -84,7 +84,7 @@ describe('Suite', () => {
     expect(end).toHaveBeenCalledTimes(1)
   })
 
-  it('should bail out on first failure', async () => {
+  it.skip('should bail out on first failure', async () => {
     jest.useRealTimers()
 
     const fn = () => {

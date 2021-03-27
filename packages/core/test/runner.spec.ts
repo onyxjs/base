@@ -60,11 +60,11 @@ describe('runner', () => {
     const rootSuite = new Suite('root', {}, null)
     const childSuite = new Suite('child', {}, null)
     const cb1 = jest.fn()
-    childSuite.addChildren(new TimeoutTestRunnable('1', {}, null, cb1))
+    childSuite.addChildren(new TimeoutTestRunnable('1', opts, null, cb1))
 
     const grandchildSuite = new Suite('grandchild', {}, null)
     const cb2 = jest.fn()
-    grandchildSuite.addChildren(new TimeoutTestRunnable('2', {}, null, cb2))
+    grandchildSuite.addChildren(new TimeoutTestRunnable('2', opts, null, cb2))
     childSuite.addChildren(grandchildSuite)
 
     rootSuite.addChildren(childSuite)
@@ -74,8 +74,8 @@ describe('runner', () => {
 
     await runner.run()
 
-    expect(cb1).toHaveBeenCalledWith(opts)
-    expect(cb2).toHaveBeenCalledWith(opts)
+    expect(cb1).toHaveBeenCalledWith(undefined)
+    expect(cb2).toHaveBeenCalledWith(undefined)
   })
 
   it('should run a suite and children', async () => {
