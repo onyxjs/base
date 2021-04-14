@@ -1,129 +1,129 @@
-import { extendMatchers } from '@onyx/matchers/src';
-import isEqual from 'lodash.isequal';
-import { isMock } from './mock';
+import { extendMatchers } from '@onyx/matchers/src'
+import isEqual from 'lodash.isequal'
+import { isMock } from './mock'
 
 const extension = {
   toHaveBeenCalled: (m: unknown): boolean => {
     if (!isMock(m)) {
-      throw new TypeError('expected value is not a mock function');
+      throw new TypeError('expected value is not a mock function')
     }
 
-    return m.calls.length > 0;
+    return m.calls.length > 0
   },
 
   toHaveBeenCalledTimes: (m: unknown, times: number): boolean => {
     if (!isMock(m)) {
-      throw new TypeError('expected value is not a mock function');
+      throw new TypeError('expected value is not a mock function')
     }
 
-    return m.calls.length >= times;
+    return m.calls.length >= times
   },
 
   toHaveBeenCalledWith: (m: unknown, ...args: any[]): boolean => {
     if (!isMock(m)) {
-      throw new TypeError('expected value is not a mock function');
+      throw new TypeError('expected value is not a mock function')
     }
 
-    return m.calls.some((x) => isEqual(x.slice(0, args.length), args));
+    return m.calls.some((x) => isEqual(x.slice(0, args.length), args))
   },
 
   toHaveBeenLastCalledWith: (m: unknown, ...args: any[]): boolean => {
     if (!isMock(m)) {
-      throw new TypeError('expected value is not a mock function');
+      throw new TypeError('expected value is not a mock function')
     }
     if (!m.calls.length) {
-      return false;
+      return false
     }
 
-    const lastCall = m.calls[m.calls.length - 1];
-    return isEqual(lastCall.slice(0, args.length), args);
+    const lastCall = m.calls[m.calls.length - 1]
+    return isEqual(lastCall.slice(0, args.length), args)
   },
 
   toHaveBeenNthCalledWith: (m: unknown, n: number, ...args: any[]): boolean => {
     if (!isMock(m)) {
-      throw new TypeError('expected value is not a mock function');
+      throw new TypeError('expected value is not a mock function')
     }
-    n--; // start with 1
+    n-- // start with 1
     if (n < 0 || n >= m.calls.length) {
-      return false;
+      return false
     }
 
-    const nthCall = m.calls[n];
-    return isEqual(nthCall.slice(0, args.length), args);
+    const nthCall = m.calls[n]
+    return isEqual(nthCall.slice(0, args.length), args)
   },
 
   toHaveReturnedWith: (m: unknown, returnValue: any): boolean => {
     if (!isMock(m)) {
-      throw new TypeError('expected value is not a mock function');
+      throw new TypeError('expected value is not a mock function')
     }
 
     if (!m.returns.length) {
-      return false;
+      return false
     }
 
-    return isEqual(m.returns[0], returnValue);
+    return isEqual(m.returns[0], returnValue)
   },
 
   toHaveLastReturnedWith: (m: unknown, returnValue: any): boolean => {
     if (!isMock(m)) {
-      throw new TypeError('expected value is not a mock function');
+      throw new TypeError('expected value is not a mock function')
     }
 
     if (!m.returns.length) {
-      return false;
+      return false
     }
 
-    const lastReturned = m.returns[m.returns.length - 1];
-    return isEqual(lastReturned, returnValue);
+    const lastReturned = m.returns[m.returns.length - 1]
+    return isEqual(lastReturned, returnValue)
   },
 
   toHaveNthReturnedWith: (m: unknown, n: number, returnValue: any): boolean => {
     if (!isMock(m)) {
-      throw new TypeError('expected value is not a mock function');
+      throw new TypeError('expected value is not a mock function')
     }
 
-    n--;
+    n--
     if (n < 0 || n >= m.returns.length) {
-      return false;
+      return false
     }
 
-    const nthReturn = m.returns[n];
-    return isEqual(nthReturn, returnValue);
+    const nthReturn = m.returns[n]
+    return isEqual(nthReturn, returnValue)
   },
 
   toHaveReturnedTimes: (m: unknown, times: number): boolean => {
     if (!isMock(m)) {
-      throw new TypeError('expected value is not a mock function');
+      throw new TypeError('expected value is not a mock function')
     }
-    const returns = m.returns.filter((v) => v).length;
+    const returns = m.returns.filter((v) => v).length
 
-    return isEqual(returns, times);
+    return isEqual(returns, times)
   },
 
   toHaveReturnedTimesWith: (m: unknown, times: number, value: any): boolean => {
     if (!isMock(m)) {
-      throw new TypeError('expected value is not a mock function');
+      throw new TypeError('expected value is not a mock function')
     }
 
-    let count = 0;
+    let count = 0
 
     m.returns.filter((v) => {
       if (v === value) {
-        count++;
+        count++
       }
-    });
+    })
 
-    return isEqual(count, times);
+    return isEqual(count, times)
   },
-};
+}
 
-type Extension = typeof extension;
+type Extension = typeof extension
 declare module '@onyx/matchers/src' {
   namespace onyx {
-    type MockMatchers = Extension;
+    type MockMatchers = Extension
   }
 }
 
-export default extension;
+export default extension
 
-extendMatchers(extension);
+extendMatchers(extension)
