@@ -25,8 +25,9 @@ export interface SuiteStats {
 }
 
 export class BailError extends Error {
+  /* istanbul ignore next */
   constructor(message: string) {
-    super(message) /* istanbul ignore next */
+    super(message)
     this.name = 'BailError'
   }
 }
@@ -109,9 +110,7 @@ export default class Suite extends Runnable {
           this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`))
           await this.invokeHook('afterEach')
 
-          if (result.status === Status.Failed) {
-            ++this.failed
-          }
+          if (result.status === Status.Failed) ++this.failed
 
           return result
       })())
