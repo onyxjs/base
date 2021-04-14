@@ -139,7 +139,6 @@ export default class Suite extends Runnable {
           }
         }))
       } catch (error) {
-        console.log('error: ', error);
         await this.invokeHook('afterAll')
         return this.doFail(error)
       }
