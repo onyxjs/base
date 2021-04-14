@@ -59,7 +59,7 @@ describe('Interface', () => {
     })
 
     expect(suite.children[0]).toMatchSnapshot()
-    expect(suite.children[0].parent!.parent).toBe(root)
+    expect(suite.children[0].parent.parent).toBe(root)
   })
 
   it('should create skipped tests inside of suites', () => {
