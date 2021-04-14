@@ -121,7 +121,7 @@ export default class Suite extends Runnable {
         try {
           const result = await promise
 
-          if (options.bail && result !== undefined) {
+          if (options.bail && result) {
             throw new BailError(result.messages[0])
           }
         } catch (error) {
@@ -134,11 +134,12 @@ export default class Suite extends Runnable {
         await Promise.all(promises.map(async (promise) => {
           const result = await promise
 
-          if (options && options.bail && result !== undefined) {
+          if (options && options.bail && result) {
             throw new BailError(result.messages[0])
           }
         }))
       } catch (error) {
+        console.log('error: ', error);
         await this.invokeHook('afterAll')
         return this.doFail(error)
       }
