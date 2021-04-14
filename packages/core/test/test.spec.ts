@@ -6,12 +6,12 @@ import Test, { isTest } from '../src/test';
 describe('Test', () => {
   const defaultOpts = { skip: false, todo: false };
 
-  it('should return isDone', () => {
+  it('should return isDone', async () => {
     const fn = jest.fn();
     const test = new Test('test', fn, defaultOpts, null);
 
     expect(test.isDone()).toBeFalsy();
-    test.run();
+    await test.run();
     expect(test.isDone()).toBeTruthy();
   });
 
@@ -78,31 +78,33 @@ describe('Test', () => {
     expect((await test.run()).status).toBe('skipped');
   });
 
-  it.skip('should timeout', async () => {
+  it('should timeout', async () => {
     jest.useRealTimers();
-    const fn = () => {
-      return new Promise((resolve) => {
+    // Test fn should not resolve before the timeout promise
+    const fn = () => new Promise((resolve) => {
         setTimeout(() => {
-          resolve('Shouldn\'t resolve');
-        }, 2000);
+          resolve('Shouldn\'t resolve first');
+        }, 3000);
       });
-    };
 
     const test = new Test('test', fn, defaultOpts, null);
 
-    const start = jest.fn();
-    test.on('start', start);
-    const fail = jest.fn();
-    test.on('fail', fail);
     const end = jest.fn();
     test.on('end', end);
+    const fail = jest.fn();
+    test.on('fail', fail);
+    const pass = jest.fn();
+    test.on('pass', pass);
+    const start = jest.fn();
+    test.on('start', start);
 
     const result = await test.run({ timeout: 1000 });
 
     expect(result.status).toBe('failed');
-    expect(result.messages[0]).toBe(`${test.description} has timed out: 1000ms`);
+    expect(result.messages[0]).toBe(`Error: ${test.description} has timed out: 1000ms`);
     expect(start).toHaveBeenCalledTimes(1);
     expect(fail).toHaveBeenCalledTimes(1);
     expect(end).toHaveBeenCalledTimes(1);
+    expect(pass).toHaveBeenCalledTimes(0);
   });
 });
