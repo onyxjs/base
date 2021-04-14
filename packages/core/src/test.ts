@@ -35,12 +35,15 @@ export default class Test extends Runnable {
     this.doStart()
 
     if (options && options.timeout) {
-      let timer
+      let timer: NodeJS.Timeout;
       const wait = (ms: number) => new Promise(resolve => {
         timer = setTimeout(resolve, ms)
       }) 
       const test = Promise.race([
-        wait(options.timeout).then(() => { throw new Error(`${this.getFullDescription()} has timed out: ${options.timeout}ms`) }),
+        wait(options.timeout).then(() => {
+          clearTimeout(timer);
+          throw new Error(`${this.getFullDescription()} has timed out: ${options.timeout}ms`)
+        }),
         this.fn()
       ])
 
@@ -48,8 +51,6 @@ export default class Test extends Runnable {
         await test
       } catch (error) {
         return this.doFail(error)
-      } finally {
-        clearTimeout(timer)
       }
 
       return this.doPass()
