@@ -120,7 +120,7 @@ export default class Suite extends Runnable {
       for (const promise of promises) {
         try {
           const result = await promise
-
+          
           if (options.bail && result) {
             throw new BailError(result.messages[0])
           }
