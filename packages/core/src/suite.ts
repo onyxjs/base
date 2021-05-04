@@ -105,14 +105,14 @@ export default class Suite extends Runnable {
     const promises: Array<Promise<void | Result>> = []
     for (const child of this.children) {
       promises.push((async () => {
-          await this.invokeHook('beforeEach')
-          const result = await child.run()
-          this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`))
-          await this.invokeHook('afterEach')
+        await this.invokeHook('beforeEach')
+        const result = await child.run()
+        this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`))
+        await this.invokeHook('afterEach')
 
-          if (result.status === Status.Failed) ++this.failed
+        if (result.status === Status.Failed) ++this.failed
 
-          return result
+        return result
       })())
     }
 
