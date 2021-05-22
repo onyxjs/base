@@ -100,5 +100,7 @@ describe('Test', () => {
     expect(fail).toHaveBeenCalledTimes(1)
     expect(end).toHaveBeenCalledTimes(1)
     expect(pass).toHaveBeenCalledTimes(0)
+
+    jest.clearAllTimers()
   })
 })

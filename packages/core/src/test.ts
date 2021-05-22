@@ -39,12 +39,14 @@ export default class Test extends Runnable {
       const wait = (ms: number) => new Promise(resolve => {
         timer = setTimeout(resolve, ms)
       }) 
+
       const test = Promise.race([
         wait(options.timeout).then(() => {
           clearTimeout(timer)
           throw new Error(`${this.getFullDescription()} has timed out: ${options.timeout}ms`)
         }),
-        this.fn()
+
+        await this.fn()
       ])
 
       try {
