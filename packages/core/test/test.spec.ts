@@ -74,7 +74,8 @@ describe('Test', () => {
 
   it('should timeout', async () => {
     jest.useRealTimers()
-    // Test fn should not resolve before the timeout promise
+
+    // fn function should not resolve before the timeout promise
     const fn = () => new Promise((resolve) => {
         setTimeout(() => {
           resolve('Shouldn\'t resolve first')
