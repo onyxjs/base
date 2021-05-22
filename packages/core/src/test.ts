@@ -45,8 +45,7 @@ export default class Test extends Runnable {
           clearTimeout(timer)
           throw new Error(`${this.getFullDescription()} has timed out: ${options.timeout}ms`)
         }),
-
-        await this.fn()
+        this.fn(),
       ])
 
       try {
