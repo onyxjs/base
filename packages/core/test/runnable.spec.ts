@@ -40,9 +40,13 @@ describe('Runnable', () => {
     expect(runnable.result.status).toBe(RunStatus.RUNNING)
   })
 
+  it('doEnd()', () => {
+    runnable.doEnd()
+    expect(runnable.result.time).not.toBe(0)
+  })
+
   it('should ignore root in full description', () => {
     parentSuite[rootSymbol] = true
-
     expect(runnable.getFullDescription()).toBe('runnable')
   })
 
