@@ -1,114 +1,56 @@
+import { RunStatus } from '../src/newResult'
 import { Status } from '../src/result'
-import Runnable from '../src/runnable'
+import Runnable, { isRunnable, RunnableTypes } from '../src/runnable'
 import Suite, { rootSymbol } from '../src/suite'
+
+class OnyxRunnable extends Runnable {
+  async run() {
+    try {
+      if (this.options.skip || this.options.todo) {
+        return Promise.resolve(this.doSkip(true))
+      }
+      
+      await this.doStart()
+
+      return Promise.resolve(this.doPass())
+    } catch(err) {
+      return Promise.reject(this.doFail(err))
+    }
+  }
+}
 
 describe('Runnable', () => {
   const defaultOpts = { skip: false, todo: false }
   const defaultSuiteOpts = { skip: false, todo: false }
+  let parentSuite: Suite
+  let runnable: Runnable
+
+  beforeAll(() => {
+    parentSuite = new Suite('parent', defaultSuiteOpts, null)
+    runnable = new OnyxRunnable('runnable', defaultOpts, parentSuite)
+  })
 
   it('should get full description', () => {
-    const parent = new Suite('parent', defaultSuiteOpts, null)
-    const child = new Runnable('child', defaultOpts, parent)
+    expect(runnable.getFullDescription()).toBe('parent -> runnable')
+  })
 
-    expect(child.getFullDescription()).toBe('parent -> child')
+  it('doStart()', () => {
+    runnable.doStart()
+    expect(runnable.start).not.toBe(0)
+    expect(runnable.result.status).toBe(RunStatus.RUNNING)
   })
 
   it('should ignore root in full description', () => {
-    const parent = new Suite('parent', defaultSuiteOpts, null)
-    parent[rootSymbol] = true
-    const child = new Runnable('child', defaultOpts, parent)
-    expect(child.getFullDescription()).toBe('child')
+    parentSuite[rootSymbol] = true
+
+    expect(runnable.getFullDescription()).toBe('runnable')
   })
 
-  it('should run asynchronously', async () => {
-    const runnable = new Runnable('runnable', defaultOpts, null)
-
-    expect((await runnable.run()).status).toBe(Status.Skipped)
-  })
-
-  describe('events', () => {
-    it('start', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null)
-
-      const fn = jest.fn()
-      runnable.on('start', fn)
-
-      runnable.doStart()
-      expect(runnable.result.status).toBe(Status.Running)
-      expect(fn).toHaveBeenCalledTimes(1)
-    })
-
-    it('pass', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null)
-      const fn = jest.fn()
-      runnable.on('pass', fn)
-
-      const end = jest.fn()
-      runnable.on('end', end)
-
-      runnable.doPass()
-      expect(runnable.result.status).toBe(Status.Passed)
-      expect(fn).toHaveBeenCalledTimes(1)
-      expect(end).toHaveBeenCalledTimes(1)
-    })
-
-    it('fail', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null)
-      const fn = jest.fn()
-      runnable.on('fail', fn)
-
-      const end = jest.fn()
-      runnable.on('end', end)
-
-      runnable.doFail()
-      expect(runnable.result.status).toBe(Status.Failed)
-      expect(fn).toHaveBeenCalledTimes(1)
-      expect(end).toHaveBeenCalledTimes(1)
-    })
-
-    it('skip', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null)
-      const fn = jest.fn()
-      runnable.on('skip', fn)
-
-      const end = jest.fn()
-      runnable.on('end', end)
-      const skip = jest.fn()
-      runnable.on('skip', skip)
-
-      runnable.doSkip()
-      expect(runnable.result.status).toBe(Status.Skipped)
-      expect(fn).toHaveBeenCalledTimes(1)
-      expect(end).toHaveBeenCalledTimes(1)
-      expect(skip).toHaveBeenCalledWith(runnable, false)
-      expect(runnable.time).toBe(0)
-    })
-
-    it('skip(todo)', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null)
-      const fn = jest.fn()
-      runnable.on('skip', fn)
-
-      const end = jest.fn()
-      runnable.on('end', end)
-      const skip = jest.fn()
-      runnable.on('skip', skip)
-
-      runnable.doSkip(true)
-      expect(runnable.result.status).toBe(Status.Todo)
-      expect(fn).toHaveBeenCalledTimes(1)
-      expect(end).toHaveBeenCalledTimes(1)
-      expect(skip).toHaveBeenCalledWith(runnable, true)
-      expect(runnable.time).toBe(0)
-    })
-
-    it('end', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null)
-      const end = jest.fn()
-      runnable.on('end', end)
-
-      runnable.doEnd()
-      expect(end).toHaveBeenCalledTimes(1)
+  describe('isRunnable type guard', () => {
+    it ('should return false if not a valid Runnable', () => {
+        expect(isRunnable(null)).toBe(false)
+        expect(isRunnable('')).toBe(false)
+        expect(isRunnable(runnable)).toBe(true)
     })
   })
 })

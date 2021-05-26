@@ -1,6 +1,7 @@
-import { EventEmitter } from 'events'
 import { performance } from 'perf_hooks'
-import Result, { Status } from './result'
+import { Test } from '.'
+import { Hooks } from './hooks'
+import { RunStatus, TestResultData } from './newResult'
 import Suite from './suite'
 
 export const runnableSymbol = Symbol('isRunnable')
@@ -9,8 +10,8 @@ export const runnableSymbol = Symbol('isRunnable')
  * @description Checks if passed value is an instance of `Runnable`.
  */
 export const isRunnable = (v: unknown): v is Runnable => {
-  if (typeof v === 'object' && v === null) { return false }
-  return (v as Runnable)[runnableSymbol]
+  if (v && (v as Runnable)[runnableSymbol]) { return true }
+  else { return false }
 }
 
 export enum RunnableTypes {
@@ -24,7 +25,26 @@ export interface RunnableOptions {
   todo: boolean
 }
 
-export default class Runnable extends EventEmitter {
+export interface RunnableResultData extends TestResultData {
+  id: string
+  description: string
+  time: number
+}
+
+const DEFAULT_RESULT_DATA: RunnableResultData = {
+  id: '',
+  description: '',
+  messages: [],
+  failures: [],
+  filePath: '',
+  hooks: {} as Hooks,
+  status: RunStatus.PENDING,
+  time: 0,
+  title: '', 
+  type: RunnableTypes.Runnable,
+}
+
+export default abstract class Runnable {
 
   /**
    * @description Normalize passed options object with `Runnable` default options.
@@ -37,30 +57,34 @@ export default class Runnable extends EventEmitter {
     }
   }
   public description: string
-  public result: Result
+  public result: RunnableResultData
   public options: RunnableOptions
   public parent: Suite | null
   public type: RunnableTypes = RunnableTypes.Runnable
   public [runnableSymbol] = true
 
   public time = 0
-  private start = 0
+  public start = 0
 
   /* istanbul ignore next */
   constructor(description: string, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
-    super()
     this.description = description
-    this.result = new Result()
+    this.result = { ...DEFAULT_RESULT_DATA }
     this.options = Runnable.normalizeOptions(options)
     this.parent = parent
   }
 
   /**
+   * @description Run a `Runnable` instance.
+   */
+  public abstract run(): Promise<RunnableResultData>
+
+
+  /**
    * @description Sets result status to `Running` and emits a `start` event with the `Runnable` instance and timestamp.
    */
   public doStart(): void {
-    this.result.status = Status.Running
-    this.emit('start', this)
+    this.result.status = RunStatus.RUNNING
     this.start = performance.now()
   }
 
@@ -68,18 +92,16 @@ export default class Runnable extends EventEmitter {
    * @description Emits an `end` event with the completed `Runnable` instance and the time taken to complete.
    */
   public doEnd() {
-    if (this.result.status !== Status.Skipped && this.result.status !== Status.Todo) {
-      this.time = performance.now() - this.start
+    if (this.result.status !== RunStatus.SKIPPED && this.result.status !== RunStatus.TODO) {
+      this.result.time = performance.now() - this.start
     }
-    this.emit('end', this, this.time)
   }
 
   /**
    * @description Emits a `pass` event with the passing `Runnable` instance.
    */
-  public doPass(): Result {
-    this.result.status = Status.Passed
-    this.emit('pass', this)
+  public doPass() {
+    this.result.status = RunStatus.PASSED
     this.doEnd()
 
     return this.result
@@ -88,12 +110,11 @@ export default class Runnable extends EventEmitter {
   /**
    * @description Emits a `fail` event with the failed `Runnable` instance and passed error.
    */
-  public doFail(error?: Error | string): Result {
+  public doFail(error?: Error) {
     if (error) {
-      this.result.addMessages(String(error))
+      this.result.failures.push(error)
     }
-    this.result.status = Status.Failed
-    this.emit('fail', this, error)
+    this.result.status = RunStatus.FAILED
     this.doEnd()
 
     return this.result
@@ -102,33 +123,18 @@ export default class Runnable extends EventEmitter {
   /**
    * @description Emits `skip` event with the skipped `Runnable` instance.
    */
-  public doSkip(todo = false): Result {
-    this.result.status = todo ? Status.Todo : Status.Skipped
-    this.emit('skip', this, todo)
+  public doSkip(todo = false) {
+    this.result.status = todo ? RunStatus.TODO : RunStatus.SKIPPED
     this.doEnd()
 
     return this.result
   }
 
   /**
-   * @description Run a `Runnable` instance.
-   */
-  // istanbul ignore next unimplemented
-  public async run(): Promise<Result> {
-    if (this.options.skip || this.options.todo) {
-      return this.doSkip(this.options.todo)
-    }
-
-    this.doStart()
-
-    return this.doSkip() // To be replaced with real run function
-  }
-
-  /**
    * @description Check that `Runnable` has completed.
    */
   public isDone() {
-    return this.result.isDone()
+    return this.result.status !== RunStatus.PENDING && this.result.status !== RunStatus.RUNNING
   }
 
   /**
