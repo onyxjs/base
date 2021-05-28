@@ -7,8 +7,8 @@
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
   "license": "MIT",
   "scripts": {
-    "lint:wotan": "wotan -m @fimbul/valtyr test/** src/** -e 'test/__snapshots__'",
-    "lint:fix": "yarn run lint:wotan --fix",
+    "lint": "eslint . --ignore-path ../../.eslintignore --ext ts --ext js",
+    "lint:fix": "eslint . --ignore-path ../../.eslintignore --ext ts --ext js --fix",
     "test": "jest -c jest.config.js",
     "build": "tsc"
   },
@@ -18,19 +18,22 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.5.0",
     "@babel/preset-env": "^7.5.0",
     "@babel/preset-stage-2": "^7.0.0",
-    "@fimbul/valtyr": "^0.21.0",
-    "@fimbul/wotan": "^0.21.1",
     "@types/jest": "^24.0.16",
     "@types/lodash.isequal": "^4.5.5",
     "babel-jest": "^24.8.0",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.4",
-    "tslint": "^5.18.0",
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "lodash.isequal": "^4.5.0",
-    "@onyx/matchers": "*"
+    "@onyx/matchers": "*",
+    "lodash.isequal": "^4.5.0"
+  },
+  "peerDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.15.0",
+    "@typescript-eslint/parser": "^4.15.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1"
   }
 }

@@ -1,0 +1,7 @@
+**/dist/**
+**/build/**
+**/node_modules/**
+**/config-overrides.js
+**/coverage/**
+jest.config.js
+packages/cli/**
