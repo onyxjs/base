@@ -1,7 +1,8 @@
 import { performance } from 'perf_hooks'
 import { Test } from '.'
 import { Hooks } from './hooks'
-import { RunStatus, TestResultData } from './newResult'
+import { RunStatus, BaseResult } from './newResult'
+import { Status } from './result'
 import Suite from './suite'
 
 export const runnableSymbol = Symbol('isRunnable')
@@ -25,23 +26,21 @@ export interface RunnableOptions {
   todo: boolean
 }
 
-export interface RunnableResultData extends TestResultData {
+export interface RunnableResult extends BaseResult {
   id: string
   description: string
   time: number
 }
 
-const DEFAULT_RESULT_DATA: RunnableResultData = {
+const DEFAULT_RESULT: RunnableResult = {
   id: '',
   description: '',
   messages: [],
   failures: [],
-  filePath: '',
   hooks: {} as Hooks,
   status: RunStatus.PENDING,
   time: 0,
-  title: '', 
-  type: RunnableTypes.Runnable,
+  fullDescription: '', 
 }
 
 export default abstract class Runnable {
@@ -57,9 +56,10 @@ export default abstract class Runnable {
     }
   }
   public description: string
-  public result: RunnableResultData
   public options: RunnableOptions
   public parent: Suite | null
+  public result: RunnableResult
+  public status: RunStatus
   public type: RunnableTypes = RunnableTypes.Runnable
   public [runnableSymbol] = true
 
@@ -69,15 +69,16 @@ export default abstract class Runnable {
   /* istanbul ignore next */
   constructor(description: string, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
     this.description = description
-    this.result = { ...DEFAULT_RESULT_DATA }
     this.options = Runnable.normalizeOptions(options)
     this.parent = parent
+    this.result = { ...DEFAULT_RESULT, description, fullDescription: this.getFullDescription() }
+    this.status = RunStatus.PENDING
   }
 
   /**
    * @description Run a `Runnable` instance.
    */
-  public abstract run(): Promise<RunnableResultData>
+  public abstract run(): Promise<RunnableResult>
 
 
   /**
@@ -123,8 +124,8 @@ export default abstract class Runnable {
   /**
    * @description Emits `skip` event with the skipped `Runnable` instance.
    */
-  public doSkip(todo = false) {
-    this.result.status = todo ? RunStatus.TODO : RunStatus.SKIPPED
+  public doSkip(skipOrTodo: RunStatus.SKIPPED | RunStatus.TODO) {
+    this.result.status = skipOrTodo
     this.doEnd()
 
     return this.result
