@@ -111,10 +111,8 @@ export default abstract class Runnable {
   /**
    * @description Emits a `fail` event with the failed `Runnable` instance and passed error.
    */
-  public doFail(error?: Error) {
-    if (error) {
-      this.result.failures.push(error)
-    }
+  public doFail(error: Error) {
+    this.result.failures.push(error)
     this.result.status = RunStatus.FAILED
     this.doEnd()
 

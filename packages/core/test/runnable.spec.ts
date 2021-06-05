@@ -4,7 +4,7 @@ import Runnable, { isRunnable, RunnableTypes } from '../src/runnable'
 import Suite, { rootSymbol } from '../src/suite'
 
 class OnyxRunnable extends Runnable {
-  async run(shouldThrow: boolean = false) {
+  async run(shouldThrow = false) {
     try {
       if (shouldThrow) throw new Error('thrown')
 
