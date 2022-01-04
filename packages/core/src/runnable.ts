@@ -2,7 +2,7 @@ import { performance } from 'perf_hooks'
 import { Test } from '.'
 import { Hooks } from './hooks'
 import { RunStatus, BaseResult } from './newResult'
-import { Status } from './result'
+import Result, { Status } from './result'
 import Suite from './suite'
 
 export const runnableSymbol = Symbol('isRunnable')
@@ -13,6 +13,10 @@ export const runnableSymbol = Symbol('isRunnable')
 export const isRunnable = (v: unknown): v is Runnable => {
   if (v && (v as Runnable)[runnableSymbol]) { return true }
   else { return false }
+}
+
+export const isRunnable2 = <R extends Runnable | Test | Suite>(v: unknown): v is R => {
+  return (v instanceof Runnable) || (v instanceof Test) || (v instanceof Suite)
 }
 
 export enum RunnableTypes {

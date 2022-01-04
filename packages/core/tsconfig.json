@@ -18,12 +18,20 @@
     "sourceMap": true,
     "strict": true,
     "target": "es5",
+    "paths": {
+      "@onyx/matchers": ["../matchers"]
+    }
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/test/*"
   ],
   "include": [
-    "src",
+    "src/**/*",
     "jest.config.js"
+  ],
+  "references": [
+    { "path": "../matchers" },
+    { "path": "../mock" }
   ]
 }

@@ -8,10 +8,7 @@ export type TestFn = () => (void | Promise<any>)
 /**
  * @description Checks if the passed `Runnable` value is a `Test` instance.
  */
-export const isTest = (v: unknown): v is Test => {
-  if (!isRunnable(v)) { return false }
-  return v.type === RunnableTypes.Test
-}
+export const isTest = (v: unknown): v is Test => v instanceof Test
 
 export default class Test extends Runnable {
   public fn: TestFn
