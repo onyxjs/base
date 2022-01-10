@@ -88,9 +88,10 @@ export default abstract class Runnable {
   /**
    * @description Sets result status to `Running` and emits a `start` event with the `Runnable` instance and timestamp.
    */
-  public doStart(): void {
+  public doStart(): RunnableResult {
     this.result.status = RunStatus.RUNNING
     this.start = performance.now()
+    return this.result
   }
 
   /**
@@ -116,7 +117,7 @@ export default abstract class Runnable {
    * @description Emits a `fail` event with the failed `Runnable` instance and passed error.
    */
   public doFail(error: Error) {
-    this.result.failures.push(error)
+    this.result.failures = [...this.result.failures, error]
     this.result.status = RunStatus.FAILED
     this.doEnd()
 

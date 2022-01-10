@@ -1,16 +1,15 @@
 import { HookName, Hooks } from './hooks'
-import Result, { Status } from './result'
-import Runnable, { isRunnable, RunnableOptions, RunnableTypes } from './runnable'
-import { normalizeRunOptions, RunOptions } from './runner'
+import Runnable, { isRunnable, RunnableOptions, RunnableResult, RunnableTypes } from './runnable'
 
 /**
  * @description Checks if passed value is a `Runnable` instance of type `Suite`.
  */
-export const isSuite = (v: unknown): v is Suite => {
+const isSuite = (v: unknown): v is Suite => {
   if (!isRunnable(v)) { return false }
-  return v.type === RunnableTypes.Suite
+  else return v.type === RunnableTypes.Suite
 }
-export const rootSymbol = Symbol('isRoot')
+
+const rootSymbol = Symbol('isRoot')
 
 export interface SuiteStats {
   total: number
@@ -92,63 +91,67 @@ export default class Suite extends Runnable {
   /**
    * @description Runs a `Suite` instance.
    */
-  public async run(options?: Partial<RunOptions>): Promise<Result> {
-    options = normalizeRunOptions(options)
+  // public async run(options?: Partial<RunOptions>): Promise<Result> {
+  //   options = normalizeRunOptions(options)
 
-    if (this.options.skip || this.options.todo) {
-      return this.doSkip(this.options.todo)
-    }
+  //   if (this.options.skip || this.options.todo) {
+  //     return this.doSkip(this.options.todo)
+  //   }
 
-    this.doStart()
-    await this.invokeHook('beforeAll')
+  //   this.doStart()
+  //   await this.invokeHook('beforeAll')
 
-    const promises: Array<Promise<void | Result>> = []
-    for (const child of this.children) {
-      promises.push((async () => {
-        await this.invokeHook('beforeEach')
-        const result = await child.run()
-        this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`))
-        await this.invokeHook('afterEach')
+  //   const promises: Array<Promise<void | Result>> = []
+  //   for (const child of this.children) {
+  //     promises.push((async () => {
+  //       await this.invokeHook('beforeEach')
+  //       const result = await child.run()
+  //       this.result.addMessages(...result.messages.map((m) => `${child.description}: ${m}`))
+  //       await this.invokeHook('afterEach')
 
-        if (result.status === Status.Failed) ++this.failed
+  //       if (result.status === Status.Failed) ++this.failed
 
-        return result
-      })())
-    }
+  //       return result
+  //     })())
+  //   }
 
-    if (options.sequential) {
-      for (const promise of promises) {
-        try {
-          const result = await promise
+  //   if (options.sequential) {
+  //     for (const promise of promises) {
+  //       try {
+  //         const result = await promise
           
-          if (options.bail && result) {
-            throw new BailError(result.messages[0])
-          }
-        } catch (error) {
-          await this.invokeHook('afterAll')
-          return this.doFail(error)
-        }
-      }
-    } else {
-      try {
-        await Promise.all(promises.map(async (promise) => {
-          const result = await promise
+  //         if (options.bail && result) {
+  //           throw new BailError(result.messages[0])
+  //         }
+  //       } catch (error) {
+  //         await this.invokeHook('afterAll')
+  //         return this.doFail(error)
+  //       }
+  //     }
+  //   } else {
+  //     try {
+  //       await Promise.all(promises.map(async (promise) => {
+  //         const result = await promise
 
-          if (options && options.bail && result) {
-            throw new BailError(result.messages[0])
-          }
-        }))
-      } catch (error) {
-        await this.invokeHook('afterAll')
-        return this.doFail(error)
-      }
-    }
+  //         if (options && options.bail && result) {
+  //           throw new BailError(result.messages[0])
+  //         }
+  //       }))
+  //     } catch (error) {
+  //       await this.invokeHook('afterAll')
+  //       return this.doFail(error)
+  //     }
+  //   }
 
-    await this.invokeHook('afterAll')
-    if (this.failed) {
-      return this.doFail()
-    }
-    return this.doPass()
+  //   await this.invokeHook('afterAll')
+  //   if (this.failed) {
+  //     return this.doFail()
+  //   }
+  //   return this.doPass()
+  // }
+
+  public async run () {
+    return {} as Promise<RunnableResult>
   }
 
   /**
@@ -156,17 +159,19 @@ export default class Suite extends Runnable {
    */
   public getStats(): SuiteStats {
     const childrenList = this.flatten(this.children)
-    return {
-      done: childrenList.filter((c) => c.result.isDone()).length,
-      failed: childrenList.filter((c) => c.result.status === Status.Failed).length,
-      passed: childrenList.filter((c) => c.result.status === Status.Passed).length,
-      pending: childrenList.filter((c) => c.result.status === Status.Pending).length,
-      running: childrenList.filter((c) => c.result.status === Status.Running).length,
-      skipped: childrenList.filter((c) => c.result.status === Status.Skipped).length,
-      time: this.time,
-      todo: childrenList.filter((c) => c.result.status === Status.Todo).length,
-      total: childrenList.length,
-    }
+    // return {
+    //   done: childrenList.filter((c) => c.result.isDone()).length,
+    //   failed: childrenList.filter((c) => c.result.status === Status.Failed).length,
+    //   passed: childrenList.filter((c) => c.result.status === Status.Passed).length,
+    //   pending: childrenList.filter((c) => c.result.status === Status.Pending).length,
+    //   running: childrenList.filter((c) => c.result.status === Status.Running).length,
+    //   skipped: childrenList.filter((c) => c.result.status === Status.Skipped).length,
+    //   time: this.time,
+    //   todo: childrenList.filter((c) => c.result.status === Status.Todo).length,
+    //   total: childrenList.length,
+    // }
+
+    return {} as SuiteStats
   }
 
   /**
@@ -184,4 +189,9 @@ export default class Suite extends Runnable {
 
     return flatTree
   }
+}
+
+export {
+  isSuite,
+  rootSymbol,
 }

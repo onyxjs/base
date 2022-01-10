@@ -1,7 +1,5 @@
 import { RunStatus } from '../src/newResult'
-import { Status } from '../src/result'
-import Runnable, { isRunnable, RunnableTypes } from '../src/runnable'
-import Suite, { rootSymbol } from '../src/suite'
+import { rootSymbol, Suite, Runnable, isRunnable } from '../src'
 
 class OnyxRunnable extends Runnable {
   async run(shouldThrow = false) {
@@ -32,7 +30,7 @@ describe('Runnable', () => {
     runnable = new OnyxRunnable('runnable', defaultOpts, parentSuite)
   })
 
-  it('should update the result description and fullDescription when instaniated', () => {
+  it('should update the result description and fullDescription when instantiated', () => {
     expect(runnable.result.description).toBe('runnable')
     expect(runnable.result.fullDescription).toBe('parent -> runnable')
   })

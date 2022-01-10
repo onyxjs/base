@@ -38,18 +38,18 @@ export default class Result {
   /**
    * @description Checks if the internal status is 'Pending' or 'Running'.
    */
-  public isDone() {
+  public isDone(): boolean {
     return this._internalStatus !== Status.Pending && this._internalStatus !== Status.Running
   }
 
-  public get errors() {
+  public get errors(): Array<Error> {
     return this._internalErrors
   }
 
   /**
    * @description Gets the internal status on the current `Result` instance.
    */
-  public get status() {
+  public get status(): Status {
     return this._internalStatus
   }
 
@@ -64,19 +64,19 @@ export default class Result {
   /**
    * @description Gets the internal messages on the current `Result` instance.
    */
-  public get messages() {
+  public get messages(): string[] {
     return this._internalMessages
   }
 
   /**
    * @description Adds messages to the internal messages if the `Runnable` has not completed.
    */
-  public addMessages(...messages: string[]) {
+  public addMessages(...messages: string[]): void {
     if (this.isDone()) { return }
     this._internalMessages.push(...messages)
   }
 
-  public addErrors(...errors: Error[]) {
+  public addErrors(...errors: Error[]): void {
     this._internalErrors = [ ...this._internalErrors, ...errors ]
   }
 }

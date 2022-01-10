@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Test should run 1`] = `
-Result {
-  "internalMessages": Array [],
-  "internalStatus": "passed",
-}
-`;
