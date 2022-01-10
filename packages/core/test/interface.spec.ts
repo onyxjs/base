@@ -14,7 +14,7 @@ import Suite from '../src/suite'
 
 const noop = () => null
 
-describe('Interface', () => {
+describe.skip('Interface', () => {
   beforeEach(() => {
     root.children.length = 0 // clean up root to simplify snapshots
   })
