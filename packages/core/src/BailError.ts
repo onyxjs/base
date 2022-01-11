@@ -1,7 +1,10 @@
 export class BailError extends Error {
-  /* istanbul ignore next */
   constructor(message: string) {
     super(message)
     this.name = 'BailError'
   }
+}
+
+function createBailError(message: string): BailError {
+  return new BailError(message)
 }

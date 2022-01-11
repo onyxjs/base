@@ -11,6 +11,8 @@
 // }
 
 // Types
+import { BailError } from './BailError'
+import { TimeoutError } from './TimeoutError'
 import { RunnableTypes, Status } from './types'
 
 /**
@@ -24,7 +26,6 @@ export default class Result {
   public time: number
   public title: string
   public description: string
-  public filePath: string
   public type: RunnableTypes
 
   constructor(messages: string | string[] = [], options: Result, errors: Error[] | Error = [], status?: Status) {
@@ -33,7 +34,6 @@ export default class Result {
     this._internalMessages = !Array.isArray(messages) ? [ messages ] : messages
     
     this.description = options.description
-    this.filePath = options.filePath
     this.time = options.time
     this.title = options.title
     this.type = options.type
@@ -77,10 +77,12 @@ export default class Result {
    */
   public addMessages(...messages: string[]): void {
     if (this.isDone()) { return }
-    this._internalMessages.push(...messages)
+    this._internalMessages = [...this._internalMessages, ...messages]
   }
 
   public addErrors(...errors: Error[]): void {
-    this._internalErrors = [ ...this._internalErrors, ...errors ]
+    if (this.isDone()) { return }
+    this.addMessages(...errors.map((e) => e.message))
+    this._internalErrors = [...this._internalErrors, ...errors]
   }
 }

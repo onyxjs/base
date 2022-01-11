@@ -4,3 +4,7 @@ export class TimeoutError extends Error {
     this.name = 'TimeoutError'
   }
 }
+
+function createTimeoutError(message: string): TimeoutError {
+  return new TimeoutError(message)
+}
