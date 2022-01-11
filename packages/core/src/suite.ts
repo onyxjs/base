@@ -12,12 +12,12 @@ import { RunnableOptions, RunOptions, RunnableResult, RunnableTypes, RunStatus, 
 /**
  * @description Checks if passed value is a `Runnable` instance of type `Suite`.
  */
-const isSuite = (v: unknown): v is Suite => {
+export const isSuite = (v: unknown): v is Suite => {
   if (!isRunnable(v)) { return false }
   else return v.type === RunnableTypes.Suite
 }
 
-const rootSymbol = Symbol('isRoot')
+export const rootSymbol = Symbol('isRoot')
 
 // export interface SuiteStats {
 //   total: number
