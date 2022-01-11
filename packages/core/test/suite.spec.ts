@@ -1,7 +1,10 @@
-import { Status } from '../src/result'
-import Runnable from '../src/runnable'
+// import { Status } from '../src/result'
+// import Runnable from '../src/runnable'
 import Suite, { rootSymbol } from '../src/suite'
-import Test from '../src/test'
+// import Test from '../src/test'
+
+// Types
+// import { Status } from '../src/types'
 
 describe('Suite', () => {
   const defaultOpts = {
