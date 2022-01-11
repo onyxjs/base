@@ -1,10 +1,10 @@
 // import Suite, { SuiteStats } from './suite'
 
-export interface RunOptions {
-  bail: boolean
-  sequential: boolean
-  timeout: number
-}
+// export interface RunOptions {
+//   bail: boolean
+//   sequential: boolean
+//   timeout: number
+// }
 // /**
 //  * @description Default runner options
 //  */

@@ -1,9 +1,13 @@
 import { performance } from 'perf_hooks'
-import { Test } from '.'
-import { Hooks } from './hooks'
-import { RunStatus, BaseResult } from './newResult'
-import Result, { Status } from './result'
-import Suite from './suite'
+import type { Hooks } from './hooks'
+// import { RunStatus/*, BaseResult*/ } from './newResult'
+// import Result, { Status } from './result'
+import type Suite from './suite'
+import type Result from './result'
+import type Test from './test'
+
+// Types
+import { RunnableOptions, RunnableResult, RunStatus, RunnableTypes } from './types'
 
 export const runnableSymbol = Symbol('isRunnable')
 
@@ -15,26 +19,26 @@ export const isRunnable = (v: unknown): v is Runnable => {
   else { return false }
 }
 
-export const isRunnable2 = <R extends Runnable | Test | Suite>(v: unknown): v is R => {
-  return (v instanceof Runnable) || (v instanceof Test) || (v instanceof Suite)
-}
+// export const isRunnable2 = <R extends Runnable | Test | Suite>(v: unknown): v is R => {
+//   return (v instanceof Runnable) || (v instanceof Test) || (v instanceof Suite)
+// }
 
-export enum RunnableTypes {
-  Runnable = 'runnable',
-  Suite = 'suite',
-  Test = 'test',
-}
+// export enum RunnableTypes {
+//   Runnable = 'runnable',
+//   Suite = 'suite',
+//   Test = 'test',
+// }
 
-export interface RunnableOptions {
-  skip: boolean
-  todo: boolean
-}
+// export interface RunnableOptions {
+//   skip: boolean
+//   todo: boolean
+// }
 
-export interface RunnableResult extends BaseResult {
-  id: string
-  description: string
-  time: number
-}
+// export interface RunnableResult extends BaseResult {
+//   id: string
+//   description: string
+//   time: number
+// }
 
 const DEFAULT_RESULT: RunnableResult = {
   id: '',
@@ -82,7 +86,7 @@ export default abstract class Runnable {
   /**
    * @description Run a `Runnable` instance.
    */
-  public abstract run(): Promise<RunnableResult>
+  public abstract run(): Promise<RunnableResult | Result>
 
 
   /**

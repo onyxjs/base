@@ -1,5 +1,7 @@
-import { RunStatus } from '../src/newResult'
+// import { RunStatus } from '../src/newResult'
 import { rootSymbol, Suite, Runnable, isRunnable } from '../src'
+
+import { RunStatus } from '../src/types'
 
 class OnyxRunnable extends Runnable {
   async run(shouldThrow = false) {

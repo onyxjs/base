@@ -1,13 +1,17 @@
-import { RunnableTypes } from "."
+// import { RunnableTypes } from "."\
 
-export enum Status {
-  Pending = 'pending',
-  Running = 'running',
-  Passed = 'passed',
-  Failed = 'failed',
-  Skipped = 'skipped',
-  Todo = 'todo',
-}
+
+// export enum Status {
+//   Pending = 'pending',
+//   Running = 'running',
+//   Passed = 'passed',
+//   Failed = 'failed',
+//   Skipped = 'skipped',
+//   Todo = 'todo',
+// }
+
+// Types
+import { RunnableTypes, Status } from './types'
 
 /**
  * @todo Delete messages.
