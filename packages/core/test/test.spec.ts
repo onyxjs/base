@@ -1,7 +1,10 @@
-import { Status } from '../src/result'
+// import { Status } from '../src/result'
 import { Test as OnyxTest, Suite as OnyxSuite, isTest } from '../src'
-import { RunStatus } from '../src/newResult'
-import { TimeoutError } from '../src/test'
+// import { RunStatus } from '../src/newResult'
+import { TimeoutError } from '../src/TimeoutError'
+
+// Types
+import { RunStatus, Status } from '../src/types'
 
 describe('Test', () => {
   const defaultOpts = { skip: false, todo: false }

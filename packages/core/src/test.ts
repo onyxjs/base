@@ -1,36 +1,13 @@
-import { Status } from '.'
-import { RunStatus } from './newResult'
-import Runnable, { RunnableOptions, RunnableResult, RunnableTypes } from './runnable'
-import { RunOptions } from './runner'
-import Suite from './suite'
+// import { RunStatus } from './newResult'
+import Runnable/*, { RunnableOptions, RunnableResult, RunnableTypes }*/ from './runnable'
+// import { RunOptions } from './runner'
+import type Suite from './suite'
+import { TimeoutError } from './TimeoutError'
 
-export type TestFn = () => (void | Promise<any>)
-// const TimeoutError = Symbol('TimeoutError')
+// Types
+import { RunnableOptions, RunOptions, RunnableResult, RunStatus, RunnableTypes, TestFn } from './types'
 
-export class TimeoutError extends Error {
-  public constructor(message: string) {
-    super(message)
-    this.name = 'TimeoutError'
-  }
-}
-
-function promiseWithTimeout<T extends TestFn>(
-  promise: T,
-  ms: number,
-  timeoutError = new TimeoutError('Promise timed out')
-) {
-  let timer: NodeJS.Timeout
-
-  // create a promise that rejects in milliseconds
-  const timeout = new Promise<never>((_, reject) => {
-    timer = setTimeout(() => {
-      reject(timeoutError)
-    }, ms)
-  })
-
-  // returns a race between timeout and the passed promise
-  return Promise.race<T | void>([promise(), timeout]).finally(() => clearTimeout(timer))
-}
+// export type TestFn = () => (void | Promise<any>)
 
 /**
  * @description Checks if the passed `Runnable` value is a `Test` instance.
@@ -77,50 +54,11 @@ export default class Test extends Runnable {
     this.doStart()
 
     try {
-      // const result = options && options.timeout ? await promiseWithTimeout(this.fn, options.timeout) : this.fn()
-      const result = options && options.timeout ? await this._timeout(this.fn, options.timeout) : await this.fn()
-
-      // console.log('result: ', result)
+      options && options.timeout ? await this._timeout(this.fn, options.timeout) : await this.fn()
 
       return this.doPass()
     } catch (error: any) {
-      // console.log('error: ', (error as Error))
-      // const err = error instanceof TimeoutError || error instanceof Error ? error : new Error(error.message)
       return this.doFail(error)
     }
   }
-
-  // public async run2() {
-  //   if (options && options.timeout) {
-  //     let timer: NodeJS.Timeout
-  //     const wait = (ms: number) => new Promise(resolve => {
-  //       timer = setTimeout(resolve, ms)
-  //     }) 
-
-  //     const test = Promise.race([
-  //       wait(options.timeout).then(() => {
-  //         clearTimeout(timer)
-  //         throw new Error(`${this.getFullDescription()} has timed out: ${options.timeout}ms`)
-  //       }),
-  //       this.fn(),
-  //     ])
-
-  //     try {
-  //       await test
-  //     } catch (error) {
-  //       return this.doFail(error)
-  //     }
-
-  //     return this.doPass()
-  //   } else {
-  //     try {
-  //       await this.fn()
-  //     } catch (error) {
-  //       return this.doFail(error)
-  //     }
-
-  //     return this.doPass()
-  //   }
-  //   return {} as Promise<RunnableResult>;
-  // }
 }
