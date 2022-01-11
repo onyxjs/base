@@ -7,7 +7,7 @@ import type Result from './result'
 import type Test from './test'
 
 // Types
-import { RunnableOptions, RunnableResult, RunStatus, RunnableTypes } from './types'
+import { RunnableOptions, RunnableResult, RunStatus, RunnableTypes, RunOptions } from './types'
 
 export const runnableSymbol = Symbol('isRunnable')
 
@@ -86,7 +86,7 @@ export default abstract class Runnable {
   /**
    * @description Run a `Runnable` instance.
    */
-  public abstract run(): Promise<RunnableResult | Result>
+  public abstract run(options: Partial<RunOptions>): Promise<RunnableResult | Result>
 
 
   /**
@@ -122,6 +122,7 @@ export default abstract class Runnable {
    */
   public doFail(error: Error) {
     this.result.failures = [...this.result.failures, error]
+    this.result.messages = [...this.result.messages, error.message]
     this.result.status = RunStatus.FAILED
     this.doEnd()
 
@@ -143,6 +144,13 @@ export default abstract class Runnable {
    */
   public isDone() {
     return this.result.status !== RunStatus.PENDING && this.result.status !== RunStatus.RUNNING
+  }
+
+  /**
+   * @description Check if the current status is the same as the status argument passed in.
+   */
+  public isStatus(status: RunStatus): boolean {
+    return this.result.status === status
   }
 
   /**
