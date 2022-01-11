@@ -54,7 +54,7 @@ export default class Test extends Runnable {
     this.doStart()
 
     try {
-      options && options.timeout ? await this._timeout(this.fn, options.timeout) : await this.fn()
+      const result = options && options.timeout ? await this._timeout(this.fn, options.timeout) : await this.fn()
 
       return this.doPass()
     } catch (error: any) {
