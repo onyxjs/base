@@ -1,17 +1,18 @@
-import Result from './result'
-import Runnable, { isRunnable, RunnableOptions, RunnableTypes } from './runnable'
-import { RunOptions } from './runner'
-import Suite from './suite'
+// import { RunStatus } from './newResult'
+import Runnable/*, { RunnableOptions, RunnableResult, RunnableTypes }*/ from './runnable'
+// import { RunOptions } from './runner'
+import type Suite from './suite'
+import { TimeoutError } from './TimeoutError'
 
-export type TestFn = () => (void | Promise<any>)
+// Types
+import { RunnableOptions, RunOptions, RunnableResult, RunStatus, RunnableTypes, TestFn } from './types'
+
+// export type TestFn = () => (void | Promise<any>)
 
 /**
  * @description Checks if the passed `Runnable` value is a `Test` instance.
  */
-export const isTest = (v: unknown): v is Test => {
-  if (!isRunnable(v)) { return false }
-  return v.type === RunnableTypes.Test
-}
+export const isTest = (v: unknown): v is Test => v instanceof Test
 
 export default class Test extends Runnable {
   public fn: TestFn
@@ -24,49 +25,40 @@ export default class Test extends Runnable {
     this.parent = parent
   }
 
+  private async _timeout<T extends TestFn>(
+    promise: T,
+    ms: number,
+    timeoutError = new TimeoutError(`${this.getFullDescription()} has timed out: ${ms}ms`)
+  ): Promise<T | void> {
+    let timer: NodeJS.Timeout
+  
+    // create a promise that rejects in milliseconds
+    const timeout = new Promise<never>((_, reject) => {
+      timer = setTimeout(() => {
+        reject(timeoutError)
+      }, ms)
+    })
+  
+    // returns a race between timeout and the passed promise
+    return await Promise.race<T | void>([promise(), timeout]).finally(() => clearTimeout(timer))
+  }
+
   /**
    * @description Run a `Test` instance.
    */
-  public async run(options?: Partial<RunOptions>): Promise<Result> {
+  public async run(options?: Partial<RunOptions>): Promise<RunnableResult> {
     if (this.options.skip || this.options.todo) {
-      return this.doSkip(this.options.todo)
+      return this.doSkip(this.options.todo ? RunStatus.TODO : RunStatus.SKIPPED)
     }
 
     this.doStart()
 
-    if (options && options.timeout) {
-      let timeoutID: NodeJS.Timeout
-      const test: Promise<void> = new Promise(async (resolve, reject) => {
-        timeoutID = setTimeout(() => {
-          reject(`${this.getFullDescription()} has timed out: ${options.timeout}ms`)
-        }, options.timeout as number)
-
-        try {
-          await this.fn()
-        } catch (error) {
-          clearTimeout(timeoutID)
-          reject(error)
-        }
-
-        clearTimeout(timeoutID)
-        resolve()
-      })
-
-      try {
-        await test
-      } catch (error) {
-        return this.doFail(error)
-      }
+    try {
+      const result = options && options.timeout ? await this._timeout(this.fn, options.timeout) : await this.fn()
 
       return this.doPass()
-    } else {
-      try {
-        this.fn()
-      } catch (error) {
-        return this.doFail(error)
-      }
-
-      return this.doPass()
+    } catch (error: any) {
+      return this.doFail(error)
     }
   }
 }

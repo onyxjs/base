@@ -3,12 +3,6 @@
     "esModuleInterop": true,
     "declaration": true,
     "lib": [
-      "es2015",
-      "es2016",
-      "es2017",
-      "es2018",
-      "es2019",
-      "es2020",
       "esnext"
     ],
     "module": "commonjs",
@@ -18,12 +12,19 @@
     "sourceMap": true,
     "strict": true,
     "target": "es5",
+    "paths": {
+      "@onyx/matchers": ["../matchers"]
+    }
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/test/*"
   ],
   "include": [
-    "src",
-    "jest.config.js"
+    "src/**/*"
+  ],
+  "references": [
+    { "path": "../matchers" },
+    { "path": "../mock" }
   ]
 }

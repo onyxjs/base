@@ -1,114 +1,100 @@
-import { Status } from '../src/result'
-import Runnable from '../src/runnable'
-import Suite, { rootSymbol } from '../src/suite'
+// import { RunStatus } from '../src/newResult'
+import { rootSymbol, Suite, Runnable, isRunnable } from '../src'
+
+import { RunStatus } from '../src/types'
+
+class OnyxRunnable extends Runnable {
+  async run(shouldThrow = false) {
+    try {
+      if (shouldThrow) throw new Error('thrown')
+
+      if (this.options.skip || this.options.todo) {
+        return Promise.resolve(this.doSkip(this.options.skip ? RunStatus.SKIPPED : RunStatus.TODO))
+      }
+      
+      await this.doStart()
+
+      return Promise.resolve(this.doPass())
+    } catch(err) {
+      return Promise.resolve(this.doFail(err))
+    }
+  }
+}
 
 describe('Runnable', () => {
   const defaultOpts = { skip: false, todo: false }
   const defaultSuiteOpts = { skip: false, todo: false }
+  let parentSuite: Suite
+  let runnable: OnyxRunnable
+
+  beforeEach(() => {
+    parentSuite = new Suite('parent', defaultSuiteOpts, null)
+    runnable = new OnyxRunnable('runnable', defaultOpts, parentSuite)
+  })
+
+  it('should update the result description and fullDescription when instantiated', () => {
+    expect(runnable.result.description).toBe('runnable')
+    expect(runnable.result.fullDescription).toBe('parent -> runnable')
+  })
 
   it('should get full description', () => {
-    const parent = new Suite('parent', defaultSuiteOpts, null)
-    const child = new Runnable('child', defaultOpts, parent)
+    expect(runnable.getFullDescription()).toBe('parent -> runnable')
+  })
 
-    expect(child.getFullDescription()).toBe('parent -> child')
+  it('doStart()', () => {
+    runnable.doStart()
+    expect(runnable.start).not.toBe(0)
+    expect(runnable.result.status).toBe(RunStatus.RUNNING)
+  })
+
+  it('doEnd()', () => {
+    runnable.doEnd()
+    expect(runnable.result.time).not.toBe(0)
   })
 
   it('should ignore root in full description', () => {
-    const parent = new Suite('parent', defaultSuiteOpts, null)
-    parent[rootSymbol] = true
-    const child = new Runnable('child', defaultOpts, parent)
-    expect(child.getFullDescription()).toBe('child')
+    parentSuite[rootSymbol] = true
+    expect(runnable.getFullDescription()).toBe('runnable')
   })
 
-  it('should run asynchronously', async () => {
-    const runnable = new Runnable('runnable', defaultOpts, null)
-
-    expect((await runnable.run()).status).toBe(Status.Skipped)
+  it('should return a passing result', async () => {
+    const result = await runnable.run()
+    expect(result.status).toBe(RunStatus.PASSED)
   })
 
-  describe('events', () => {
-    it('start', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null)
+  it('should return a failing result', async () => {
+    const result = await runnable.run(true)
+    expect(result.status).toBe(RunStatus.FAILED)
+    expect(result.failures[0].message).toBe('thrown')
+  })
 
-      const fn = jest.fn()
-      runnable.on('start', fn)
+  it('should return a skipped result', async () => {
+    runnable.options.skip = true
 
-      runnable.doStart()
-      expect(runnable.result.status).toBe(Status.Running)
-      expect(fn).toHaveBeenCalledTimes(1)
-    })
+    const result = await runnable.run()
+    expect(result.status).toBe(RunStatus.SKIPPED)
+  })
 
-    it('pass', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null)
-      const fn = jest.fn()
-      runnable.on('pass', fn)
+  it('should return a todo result', async () => {
+    runnable.options.todo = true
 
-      const end = jest.fn()
-      runnable.on('end', end)
+    const result = await runnable.run()
+    expect(result.status).toBe(RunStatus.TODO)
+  })
 
-      runnable.doPass()
-      expect(runnable.result.status).toBe(Status.Passed)
-      expect(fn).toHaveBeenCalledTimes(1)
-      expect(end).toHaveBeenCalledTimes(1)
-    })
+  it('should return whether the runnable has finished', async () => {
+    expect(runnable.isDone()).toBe(false)
 
-    it('fail', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null)
-      const fn = jest.fn()
-      runnable.on('fail', fn)
+    await runnable.run()
 
-      const end = jest.fn()
-      runnable.on('end', end)
+    expect(runnable.isDone()).toBe(true)
+  })
 
-      runnable.doFail()
-      expect(runnable.result.status).toBe(Status.Failed)
-      expect(fn).toHaveBeenCalledTimes(1)
-      expect(end).toHaveBeenCalledTimes(1)
-    })
-
-    it('skip', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null)
-      const fn = jest.fn()
-      runnable.on('skip', fn)
-
-      const end = jest.fn()
-      runnable.on('end', end)
-      const skip = jest.fn()
-      runnable.on('skip', skip)
-
-      runnable.doSkip()
-      expect(runnable.result.status).toBe(Status.Skipped)
-      expect(fn).toHaveBeenCalledTimes(1)
-      expect(end).toHaveBeenCalledTimes(1)
-      expect(skip).toHaveBeenCalledWith(runnable, false)
-      expect(runnable.time).toBe(0)
-    })
-
-    it('skip(todo)', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null)
-      const fn = jest.fn()
-      runnable.on('skip', fn)
-
-      const end = jest.fn()
-      runnable.on('end', end)
-      const skip = jest.fn()
-      runnable.on('skip', skip)
-
-      runnable.doSkip(true)
-      expect(runnable.result.status).toBe(Status.Todo)
-      expect(fn).toHaveBeenCalledTimes(1)
-      expect(end).toHaveBeenCalledTimes(1)
-      expect(skip).toHaveBeenCalledWith(runnable, true)
-      expect(runnable.time).toBe(0)
-    })
-
-    it('end', () => {
-      const runnable = new Runnable('runnable', defaultOpts, null)
-      const end = jest.fn()
-      runnable.on('end', end)
-
-      runnable.doEnd()
-      expect(end).toHaveBeenCalledTimes(1)
+  describe('isRunnable type guard', () => {
+    it ('should return false if not a valid Runnable', () => {
+        expect(isRunnable(null)).toBe(false)
+        expect(isRunnable('')).toBe(false)
+        expect(isRunnable(runnable)).toBe(true)
     })
   })
 })

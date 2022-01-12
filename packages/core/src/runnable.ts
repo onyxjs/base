@@ -1,7 +1,13 @@
-import { EventEmitter } from 'events'
 import { performance } from 'perf_hooks'
-import Result, { Status } from './result'
-import Suite from './suite'
+import type { Hooks } from './hooks'
+// import { RunStatus/*, BaseResult*/ } from './newResult'
+// import Result, { Status } from './result'
+import type Suite from './suite'
+import type Result from './result'
+import type Test from './test'
+
+// Types
+import { RunnableOptions, RunnableResult, RunStatus, RunnableTypes, RunOptions } from './types'
 
 export const runnableSymbol = Symbol('isRunnable')
 
@@ -9,22 +15,43 @@ export const runnableSymbol = Symbol('isRunnable')
  * @description Checks if passed value is an instance of `Runnable`.
  */
 export const isRunnable = (v: unknown): v is Runnable => {
-  if (typeof v === 'object' && v === null) { return false }
-  return (v as Runnable)[runnableSymbol]
+  if (v && (v as Runnable)[runnableSymbol]) { return true }
+  else { return false }
 }
 
-export enum RunnableTypes {
-  Runnable = 'runnable',
-  Suite = 'suite',
-  Test = 'test',
+// export const isRunnable2 = <R extends Runnable | Test | Suite>(v: unknown): v is R => {
+//   return (v instanceof Runnable) || (v instanceof Test) || (v instanceof Suite)
+// }
+
+// export enum RunnableTypes {
+//   Runnable = 'runnable',
+//   Suite = 'suite',
+//   Test = 'test',
+// }
+
+// export interface RunnableOptions {
+//   skip: boolean
+//   todo: boolean
+// }
+
+// export interface RunnableResult extends BaseResult {
+//   id: string
+//   description: string
+//   time: number
+// }
+
+const DEFAULT_RESULT: RunnableResult = {
+  id: '',
+  description: '',
+  messages: [],
+  failures: [],
+  hooks: {} as Hooks,
+  status: RunStatus.PENDING,
+  time: 0,
+  fullDescription: '', 
 }
 
-export interface RunnableOptions {
-  skip: boolean
-  todo: boolean
-}
-
-export default class Runnable extends EventEmitter {
+export default abstract class Runnable {
 
   /**
    * @description Normalize passed options object with `Runnable` default options.
@@ -37,49 +64,53 @@ export default class Runnable extends EventEmitter {
     }
   }
   public description: string
-  public result: Result
   public options: RunnableOptions
   public parent: Suite | null
+  public result: RunnableResult
+  public status: RunStatus
   public type: RunnableTypes = RunnableTypes.Runnable
   public [runnableSymbol] = true
 
-  public time = 0
-  private start = 0
+  public start = 0
 
   /* istanbul ignore next */
   constructor(description: string, options: Partial<RunnableOptions> = {}, parent: Suite | null) {
-    super()
     this.description = description
-    this.result = new Result()
     this.options = Runnable.normalizeOptions(options)
     this.parent = parent
+    this.result = { ...DEFAULT_RESULT, description, fullDescription: this.getFullDescription() }
+    this.status = RunStatus.PENDING
   }
+
+  /**
+   * @description Run a `Runnable` instance.
+   */
+  public abstract run(options: Partial<RunOptions>): Promise<RunnableResult | Result>
+
 
   /**
    * @description Sets result status to `Running` and emits a `start` event with the `Runnable` instance and timestamp.
    */
-  public doStart(): void {
-    this.result.status = Status.Running
-    this.emit('start', this)
+  public doStart(): RunnableResult {
+    this.result.status = RunStatus.RUNNING
     this.start = performance.now()
+    return this.result
   }
 
   /**
    * @description Emits an `end` event with the completed `Runnable` instance and the time taken to complete.
    */
   public doEnd() {
-    if (this.result.status !== Status.Skipped && this.result.status !== Status.Todo) {
-      this.time = performance.now() - this.start
+    if (this.result.status !== RunStatus.SKIPPED && this.result.status !== RunStatus.TODO) {
+      this.result.time = performance.now() - this.start
     }
-    this.emit('end', this, this.time)
   }
 
   /**
    * @description Emits a `pass` event with the passing `Runnable` instance.
    */
-  public doPass(): Result {
-    this.result.status = Status.Passed
-    this.emit('pass', this)
+  public doPass() {
+    this.result.status = RunStatus.PASSED
     this.doEnd()
 
     return this.result
@@ -88,12 +119,10 @@ export default class Runnable extends EventEmitter {
   /**
    * @description Emits a `fail` event with the failed `Runnable` instance and passed error.
    */
-  public doFail(error?: Error | string): Result {
-    if (error) {
-      this.result.addMessages(String(error))
-    }
-    this.result.status = Status.Failed
-    this.emit('fail', this, error)
+  public doFail(error: Error) {
+    this.result.failures = [...this.result.failures, error]
+    this.result.messages = [...this.result.messages, error.message]
+    this.result.status = RunStatus.FAILED
     this.doEnd()
 
     return this.result
@@ -102,33 +131,29 @@ export default class Runnable extends EventEmitter {
   /**
    * @description Emits `skip` event with the skipped `Runnable` instance.
    */
-  public doSkip(todo = false): Result {
-    this.result.status = todo ? Status.Todo : Status.Skipped
-    this.emit('skip', this, todo)
+  public doSkip(skipOrTodo: RunStatus.SKIPPED | RunStatus.TODO) {
+    this.result.status = skipOrTodo
     this.doEnd()
 
     return this.result
   }
 
   /**
-   * @description Run a `Runnable` instance.
-   */
-  // istanbul ignore next unimplemented
-  public async run(): Promise<Result> {
-    if (this.options.skip || this.options.todo) {
-      return this.doSkip(this.options.todo)
-    }
-
-    this.doStart()
-
-    return this.doSkip() // To be replaced with real run function
-  }
-
-  /**
    * @description Check that `Runnable` has completed.
    */
   public isDone() {
-    return this.result.isDone()
+    return this.result.status !== RunStatus.PENDING && this.result.status !== RunStatus.RUNNING
+  }
+
+  /**
+   * @description Check if the current status is the same as the status argument passed in.
+   */
+  public isStatus(status: RunStatus): boolean {
+    return this.result.status === status
+  }
+
+  public isPending(): boolean {
+    return this.result.status === RunStatus.PENDING || (this.parent !== null && this.parent.isStatus(RunStatus.PENDING))
   }
 
   /**
@@ -136,7 +161,7 @@ export default class Runnable extends EventEmitter {
    */
   public getFullDescription(): string {
     if (this.parent && !this.parent.isRoot()) {
-      return `${this.parent.getFullDescription()} -> ${this.description}`
+      return `${this.parent.getFullDescription()} ${this.description}`
     }
     return this.description
   }
