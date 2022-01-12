@@ -14,28 +14,33 @@
 import { BailError } from './BailError'
 import { TimeoutError } from './TimeoutError'
 import { RunnableTypes, Status } from './types'
+type ResultOptions<T extends RunnableTypes> = {
+  description: string,
+  time: number,
+  type: T,
+}
+
+type RunnableError = Error | TimeoutError | BailError
 
 /**
  * @todo Delete messages.
  */
-export default class Result {
+class Result<T extends RunnableTypes> {
   private _internalErrors: Error[]
   private _internalStatus: Status
   private _internalMessages: string[]
-  
-  public time: number
-  public title: string
-  public description: string
-  public type: RunnableTypes
 
-  constructor(messages: string | string[] = [], options: Result, errors: Error[] | Error = [], status?: Status) {
+  public time: number
+  public description: string
+  public type: T
+
+  constructor(messages: string | string[] = [], options: ResultOptions<T>, errors: RunnableError[] | RunnableError = [], status?: Status) {
     this._internalErrors = !Array.isArray(errors) ? [ errors ] : errors
     this._internalStatus = status || Status.Pending
     this._internalMessages = !Array.isArray(messages) ? [ messages ] : messages
     
     this.description = options.description
     this.time = options.time
-    this.title = options.title
     this.type = options.type
   }
 
@@ -86,3 +91,9 @@ export default class Result {
     this._internalErrors = [...this._internalErrors, ...errors]
   }
 }
+
+export function createResult<T extends RunnableTypes>(messages: string | string[] = [], options: ResultOptions<T>, errors: RunnableError[] | RunnableError = [], status?: Status): Result<T> {
+  return new Result(messages, options, errors, status)
+}
+
+export default Result
