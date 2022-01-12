@@ -71,7 +71,6 @@ export default abstract class Runnable {
   public type: RunnableTypes = RunnableTypes.Runnable
   public [runnableSymbol] = true
 
-  public time = 0
   public start = 0
 
   /* istanbul ignore next */
@@ -153,12 +152,16 @@ export default abstract class Runnable {
     return this.result.status === status
   }
 
+  public isPending(): boolean {
+    return this.result.status === RunStatus.PENDING || (this.parent !== null && this.parent.isStatus(RunStatus.PENDING))
+  }
+
   /**
    * @description Concatenate the Parent's description and the current `Runnable`'s description.
    */
   public getFullDescription(): string {
     if (this.parent && !this.parent.isRoot()) {
-      return `${this.parent.getFullDescription()} -> ${this.description}`
+      return `${this.parent.getFullDescription()} ${this.description}`
     }
     return this.description
   }
