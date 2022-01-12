@@ -15,9 +15,9 @@ import { BailError } from './BailError'
 import { TimeoutError } from './TimeoutError'
 import { RunnableTypes, Status } from './types'
 type ResultOptions<T extends RunnableTypes> = {
-  description: string,
-  time: number,
-  type: T,
+  description: string
+  time: number
+  type: T
 }
 
 type RunnableError = Error | TimeoutError | BailError
@@ -92,7 +92,7 @@ class Result<T extends RunnableTypes> {
   }
 }
 
-export function createResult<T extends RunnableTypes>(messages: string | string[] = [], options: ResultOptions<T>, errors: RunnableError[] | RunnableError = [], status?: Status): Result<T> {
+export function createResult<T extends RunnableTypes>(options: ResultOptions<T>, messages: string | string[] = [], errors: RunnableError[] | RunnableError = [], status?: Status): Result<T> {
   return new Result(messages, options, errors, status)
 }
 

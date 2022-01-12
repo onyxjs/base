@@ -1,42 +1,41 @@
-import Result, { Status } from '../src/result'
+import Result, { createResult } from '../src/result'
+import { RunnableTypes, Status } from '../src/types'
 
-describe.skip('Result', () => {
-  // it('should change status', () => {
-  //   const result = new Result()
+describe('Result', () => {
+  let result: Result<RunnableTypes.Runnable>
 
-  //   expect(result.status).toBe(Status.Pending)
-  //   result.status = Status.Passed
-  //   expect(result.status).toBe(Status.Passed)
-  // })
+  beforeEach(() => {
+    result = createResult({ description: 'testResult', time: 0, type: RunnableTypes.Runnable })
+  })
 
-  // it('should set isDone', () => {
-  //   const result = new Result()
+  it('should change status', () => {
+    expect(result.status).toBe(Status.Pending)
+    result.status = Status.Passed
+    expect(result.status).toBe(Status.Passed)
+  })
 
-  //   expect(result.isDone()).toBeFalsy()
-  //   result.status = Status.Passed
-  //   expect(result.isDone()).toBeTruthy()
-  // })
+  it('should set isDone', () => {
+    expect(result.isDone()).toBeFalsy()
+    result.status = Status.Passed
+    expect(result.isDone()).toBeTruthy()
+  })
 
-  // it('should work with messages', () => {
-  //   const result = new Result(Status.Pending, 'Result')
+  it('should work with messages', () => {
+    expect(result.messages).toStrictEqual([])
+    result.addMessages('Test', 'Onyx')
+    expect(result.messages).toHaveLength(2)
+  })
 
-  //   expect(result.messages).toHaveLength(1)
-  //   result.addMessages('Test', 'Onyx')
-  //   expect(result.messages).toHaveLength(3)
-  // })
+  it('should lock up when done', () => {
+    result.addMessages('Test', 'Onyx')
+    expect(result.messages).toHaveLength(2)
 
-  // it('should lock up when done', () => {
-  //   const result = new Result()
+    result.status = Status.Passed
 
-  //   result.addMessages('Test', 'Onyx')
-  //   expect(result.messages).toHaveLength(2)
+    result.addMessages('Test', 'Onyx')
+    expect(result.messages).toHaveLength(2)
 
-  //   result.status = Status.Passed
-
-  //   result.addMessages('Test', 'Onyx')
-  //   expect(result.messages).toHaveLength(2)
-
-  //   result.status = Status.Pending
-  //   expect(result.status).toBe(Status.Passed)
-  // })
+    result.status = Status.Pending
+    expect(result.status).toBe(Status.Passed)
+  })
 })
