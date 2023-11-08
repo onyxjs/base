@@ -2,13 +2,14 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "rootDir": "./src",
-    "module": "es2015",
+    "module": "commonjs",
     "target": "es5",
     "allowJs": true,
     "checkJs": true,
     "esModuleInterop": true,
     "strict": true,
     "moduleResolution": "node",
+    "preserveSymlinks": true,
     "lib": [
       "es2015",
       "es2016",
@@ -23,7 +24,8 @@
   "exclude": [
     "**/*.spec.ts",
     "**/*.spec.js",
-    "node_modules"
+    "node_modules",
+    "jest.config.js"
   ],
   "include": [
     "src"

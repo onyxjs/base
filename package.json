@@ -1,7 +1,7 @@
 {
   "name": "onyx",
   "version": "0.0.0",
-  "description": "A simple Javascript unit testing library.",
+  "description": "WIP: A modular modern TypeScript testing framework.",
   "repository": "git@github.com:onyxjs/onyx.git",
   "author": "Elijah Kotyluk <elijah@elijahkotyluk.com>",
   "license": "MIT",
@@ -12,28 +12,36 @@
   "scripts": {
     "commit": "npx git-cz",
     "test": "lerna run test --stream",
-    "lint": "lerna run --no-bail lint:wotan --stream",
+    "lint": "lerna run --no-bail lint --stream",
     "lint:fix": "lerna run --no-bail lint:fix --stream",
+    "lint:all": "eslint .",
     "build": "lerna run build --stream",
     "dev": "lerna run dev --stream",
     "watch": "lerna run watch --stream"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lerna run lint:fix --concurrency 1 --since HEAD"
     }
   },
   "lint-staged": {
     "*.[jt]s": [
-      "lerna run lint:fix --",
+      "lerna run lint:fix",
       "git add",
       "lerna run test -- --bail --findRelatedTests"
     ]
   },
   "devDependencies": {
-    "commitizen": "^3.1.1",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
+    "commitizen": "4.2.4",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
     "husky": "^2.7.0",
-    "lerna": "^3.15.0",
-    "lint-staged": "^8.2.1"
+    "lerna": "^4.0.0",
+    "lint-staged": "^11.1.2",
+    "prettier": "^2.2.1",
+    "yarn-audit-fix": "^9.0.5"
   }
 }

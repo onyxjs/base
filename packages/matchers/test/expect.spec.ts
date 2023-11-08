@@ -1,17 +1,13 @@
-import _expect from '../src/expect';
+import $expect from '../src/expect'
 
-const matchers = {
-  toStrictlyEqual: (a: any, b: any) => a === b,
-};
-
-describe('Expect', () => {
+describe('expect', () => {
   it('should expect values', () => {
-    expect(() => _expect(matchers, 1).toStrictlyEqual(1)).not.toThrow();
-    expect(() => _expect(matchers, 1).toStrictlyEqual(2)).toThrow();
-  });
+    expect(() => $expect(1).toStrictlyEqual(1)).not.toThrow()
+    expect(() => $expect(1).toStrictlyEqual(2)).toThrow()
+  })
 
   it('should not expect values', () => {
-    expect(() => _expect(matchers, 1).not.toStrictlyEqual(1)).toThrow();
-    expect(() => _expect(matchers, 1).not.toStrictlyEqual(2)).not.toThrow();
-  });
-});
+    expect(() => $expect(1).not.toStrictlyEqual(1)).toThrow()
+    expect(() => $expect(1).not.toStrictlyEqual(2)).not.toThrow()
+  })
+})

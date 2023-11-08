@@ -1,28 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Suite should error and collect messages 1`] = `
-Result {
-  "internalMessages": Array [
-    "FATAL ERROR!",
-  ],
-  "internalStatus": 2,
-}
-`;
-
-exports[`Suite should fail and collect messages 1`] = `
-Result {
-  "internalMessages": Array [
-    "FAIL!",
-  ],
-  "internalStatus": 1,
-}
-`;
-
-exports[`Suite should pass and collect messages 1`] = `
-Result {
-  "internalMessages": Array [
-    "OK",
-  ],
-  "internalStatus": 0,
-}
+exports[`Suite should invoke hooks 1`] = `
+Array [
+  "beforeAll1",
+  "beforeAll2",
+  "beforeEach1",
+  "beforeEach1",
+  "beforeEach2",
+  "beforeEach2",
+  "afterEach1",
+  "afterEach1",
+  "afterEach2",
+  "afterEach2",
+  "afterAll1",
+  "afterAll2",
+]
 `;
